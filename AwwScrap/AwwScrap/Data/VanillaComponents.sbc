@@ -10,7 +10,7 @@
 				<SubtypeId>BulletproofGlassScrap</SubtypeId>
 			</Id>
 			<DisplayName>Bulletproof Glass Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\bulletproof_glass.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -18,7 +18,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap2.mwm</Model>
+			<Model>Models\Components\Scrap2.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -29,7 +29,7 @@
 				<SubtypeId>ComputerScrap</SubtypeId>
 			</Id>
 			<DisplayName>Computer Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\computer.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -37,7 +37,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap8.mwm</Model>
+			<Model>Models\Components\Scrap8.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -48,7 +48,7 @@
 				<SubtypeId>ConstructionScrap</SubtypeId>
 			</Id>
 			<DisplayName>Construction Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\construction_components.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -67,7 +67,7 @@
 				<SubtypeId>DetectorScrap</SubtypeId>
 			</Id>
 			<DisplayName>Detector Component Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\detector_components.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -75,7 +75,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap7.mwm</Model>
+			<Model>Models\Components\Scrap7.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -86,7 +86,7 @@
 				<SubtypeId>DisplayScrap</SubtypeId>
 			</Id>
 			<DisplayName>Display Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\display.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -94,7 +94,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap8.mwm</Model>
+			<Model>Models\Components\Scrap8.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -105,7 +105,7 @@
 				<SubtypeId>ExplosivesScrap</SubtypeId>
 			</Id>
 			<DisplayName>Explosives Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\explosives.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -113,7 +113,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap9.mwm</Model>
+			<Model>Models\Components\Scrap9.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -124,7 +124,7 @@
 				<SubtypeId>GirderScrap</SubtypeId>
 			</Id>
 			<DisplayName>Girder Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\girder.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -143,7 +143,7 @@
 				<SubtypeId>GravityGeneratorScrap</SubtypeId>
 			</Id>
 			<DisplayName>Gravity Generator Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\gravity_generator_components.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -151,7 +151,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap5.mwm</Model>
+			<Model>Models\Components\Scrap5.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -162,7 +162,7 @@
 				<SubtypeId>InteriorPlateScrap</SubtypeId>
 			</Id>
 			<DisplayName>Interior Plate Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\interior_plate.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -181,7 +181,7 @@
 				<SubtypeId>LargeTubeScrap</SubtypeId>
 			</Id>
 			<DisplayName>Large Steel Tube Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\large_steel_tube.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -200,7 +200,7 @@
 				<SubtypeId>MedicalScrap</SubtypeId>
 			</Id>
 			<DisplayName>Medical Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\medical_components.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -208,7 +208,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap6.mwm</Model>
+			<Model>Models\Components\Scrap6.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -219,7 +219,7 @@
 				<SubtypeId>MetalGridScrap</SubtypeId>
 			</Id>
 			<DisplayName>Metal Grid Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\metal_grid.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -227,7 +227,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap1.mwm</Model>
+			<Model>Models\Components\Scrap1.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -238,7 +238,7 @@
 				<SubtypeId>MotorScrap</SubtypeId>
 			</Id>
 			<DisplayName>Motor Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\motor.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -246,7 +246,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap7.mwm</Model>
+			<Model>Models\Components\Scrap7.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -257,7 +257,7 @@
 				<SubtypeId>PowerCellScrap</SubtypeId>
 			</Id>
 			<DisplayName>Power Cell Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\power_cell.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -265,7 +265,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap11.mwm</Model>
+			<Model>Models\Components\Scrap11.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -276,7 +276,7 @@
 				<SubtypeId>RadioCommunicationScrap</SubtypeId>
 			</Id>
 			<DisplayName>Radio Communication Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\radio_communication_components.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -284,7 +284,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap8.mwm</Model>
+			<Model>Models\Components\Scrap8.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -295,7 +295,7 @@
 				<SubtypeId>ReactorScrap</SubtypeId>
 			</Id>
 			<DisplayName>Reactor Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\reactor_components.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -303,7 +303,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap3.mwm</Model>
+			<Model>Models\Components\Scrap3.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -314,7 +314,7 @@
 				<SubtypeId>SmallTubeScrap</SubtypeId>
 			</Id>
 			<DisplayName>Small Steel Tube Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\small_steel_tube.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -333,7 +333,7 @@
 				<SubtypeId>SolarCellScrap</SubtypeId>
 			</Id>
 			<DisplayName>Solar Cell Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\solar_cell.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -341,7 +341,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap10.mwm</Model>
+			<Model>Models\Components\Scrap10.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -352,7 +352,7 @@
 				<SubtypeId>SteelPlateScrap</SubtypeId>
 			</Id>
 			<DisplayName>Steel Plate Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\steel_plate.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -371,7 +371,7 @@
 				<SubtypeId>SuperconductorScrap</SubtypeId>
 			</Id>
 			<DisplayName>Superconductor Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\superconductor_conducts.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -379,7 +379,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap4.mwm</Model>
+			<Model>Models\Components\Scrap4.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -390,7 +390,7 @@
 				<SubtypeId>ThrustScrap</SubtypeId>
 			</Id>
 			<DisplayName>Thrust Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\thrust_components.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -398,7 +398,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap4.mwm</Model>
+			<Model>Models\Components\Scrap4.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -412,7 +412,7 @@
 				<SubtypeId>BulletproofGlassToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Bulletproof Glass Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\bulletproof_glass.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="BulletproofGlassScrap" />
 			</Prerequisites>
@@ -429,7 +429,7 @@
 				<SubtypeId>ComputerToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Computer Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\computer.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="ComputerScrap" />
 			</Prerequisites>
@@ -447,7 +447,7 @@
 				<SubtypeId>ConstructionToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Construction Component Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\construction_components.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="ConstructionScrap" />
 			</Prerequisites>
@@ -464,7 +464,7 @@
 				<SubtypeId>DetectorToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Detector Component Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\detector_components.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="DetectorScrap" />
 			</Prerequisites>
@@ -482,7 +482,7 @@
 				<SubtypeId>DisplayToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Display Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\display.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="DisplayScrap" />
 			</Prerequisites>
@@ -500,7 +500,7 @@
 				<SubtypeId>ExplosivesToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Explosives Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\explosives.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="ExplosivesScrap" />
 			</Prerequisites>
@@ -518,7 +518,7 @@
 				<SubtypeId>GirderToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Girder Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\girder.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="GirderScrap" />
 			</Prerequisites>
@@ -535,7 +535,7 @@
 				<SubtypeId>GravityGeneratorToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Gravity Generator Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\gravity_generator_components.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="GravityGeneratorScrap" />
 			</Prerequisites>
@@ -555,7 +555,7 @@
 				<SubtypeId>InteriorPlateToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Interior Plate Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\interior_plate.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="InteriorPlateScrap" />
 			</Prerequisites>
@@ -572,7 +572,7 @@
 				<SubtypeId>LargeTubeToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Large Steel Tube Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\large_steel_tube.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="LargeTubeScrap" />
 			</Prerequisites>
@@ -589,7 +589,7 @@
 				<SubtypeId>MedicalToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Medical Component Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\medical_components.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="MedicalScrap" />
 			</Prerequisites>
@@ -608,7 +608,7 @@
 				<SubtypeId>MetalGridToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Metal Grid Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\metal_grid.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="MetalGridScrap" />
 			</Prerequisites>
@@ -627,7 +627,7 @@
 				<SubtypeId>MotorToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Motor Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\motor.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="MotorScrap" />
 			</Prerequisites>
@@ -645,7 +645,7 @@
 				<SubtypeId>PowerCellToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Power Cell Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\power_cell.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="PowerCellScrap" />
 			</Prerequisites>
@@ -664,7 +664,7 @@
 				<SubtypeId>RadioCommunicationToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Radio Communication Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\radio_communication_components.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="RadioCommunicationScrap" />
 			</Prerequisites>
@@ -682,7 +682,7 @@
 				<SubtypeId>ReactorToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Reactor Component Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\reactor_components.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="ReactorScrap" />
 			</Prerequisites>
@@ -701,7 +701,7 @@
 				<SubtypeId>SmallTubeToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Small Steel Tube Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\small_steel_tube.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="SmallTubeScrap" />
 			</Prerequisites>
@@ -718,7 +718,7 @@
 				<SubtypeId>SolarCellToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Solar Cell Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\solar_cell.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="SolarCellScrap" />
 			</Prerequisites>
@@ -736,7 +736,7 @@
 				<SubtypeId>SteelPlateToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Steel Plate Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\steel_plate.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="SteelPlateScrap" />
 			</Prerequisites>
@@ -753,7 +753,7 @@
 				<SubtypeId>SuperconductorToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Superconductor Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\superconductor_conducts.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="SuperconductorScrap" />
 			</Prerequisites>
@@ -771,7 +771,7 @@
 				<SubtypeId>ThrustToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Thrust Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\thrust_components.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="ThrustScrap" />
 			</Prerequisites>
@@ -785,6 +785,21 @@
 		</Blueprint>
 
 	</Blueprints>
+
+  <BlueprintClasses>
+    <Class>
+      <Id>
+        <TypeId>BlueprintClassDefinition</TypeId>
+        <SubtypeId>AwwScrap</SubtypeId>
+      </Id>
+      <DisplayName>Scrap Recycling</DisplayName>
+      <Description>Scrap Recycling</Description>
+      <Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+      <HighlightIcon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</HighlightIcon>
+      <InputConstraintIcon>Textures\GUI\Icons\filter_ore.dds</InputConstraintIcon>
+      <OutputConstraintIcon>Textures\GUI\Icons\filter_ingot.dds</OutputConstraintIcon>
+    </Class>
+  </BlueprintClasses>
 
 	<BlueprintClassEntries>
 		<Entry Class="Ingots" BlueprintSubtypeId="BulletproofGlassToIngot" />
@@ -825,15 +840,14 @@
 		<Entry Class="CommonMetals" BlueprintSubtypeId="SolarCellToIngot" />
 		<Entry Class="CommonMetals" BlueprintSubtypeId="SteelPlateToIngot" />
 
-		<Entry Class="BasicComponents" BlueprintSubtypeId="ComputerToIngot" />
-		<Entry Class="BasicComponents" BlueprintSubtypeId="ConstructionToIngot" />
-		<Entry Class="BasicComponents" BlueprintSubtypeId="DisplayToIngot" />
-    <Entry Class="BasicComponents" BlueprintSubtypeId="GirderToIngot" />
-		<Entry Class="BasicComponents" BlueprintSubtypeId="InteriorPlateToIngot" />
-		<Entry Class="BasicComponents" BlueprintSubtypeId="MotorToIngot" />
-		<Entry Class="BasicComponents" BlueprintSubtypeId="PowerCellToIngot" />
-		<Entry Class="BasicComponents" BlueprintSubtypeId="SolarCellToIngot" />
-		<Entry Class="BasicComponents" BlueprintSubtypeId="SteelPlateToIngot" />
+		<Entry Class="AwwScrap" BlueprintSubtypeId="ComputerToIngot" />
+		<Entry Class="AwwScrap" BlueprintSubtypeId="ConstructionToIngot" />
+		<Entry Class="AwwScrap" BlueprintSubtypeId="DisplayToIngot" />
+    <Entry Class="AwwScrap" BlueprintSubtypeId="GirderToIngot" />
+		<Entry Class="AwwScrap" BlueprintSubtypeId="InteriorPlateToIngot" />
+		<Entry Class="AwwScrap" BlueprintSubtypeId="MotorToIngot" />
+		<Entry Class="AwwScrap" BlueprintSubtypeId="SolarCellToIngot" />
+		<Entry Class="AwwScrap" BlueprintSubtypeId="SteelPlateToIngot" />
 	</BlueprintClassEntries>
 
 </Definitions>

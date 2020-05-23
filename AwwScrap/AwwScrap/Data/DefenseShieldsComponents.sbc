@@ -9,7 +9,7 @@
 				<SubtypeId>FieldEmitterScrap</SubtypeId>
 			</Id>
 			<DisplayName>Field Emitter Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\field_emitter.dds</Icon>
 			<Size>
 				<X>0.2</X>
 				<Y>0.2</Y>
@@ -17,7 +17,7 @@
 			</Size>
 			<Mass>1</Mass>
 			<Volume>0.254</Volume>
-			<Model>Data\Models\Components\Scrap2.mwm</Model>
+			<Model>Models\Components\Scrap2.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
 
@@ -31,7 +31,7 @@
 				<SubtypeId>ShieldComponentToIngot</SubtypeId>
 			</Id>
 			<DisplayName>Field Emitter Scrap</DisplayName>
-			<Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+			<Icon>Textures\GUI\Icons\Components\field_emitter.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="FieldEmitterScrap" />
 			</Prerequisites>
