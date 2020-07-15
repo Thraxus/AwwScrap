@@ -101,8 +101,8 @@ namespace AwwScrap
 						myBlueprintDefinitionBase.Results[index].Amount = (MyFixedPoint)f;
 					}
 				}
-				MyRefineryDefinition basicRefinery = MyDefinitionManager.Static.GetCubeBlockDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Refinery), "Blast Furnace")) as MyRefineryDefinition;
-				if (basicRefinery != null) basicRefinery.MaterialEfficiency = 1.0f;
+				//MyRefineryDefinition basicRefinery = MyDefinitionManager.Static.GetCubeBlockDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Refinery), "Blast Furnace")) as MyRefineryDefinition;
+				//if (basicRefinery != null) basicRefinery.MaterialEfficiency = 1.0f;
 			}
 			catch (Exception e)
 			{
