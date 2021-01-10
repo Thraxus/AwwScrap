@@ -85,7 +85,7 @@ namespace AwwScrap.Support
 			{ MyStringHash.GetOrCompute("ShieldComponent"), "FieldEmitterScrap" }
 		};
 
-		public static readonly List<MyStringHash> AwwScrapSubTypeIds = new List<MyStringHash>
+		public static readonly List<MyStringHash> AwwScrapSubTypeIds = new List<MyStringHash>()
 		{
 			// Vanilla
 			MyStringHash.GetOrCompute("BulletproofGlassToIngot"),
@@ -125,6 +125,13 @@ namespace AwwScrap.Support
 			"MotorScrap",
 			"SolarCellScrap",
 			"SteelPlateScrap"
+		};
+
+		public static readonly List<MyStringHash> IgnoredBlocks = new List<MyStringHash>
+		{
+			MyStringHash.GetOrCompute("StorageShelf1"),
+			MyStringHash.GetOrCompute("StorageShelf2"),
+			MyStringHash.GetOrCompute("StorageShelf3")
 		};
 
 		public static readonly bool SkipTieredTech = true;

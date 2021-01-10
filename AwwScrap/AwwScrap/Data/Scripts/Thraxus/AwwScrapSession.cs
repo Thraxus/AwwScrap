@@ -41,6 +41,8 @@ namespace AwwScrap
 			
 				foreach (MyCubeBlockDefinition myCubeBlockDefinition in MyDefinitionManager.Static.GetAllDefinitions().OfType<MyCubeBlockDefinition>().Where(myCubeBlockDefinition => myCubeBlockDefinition?.Components != null))
 				{
+					if (Statics.IgnoredBlocks.Contains(myCubeBlockDefinition.Id.SubtypeId)) continue;
+
 					foreach (MyCubeBlockDefinition.Component component in myCubeBlockDefinition.Components)
 					{
 						if (!component.Definition.Public)
