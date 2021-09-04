@@ -174,9 +174,11 @@
     <None Include="AwwScrap\Models\Components\Scrap7.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap8.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap9.mwm" />
+    <None Include="AwwScrap\modinfo.sbmi" />
     <None Include="AwwScrap\Textures\GUI\Icons\Components\format.xcf" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AwwScrap\metadata.mod" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\bulletproof_glass.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\Cartridge_Icon.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\computer.dds" />
@@ -200,6 +202,7 @@
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\steel_plate.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\superconductor_conducts.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\thrust_components.dds" />
+    <Content Include="AwwScrap\Thumb.jpg" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
