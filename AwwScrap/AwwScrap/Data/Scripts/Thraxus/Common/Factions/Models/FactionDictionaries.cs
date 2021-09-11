@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Factions.DataTypes.Enums;
+using AwwScrap.Common.Factions.DataTypes.Enums;
 using Sandbox.Definitions;
 using Sandbox.ModAPI;
 using VRage.Game.ModAPI;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Factions.Models
+namespace AwwScrap.Common.Factions.Models
 {
 	public static class FactionDictionaries
 	{

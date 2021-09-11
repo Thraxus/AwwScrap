@@ -1,9 +1,9 @@
-﻿using AwwScrap_IFoundYourCrap.Thraxus.Common.Enums;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Logging;
+﻿using AwwScrap.Common.Enums;
+using AwwScrap.Common.Utilities.Tools.Logging;
 using VRage.Game.Components;
 using VRage.ObjectBuilders;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.BaseClasses
+namespace AwwScrap.Common.BaseClasses
 {
 	internal abstract class BaseGameLogicComp : MyGameLogicComponent
 	{

@@ -1,8 +1,8 @@
-﻿using AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Networking.Messages;
+﻿using AwwScrap.Common.Utilities.Tools.Networking.Messages;
 using ProtoBuf;
 using Sandbox.ModAPI;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Networking
+namespace AwwScrap.Common.Utilities.Tools.Networking
 {
 	[ProtoInclude(10, typeof(ExampleMessage))]
 	[ProtoContract]

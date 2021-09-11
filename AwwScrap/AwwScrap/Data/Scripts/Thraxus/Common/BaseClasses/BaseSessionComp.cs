@@ -1,11 +1,11 @@
-﻿using AwwScrap_IFoundYourCrap.Thraxus.Common.Enums;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Logging;
+﻿using AwwScrap.Common.Enums;
+using AwwScrap.Common.Utilities;
+using AwwScrap.Common.Utilities.Tools.Logging;
 using Sandbox.ModAPI;
 using VRage.Game;
 using VRage.Game.Components;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.BaseClasses
+namespace AwwScrap.Common.BaseClasses
 {
 	public abstract class BaseSessionComp : MySessionComponentBase
 	{

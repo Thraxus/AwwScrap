@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Factions.DataTypes.Enums;
+using AwwScrap.Common.Factions.DataTypes.Enums;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Factions.Models
+namespace AwwScrap.Common.Factions.Models
 {
 	public static class Settings
 	{

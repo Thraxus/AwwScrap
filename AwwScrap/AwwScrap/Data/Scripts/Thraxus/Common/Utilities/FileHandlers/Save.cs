@@ -2,7 +2,7 @@
 using System.IO;
 using Sandbox.ModAPI;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.FileHandlers
+namespace AwwScrap.Common.Utilities.FileHandlers
 {
 	public static class Save
 	{

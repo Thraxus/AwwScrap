@@ -1,5 +1,5 @@
 ﻿
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Enums
+namespace AwwScrap.Common.Enums
 {
 	public enum FactionRelationship
 	{

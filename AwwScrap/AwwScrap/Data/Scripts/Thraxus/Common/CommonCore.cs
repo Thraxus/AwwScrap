@@ -1,10 +1,10 @@
-﻿using AwwScrap_IFoundYourCrap.Thraxus.Common.BaseClasses;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Enums;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Factions.Models;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Reporting;
+﻿using AwwScrap.Common.BaseClasses;
+using AwwScrap.Common.Enums;
+using AwwScrap.Common.Factions.Models;
+using AwwScrap.Common.Reporting;
 using VRage.Game.Components;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common
+namespace AwwScrap.Common
 {
 	[MySessionComponentDescriptor(MyUpdateOrder.BeforeSimulation, priority: int.MinValue + 1)]
 	public class CommonCore : BaseSessionComp

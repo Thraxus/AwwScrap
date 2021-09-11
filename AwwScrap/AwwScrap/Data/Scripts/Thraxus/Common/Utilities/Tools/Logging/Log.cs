@@ -3,7 +3,7 @@ using System.IO;
 using Sandbox.ModAPI;
 using VRage.Game;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Logging
+namespace AwwScrap.Common.Utilities.Tools.Logging
 {
 	public class Log
 	{

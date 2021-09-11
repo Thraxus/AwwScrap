@@ -1,5 +1,5 @@
 ﻿
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Factions.DataTypes.Enums
+namespace AwwScrap.Common.Factions.DataTypes.Enums
 {
 	public enum FactionTypes
 	{

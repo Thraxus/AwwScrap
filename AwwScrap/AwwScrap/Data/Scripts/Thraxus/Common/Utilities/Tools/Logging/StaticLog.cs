@@ -1,9 +1,9 @@
-﻿using AwwScrap_IFoundYourCrap.Thraxus.Common.Enums;
+﻿using AwwScrap.Common.Enums;
 using VRage.Game;
 using VRage.Game.Components;
 using VRage.Utils;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Logging
+namespace AwwScrap.Common.Utilities.Tools.Logging
 {
 	[MySessionComponentDescriptor(MyUpdateOrder.NoUpdate, priority: int.MinValue)]
 	internal class StaticLog : MySessionComponentBase

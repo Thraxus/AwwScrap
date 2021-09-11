@@ -5,7 +5,7 @@ using Sandbox.ModAPI;
 using VRage.ModAPI;
 using VRageMath;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Statics
+namespace AwwScrap.Common.Utilities.Statics
 {
 	public static class ThrusterCalculations
 	{

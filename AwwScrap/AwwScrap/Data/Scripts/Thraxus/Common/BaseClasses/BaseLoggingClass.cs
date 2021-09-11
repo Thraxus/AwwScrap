@@ -1,10 +1,10 @@
 ﻿using System;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Enums;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Interfaces;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities;
+using AwwScrap.Common.Enums;
+using AwwScrap.Common.Interfaces;
+using AwwScrap.Common.Utilities;
 using VRage.Game;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.BaseClasses
+namespace AwwScrap.Common.BaseClasses
 {
 	public abstract class BaseLoggingClass : ICommon
 	{

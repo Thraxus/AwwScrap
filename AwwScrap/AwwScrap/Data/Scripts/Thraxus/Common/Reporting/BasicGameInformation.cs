@@ -4,7 +4,7 @@ using Sandbox.ModAPI;
 using VRage.Game;
 using VRage.Game.ModAPI;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Reporting
+namespace AwwScrap.Common.Reporting
 {
 	public static class BasicGameInformation
 	{

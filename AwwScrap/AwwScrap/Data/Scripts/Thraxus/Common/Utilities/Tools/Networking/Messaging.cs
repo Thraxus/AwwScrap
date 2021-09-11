@@ -5,7 +5,7 @@ using Sandbox.ModAPI;
 using VRage.Game;
 using VRage.Game.ModAPI;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Networking
+namespace AwwScrap.Common.Utilities.Tools.Networking
 {
 	public static class Messaging
 	{

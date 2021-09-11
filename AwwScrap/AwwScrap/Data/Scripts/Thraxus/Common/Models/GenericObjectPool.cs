@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Models
+namespace AwwScrap.Common.Models
 {
 	public class GenericObjectPool<T>
 	{

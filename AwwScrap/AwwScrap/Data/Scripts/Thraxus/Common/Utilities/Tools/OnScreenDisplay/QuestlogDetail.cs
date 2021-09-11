@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.OnScreenDisplay
+namespace AwwScrap.Common.Utilities.Tools.OnScreenDisplay
 {
 	public class QuestLogDetail
 	{

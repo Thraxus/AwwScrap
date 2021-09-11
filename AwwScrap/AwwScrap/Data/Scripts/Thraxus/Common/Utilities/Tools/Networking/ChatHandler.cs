@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sandbox.ModAPI;
 using VRage.Game.ModAPI;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Networking
+namespace AwwScrap.Common.Utilities.Tools.Networking
 {
 	internal static class ChatHandler
 	{

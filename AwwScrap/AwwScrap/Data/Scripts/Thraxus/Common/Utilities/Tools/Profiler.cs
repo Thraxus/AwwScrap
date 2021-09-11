@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Enums;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Logging;
+using AwwScrap.Common.Enums;
+using AwwScrap.Common.Utilities.Tools.Logging;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools
+namespace AwwScrap.Common.Utilities.Tools
 {
 	/// <inheritdoc cref="Profiler" />
 	/// <summary>

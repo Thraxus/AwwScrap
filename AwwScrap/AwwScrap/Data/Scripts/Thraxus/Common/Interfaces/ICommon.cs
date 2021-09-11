@@ -1,9 +1,9 @@
 ﻿using System;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Enums;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities;
+using AwwScrap.Common.Enums;
+using AwwScrap.Common.Utilities;
 using VRage.Game;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Interfaces
+namespace AwwScrap.Common.Interfaces
 {
 	public interface ICommon
 	{

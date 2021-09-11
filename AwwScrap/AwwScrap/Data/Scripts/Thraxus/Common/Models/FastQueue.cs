@@ -1,5 +1,5 @@
 ﻿
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Models
+namespace AwwScrap.Common.Models
 {
 	public class FastQueue<T>
 	{

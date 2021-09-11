@@ -2,7 +2,7 @@
 using Sandbox.Game;
 using Sandbox.ModAPI;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.OnScreenDisplay
+namespace AwwScrap.Common.Utilities.Tools.OnScreenDisplay
 {
 	/// <summary>
 	/// This is designed for local player only; intended for debug purposes.

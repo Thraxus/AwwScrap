@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Models
+namespace AwwScrap.Common.Models
 {
 	public class BufferedBinaryReader : IDisposable
 	{

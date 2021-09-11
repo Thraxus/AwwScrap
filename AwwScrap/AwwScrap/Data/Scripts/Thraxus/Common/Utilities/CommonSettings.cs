@@ -1,7 +1,7 @@
 ﻿using System;
 using Sandbox.ModAPI;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities
+namespace AwwScrap.Common.Utilities
 {
 	public static class CommonSettings
 	{   // These settings should be used by the mod directly, and not changeable by a user.  They are considered "reference only"

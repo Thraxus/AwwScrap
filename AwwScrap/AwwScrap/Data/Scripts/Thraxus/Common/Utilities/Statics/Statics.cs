@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Enums;
-using AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Tools.Logging;
+using AwwScrap.Common.Enums;
+using AwwScrap.Common.Utilities.Tools.Logging;
 using Sandbox.Game;
 using Sandbox.Game.Entities;
 using Sandbox.ModAPI;
 using Sandbox.ModAPI.Interfaces;
 using Sandbox.ModAPI.Weapons;
-using SpaceEngineers.Game.ModAPI;
 using VRage.Game;
 using VRage.Game.Entity;
 using VRage.Game.ModAPI;
@@ -18,7 +17,7 @@ using IMyCubeGrid = VRage.Game.ModAPI.IMyCubeGrid;
 using IMyEntity = VRage.ModAPI.IMyEntity;
 using IMyInventory = VRage.Game.ModAPI.IMyInventory;
 
-namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Statics
+namespace AwwScrap.Common.Utilities.Statics
 {
 	public static class Statics
 	{
@@ -122,16 +121,17 @@ namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Statics
 			foreach (MyCubeBlock block in grid.GetFatBlocks())
 			{
 				if (!block.IsFunctional) continue;
-				if (block is IMyLargeMissileTurret)
-				{
-					threat += 750;
-					continue;
-				}
-				if (block is IMyLargeGatlingTurret)
-				{
-					threat += 750;
-					continue;
-				}
+				
+				//if (block is IMyLargeMissileTurret)
+				//{
+				//	threat += 750;
+				//	continue;
+				//}
+				//if (block is IMyLargeGatlingTurret)
+				//{
+				//	threat += 750;
+				//	continue;
+				//}
 				if (block is IMySmallMissileLauncher)
 				{
 					threat += 300;
@@ -142,11 +142,11 @@ namespace AwwScrap_IFoundYourCrap.Thraxus.Common.Utilities.Statics
 					threat += 300;
 					continue;
 				}
-				if (block is IMyLargeInteriorTurret)
-				{
-					threat += 200;
-					continue;
-				}
+				//if (block is IMyLargeInteriorTurret)
+				//{
+				//	threat += 200;
+				//	continue;
+				//}
 			}
 
 			if (grid.IsStatic || grid.IsUnsupportedStation)
