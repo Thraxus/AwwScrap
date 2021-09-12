@@ -1,48 +1,56 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Sandbox.Definitions;
+using VRage;
+using VRage.Game;
 
 namespace AwwScrap
 {
 	public class ComponentMap
 	{
-		public MyPhysicalItemDefinition ComponentDefinition;
-		public ComponentPrerequisites DesiredPrerequisites = new ComponentPrerequisites();
-		public List<ComponentPrerequisites> AllComponentPrerequisiteOptions = new List<ComponentPrerequisites>();
+		private MyPhysicalItemDefinition _componentDefinition;
+		private MyPhysicalItemDefinition _scrapDefinition;
+		public Dictionary<string, MyFixedPoint> ComponentPrerequisites = new Dictionary<string, MyFixedPoint>();
+		public List<MyBlueprintClassDefinition> CompatibleBlueprints = new List<MyBlueprintClassDefinition>();
+		public float ResourceCount;
 		public bool Tainted;
+		private const string ScrapSuffix = "Scrap";
 
+		private void SetScrapDefinition()
+		{
+			if (_componentDefinition == null) return;
+			_scrapDefinition = MyDefinitionManager.Static.GetPhysicalItemDefinition(
+				new MyDefinitionId(typeof(MyObjectBuilder_Ore), _componentDefinition.Id.SubtypeName + ScrapSuffix));
+			if (_scrapDefinition.Id.SubtypeName != _componentDefinition.Id.SubtypeName + ScrapSuffix)
+				_scrapDefinition = null;
+		}
+
+		public void SetComponentDefinition(MyPhysicalItemDefinition def)
+		{
+			if (def == null) return;
+			_componentDefinition = def;
+			if (_scrapDefinition == null)
+				SetScrapDefinition();
+		}
+
+		public MyPhysicalItemDefinition GetComponentDefinition()
+		{
+			return _componentDefinition;
+		}
 
 		public void AddComponentPrerequisites(MyBlueprintDefinitionBase bpd)
 		{
-			//if (DesiredPrerequisites.Prerequisites.Count > 0) return;
-			//ComponentPrerequisites cp = new ComponentPrerequisites();
-			//cp.AddPrerequisite(bpd);
-
-
-			if (AllComponentPrerequisiteOptions.Count == 0)
+			if (ComponentPrerequisites.Count > 0) return;
+			foreach (var pre in bpd.Prerequisites)
 			{
-				ComponentPrerequisites cp = new ComponentPrerequisites();
-				cp.AddPrerequisite(bpd);
-				AllComponentPrerequisiteOptions.Add(cp);
-				DesiredPrerequisites.CopyFrom(cp);
-				return;
+				ComponentPrerequisites.Add(pre.Id.SubtypeName, pre.Amount);
+				ResourceCount += (float)pre.Amount;
 			}
-			
-			int i = 0;
-			foreach (var cp in AllComponentPrerequisiteOptions)
-			{
-				if (cp.CompareTo(bpd))
-					i++;
-			}
-			if (i == AllComponentPrerequisiteOptions.Count) return;
-			var cp2 = new ComponentPrerequisites();
-			cp2.AddPrerequisite(bpd);
-			AllComponentPrerequisiteOptions.Add(cp2);
 		}
-
+		
 		public void CheckForTaintedPrerequisites(Dictionary<string, MyPhysicalItemDefinition> validationDictionary)
 		{
-			foreach (var component in DesiredPrerequisites.Prerequisites)
+			foreach (var component in ComponentPrerequisites)
 			{
 				if (validationDictionary.ContainsKey(component.Key)) Tainted = true;
 			}
@@ -50,78 +58,61 @@ namespace AwwScrap
 
 		public void CopyFrom(ComponentMap map)
 		{
-			ComponentDefinition = map.ComponentDefinition;
-			DesiredPrerequisites.CopyFrom(map.DesiredPrerequisites);
+			SetComponentDefinition(map._componentDefinition);
+			foreach (var pre in map.ComponentPrerequisites)
+			{
+				if (ComponentPrerequisites.ContainsKey(pre.Key))
+					ComponentPrerequisites[pre.Key] += pre.Value;
+				else ComponentPrerequisites.Add(pre.Key, pre.Value);
+				ResourceCount += (float)pre.Value;
+			}
 		}
 
-		public string ToStringSimple()
+		public void AddCompatibleRefineryBpc(MyBlueprintClassDefinition bcd)
 		{
-			StringBuilder sb = new StringBuilder();
-			//sb.AppendFormat("{0,-2} [{1}] [{2, -18}]", " ", AllComponentPrerequisiteOptions.Count > 1 ? "T" : "F", ComponentDefinition.Id.SubtypeName);
-			sb.AppendFormat("{0,-2} [{1, -18}]", " ", ComponentDefinition.Id.SubtypeName);
-			sb.AppendFormat("{0,-2} [{1:000.00}] [{2}]", " ", DesiredPrerequisites.ResourceCount, DesiredPrerequisites.Tainted ? "T" : "F");
-			if (DesiredPrerequisites.Prerequisites.Count <= 0) return sb.ToString();
-			foreach (var dpr in DesiredPrerequisites.Prerequisites)
+			if (CompatibleBlueprints.Contains(bcd)) return;
+			CompatibleBlueprints.Add(bcd);
+		}
+
+		public void AddToPrerequisites(string key, MyFixedPoint value)
+		{
+			if (ComponentPrerequisites.ContainsKey(key))
 			{
-				sb.AppendFormat("{0,-1} [{1:00.00}] {2, -18}", " ", (float)dpr.Value, dpr.Key);
+				ComponentPrerequisites[key] += value;
+				ResourceCount += (float)value;
+				return;
 			}
-			return sb.ToString();
+			ComponentPrerequisites.Add(key, value);
+			ResourceCount += (float)value;
 		}
 
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
+			sb.AppendFormat("{0,-1}[{1}] [{2}]", " ", ComponentPrerequisites.Count, CompatibleBlueprints.Count);
+			sb.AppendFormat("{0,-1}[{1:000.00}] [{2}]", " ", ResourceCount, Tainted ? "T" : "F");
 			sb.AppendLine();
+			sb.AppendFormat("{0,-2}Item: {1}", " ", _componentDefinition?.Id.SubtypeName);
 			sb.AppendLine();
-			sb.AppendLine("------------------ Comp Map -------------------");
-			sb.AppendLine();
-			sb.AppendFormat("{0,-4} [{1}] {2}", " ", AllComponentPrerequisiteOptions.Count > 1 ? "T" : "F", ComponentDefinition.Id.SubtypeName);
-			sb.AppendLine();
-			sb.AppendLine();
-			sb.AppendFormat("{0,-6} [{1:00.00}] [{2}] Desired Prerequisites", " ", DesiredPrerequisites.ResourceCount, DesiredPrerequisites.Tainted ? "T" : "F");
-			sb.AppendLine();
-			sb.AppendLine();
-			foreach (var dpr in DesiredPrerequisites.Prerequisites)
+			sb.AppendFormat("{0,-4}", " ");
+			if (ComponentPrerequisites.Count <= 0) return sb.ToString();
+			foreach (var pr in ComponentPrerequisites)
 			{
-				sb.AppendFormat("{0,-8} [{1:00.00}] {2}", " ", (float)dpr.Value, dpr.Key);
-				sb.AppendLine();
+				sb.AppendFormat(" [{0:00.00}] {1}", (float)pr.Value, pr.Key);
 			}
 			sb.AppendLine();
+			sb.AppendFormat("{0,-2}Scrap: {1}", " ", _scrapDefinition == null ? "No Scrap Identified" : _scrapDefinition.Id.SubtypeName);
 			sb.AppendLine();
-			sb.AppendFormat("{0,-10} [{1}] All Available Prerequisites", " ", AllComponentPrerequisiteOptions.Count);
-			sb.AppendLine();
-			sb.AppendLine();
-			foreach (var cp in AllComponentPrerequisiteOptions)
+			sb.AppendFormat("{0,-4}Compatible BPCs:", " ");
+			if (CompatibleBlueprints.Count <= 0)
 			{
-				foreach (var cpp in cp.Prerequisites)
-				{
-					sb.AppendFormat("{0,-12} [{1:00.00}] {2}", " ", (float)cpp.Value, cpp.Key);
-					sb.AppendLine();
-				}
-				sb.AppendLine();
+				sb.AppendFormat(" No Compatible BPCs identified.");
+				return sb.ToString();
 			}
-			sb.AppendLine();
-
-			//if (BlueprintDefinitions.Count > 1)
-			//{
-			//	sb.AppendLine();
-			//	sb.AppendFormat("{0,-12} All Definitions [{1}]", " ", BlueprintDefinitions.Count);
-			//	sb.AppendLine();
-			//	sb.AppendLine();
-			//	foreach (MyBlueprintDefinitionBase def in BlueprintDefinitions)
-			//	{
-			//		sb.AppendFormat("{0,-16} {1}", " ", def.Id.SubtypeId);
-			//		sb.AppendLine();
-			//		foreach (var pre in def.Prerequisites)
-			//		{
-			//			sb.AppendFormat("{0,-20} [{1:00.00}] {2}", " ", (float)pre.Amount, pre.Id.SubtypeId);
-			//			sb.AppendLine();
-			//		}
-			//	}
-			//	sb.AppendLine();
-			//}
-
-			sb.AppendLine("---------------- End Comp Map -----------------");
+			foreach (var cb in CompatibleBlueprints)
+			{
+				sb.AppendFormat(" [{0}]", cb.Id.SubtypeId);
+			}
 			return sb.ToString();
 		}
 	}

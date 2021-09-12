@@ -10,16 +10,7 @@ using VRage;
 using VRage.Game;
 using VRage.Game.Components;
 using AwwScrap.Support;
-using Sandbox;
-using Sandbox.Common.ObjectBuilders;
-using Sandbox.Game;
-using Sandbox.Game.AI;
-using Sandbox.Game.Entities;
-using Sandbox.Game.Entities.Character;
-using Sandbox.Game.Multiplayer;
-using Sandbox.Game.World;
 using VRage.Collections;
-using VRage.Game.ModAPI;
 using VRage.Utils;
 
 namespace AwwScrap
@@ -54,15 +45,21 @@ namespace AwwScrap
 		{
 			base.LateSetup();
 			GrabInformation();
-			PrintAssemblerBlueprints();
-			PrintPreComponentMaps();
+			//PrintAssemblerBlueprints();
+			ScourAssemblers();
+			//PrintPreComponentMapsSimple();
 			IdentifyTaintedComponentMaps();
+			//PrintRefineryBlueprints();
+			ScourRefineries();
+			PrintBlueprintClassOutputs();
+			FindCompatibleBlueprints();
 			//PrintFinalComponentMaps();
 			//BuildScrapDictionary();
 			//BuildCompDictionary();
 			//PopulateComponentPrerequisites();
 			//GetUniqueIngotList();
 			//PrintProductionBlockDefinitions();
+			PrintFinalComponentMaps();
 		}
 
 		private readonly Dictionary<string, MyPhysicalItemDefinition> _oreDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
@@ -98,10 +95,8 @@ namespace AwwScrap
 				{
 					if (def.Id.SubtypeName == "ZoneChip") continue;
 					_componentDictionary.Add(def.Id.SubtypeName, def);
-					var compMap = new ComponentMap
-					{
-						ComponentDefinition = def
-					};
+					var compMap = new ComponentMap();
+					compMap.SetComponentDefinition(def);
 					_preComponentMaps.Add(def.Id.SubtypeName, compMap);
 					_preComponentMaps.ApplyChanges();
 					continue;
@@ -178,32 +173,30 @@ namespace AwwScrap
 			foreach (var assembler in MyDefinitionManager.Static.GetDefinitionsOfType<MyAssemblerDefinition>())
 			{
 				if (!assembler.Public) continue;
-				_report.AppendFormat("{0,-8}Assembler: {1}", " ", assembler.Id.SubtypeId);
+				_report.AppendFormat("{0,-2}Assembler: {1}", " ", assembler.Id.SubtypeId);
 				_report.AppendLine();
 				_report.AppendLine();
 				foreach (var bpc in assembler.BlueprintClasses)
 				{
 					if (!bpc.Public) continue;
-					_report.AppendFormat("{0,-10}BPC Subtype: {1}", " ", bpc.Id.SubtypeName);
+					_report.AppendFormat("{0,-4}BPC Subtype: {1}", " ", bpc.Id.SubtypeName);
 					_report.AppendLine();
 					foreach (var bpd in bpc)
 					{
-						if(!bpd.Public) continue;
-						_report.AppendFormat("{0,-12}BPD Subtype: {1}", " ", bpd.Id.SubtypeName);
+						if (!bpd.Public) continue;
+						_report.AppendFormat("{0,-6}BPD Subtype: {1}", " ", bpd.Id.SubtypeName);
 						_report.AppendLine();
+						_report.AppendFormat("{0,-8}[P]", " ");
 						foreach (var pre in bpd.Prerequisites)
 						{
-							_report.AppendFormat("{0,-14}[P] [{1:00.00}] {2}", " ", (float)pre.Amount, pre.Id.SubtypeName);
-							_report.AppendLine();
+							_report.AppendFormat(" [{1:00.00}] {2}", " ", (float)pre.Amount, pre.Id.SubtypeName);
 						}
-
+						_report.AppendLine();
+						_report.AppendFormat("{0,-8}[R]", " ");
 						foreach (var res in bpd.Results)
 						{
-							_report.AppendFormat("{0,-14}[R] [{1:00.00}] {2}", " ", (float)res.Amount, res.Id.SubtypeName);
-							_report.AppendLine();
+							_report.AppendFormat(" [{1:00.00}] {2}", " ", (float)res.Amount, res.Id.SubtypeName);
 						}
-						if (bpd.Results.Length == 1 && _preComponentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName))
-							_preComponentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
 						_report.AppendLine();
 					}
 					_report.AppendLine();
@@ -217,58 +210,46 @@ namespace AwwScrap
 			WriteToLog("Assemblers", _report.ToString(), LogType.General);
 		}
 
-		private void PrintPreComponentMaps()
+		private void ScourAssemblers()
 		{
-			WriteToLog("PPC", $"[{_preComponentMaps.Count()}] Items in Collection", LogType.General);
-			foreach (var component in _preComponentMaps)
+			foreach (var assembler in MyDefinitionManager.Static.GetDefinitionsOfType<MyAssemblerDefinition>())
 			{
-				WriteToLog("PPC", component.Value.ToStringSimple(), LogType.General);
+				if (!assembler.Public) continue;
+				foreach (var bpc in assembler.BlueprintClasses)
+				{
+					if (!bpc.Public) continue;
+					foreach (var bpd in bpc)
+					{
+						if (!bpd.Public) continue;
+						if (bpd.Results.Length == 1 && _preComponentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName))
+							_preComponentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
+					}
+				}
 			}
 		}
 
 		private void PrintPreComponentMapsSimple()
 		{
-			WriteToLog("PPC_Simple", $"[{_preComponentMaps.Count()}] Items in Collection", LogType.General);
+			WriteToLog("PPC", $"[{_preComponentMaps.Count()}] Items in Collection", LogType.General);
 			foreach (var component in _preComponentMaps)
 			{
-				WriteToLog("PPC_Simple", $"[{component.Value.DesiredPrerequisites.ResourceCount:000.00}] [{(component.Value.Tainted ? "T" : "F")}] {component.Key}", LogType.General);
-			}
-		}
-
-		private void PrintPreComponentMapsSimple2()
-		{
-			WriteToLog("PPC_Simple2", $"[{_preComponentMaps.Count()}] Items in Collection", LogType.General);
-			foreach (var component in _preComponentMaps)
-			{
-				WriteToLog("PPC_Simple2", $"[{component.Value.DesiredPrerequisites.ResourceCount:000.00}] [{(component.Value.Tainted ? "T" : "F")}] {component.Value.ToStringSimple()}", LogType.General);
+				WriteToLog("PPC", $"{component.Value}", LogType.General);
 			}
 		}
 
 		private void PrintFinalComponentMaps()
 		{
-			WriteToLog("PFC", $"[{_finalComponentMaps.Count()}] Items in Collection", LogType.General);
+			var sb = new StringBuilder();
+			sb.AppendLine();
+			sb.AppendFormat("[{0}] Items in Collection", _finalComponentMaps.Count);
+			sb.AppendLine();
 			foreach (var component in _finalComponentMaps)
 			{
-				WriteToLog("PFC", component.Value.ToStringSimple(), LogType.General);
+				sb.AppendFormat("{1}", " ", component.Value);
+				sb.AppendLine();
 			}
-		}
-
-		private void PrintFinalComponentMapsSimple()
-		{
-			WriteToLog("PFC_Simple", $"[{_finalComponentMaps.Count()}] Items in Collection", LogType.General);
-			foreach (var component in _finalComponentMaps)
-			{
-				WriteToLog("PFC_Simple", $"[{component.Value.DesiredPrerequisites.ResourceCount:000.00}] [{(component.Value.Tainted ? "T" : "F")}] {component.Key}", LogType.General);
-			}
-		}
-
-		private void PrintFinalComponentMapsSimple2()
-		{
-			WriteToLog("PFC_Simple2", $"[{_finalComponentMaps.Count()}] Items in Collection", LogType.General);
-			foreach (var component in _finalComponentMaps)
-			{
-				WriteToLog("PFC_Simple2", $"[{component.Value.DesiredPrerequisites.ResourceCount:000.00}] [{(component.Value.Tainted ? "T" : "F")}] {component.Value.ToStringSimple()}", LogType.General);
-			}
+			sb.AppendLine();
+			WriteToLog("PFC", sb.ToString(), LogType.General);
 		}
 
 		private void IdentifyTaintedComponentMaps()
@@ -291,8 +272,6 @@ namespace AwwScrap
 			
 			const int iterationCap = 50;
 			int iterationCount = 0;
-			//PrintPreComponentMapsSimple();
-			//PrintFinalComponentMapsSimple();
 			
 			try
 			{
@@ -301,110 +280,220 @@ namespace AwwScrap
 					iterationCount++;
 					foreach (var preComp in _preComponentMaps)
 					{
-						
 						bool tainted = false;
-						WriteToLog("ITC", $"Finalizing: [{iterationCount:000}] [{(iterationCap > iterationCount ? "T" : "F")}] {preComp.Value.ToStringSimple()}", LogType.General);
-						foreach (var pre in preComp.Value.DesiredPrerequisites.Prerequisites)
+						//WriteToLog("ITC", $"Finalizing: [{iterationCount:000}] [{(iterationCount >= iterationCap ? "T" : "F")}] [{(iterationCap > iterationCount ? "T" : "F")}] {preComp.Value.ToStringSimple()}", LogType.General);
+						foreach (var pre in preComp.Value.ComponentPrerequisites)
 						{
-							//WriteToLog("IdentifyTaintedComponentMaps", $"Checking for [{(_preComponentMaps.ContainsKey(pre.Key) ? "T" : "F")}] {pre.Key}", LogType.General);
 							if (!_preComponentMaps.ContainsKey(pre.Key)) continue;
 							tainted = true;
 							break;
 						}
 						if (tainted)
 							continue;
-						var map = new ComponentMap
-						{
-							ComponentDefinition = preComp.Value.ComponentDefinition
-						};
-						foreach (var pre in preComp.Value.DesiredPrerequisites.Prerequisites)
+						var map = new ComponentMap();
+						map.SetComponentDefinition(preComp.Value.GetComponentDefinition());
+						foreach (var pre in preComp.Value.ComponentPrerequisites)
 						{
 							if (_finalComponentMaps.ContainsKey(pre.Key))
 							{
-								foreach (var fPre in _finalComponentMaps[pre.Key].DesiredPrerequisites.Prerequisites)
+								foreach (var fPre in _finalComponentMaps[pre.Key].ComponentPrerequisites)
 								{
-									map.DesiredPrerequisites.AddToPrerequisites(fPre.Key, fPre.Value * pre.Value);
+									map.AddToPrerequisites(fPre.Key, fPre.Value * pre.Value);
 								}
 								continue;
 							}
-							map.DesiredPrerequisites.AddToPrerequisites(pre.Key, pre.Value);
+							map.AddToPrerequisites(pre.Key, pre.Value);
 						}
 						_preComponentMaps.Remove(preComp.Key);
 						_finalComponentMaps.Add(preComp.Key, map);
 					}
 					_preComponentMaps.ApplyRemovals();
-				} while (_preComponentMaps.Any() || iterationCount >= iterationCap);
+				} while (_preComponentMaps.Any() && iterationCount <= iterationCap);
 			}
 			catch (Exception e)
 			{
 				WriteToLog("IdentifyTaintedComponentMaps", $"Shit broke..... \n{e}", LogType.General);
 			}
-
-			WriteToLog("IdentifyTaintedComponentMaps", $"___________________________________________________________________________________________________________________________", LogType.General);
-			PrintPreComponentMapsSimple2();
-			PrintFinalComponentMapsSimple2();
 		}
 
-		private void BuildScrapDictionary()
+		private void PrintRefineryBlueprints()
 		{
-			//	1) Build ScrapMap to map scrap to component definitions
-			foreach (var def in MyDefinitionManager.Static.GetDefinitionsOfType<MyPhysicalItemDefinition>())
-			{
-				if (!ValidateScrap(def.Id.SubtypeName)) continue;
-				var map = new ScrapMap
-				{
-					ScrapDef = def,
-					CompDef = MyDefinitionManager.Static.GetPhysicalItemDefinition(
-						new MyDefinitionId(typeof(MyObjectBuilder_Component),
-							ScrubSuffix(def.Id.SubtypeName, ScrapSuffix))) //.Substring(0, def.Id.SubtypeName.Length - ScrapSuffix.Length)))
-				};
-				if (map.CompDef == null || map.CompDef.Id.SubtypeName == "SemiAutoPistolMagazine") continue;
-				_scrapMaps.Add(map.ScrapDef.Id.SubtypeName, map);
-				WriteToLog("BuildScrapDictionary", $"Def: {map}", LogType.General);
-			}
-		}
+			_report.Clear();
+			_report.AppendLine();
+			_report.AppendLine();
+			_report.AppendLine("------------------------------ Refineries ------------------------------");
+			_report.AppendLine();
+			_report.AppendLine();
 
-		private void BuildCompDictionary()
-		{
-			foreach (var scrap in _scrapMaps)
+			foreach (var refinery in MyDefinitionManager.Static.GetDefinitionsOfType<MyRefineryDefinition>())
 			{
-				if (_preComponentMaps.ContainsKey(scrap.Value.CompDef.Id.SubtypeName)) continue;
-				var cmp = new ComponentMap()
+				if (!refinery.Public) continue;
+				_report.AppendFormat("{0,-2}Refinery: {1}", " ", refinery.Id.SubtypeId);
+				_report.AppendLine();
+				_report.AppendLine();
+				foreach (var bpc in refinery.BlueprintClasses)
 				{
-					ComponentDefinition = scrap.Value.CompDef
-				};
-				_preComponentMaps.Add(scrap.Value.CompDef.Id.SubtypeName, cmp);
-			}
-
-			foreach (var comp in _preComponentMaps)
-			{
-				WriteToLog("BuildCompDictionary", $"{comp.Key}", LogType.General);
-			}
-		}
-		
-		private void PopulateComponentPrerequisites()
-		{
-			foreach (MyProductionBlockDefinition def in MyDefinitionManager.Static.GetDefinitionsOfType<MyProductionBlockDefinition>())
-			{
-				foreach (MyBlueprintClassDefinition bpc in def.BlueprintClasses)
-				{
-					foreach (MyBlueprintDefinitionBase bpd in bpc)
+					if (!bpc.Public) continue;
+					_report.AppendFormat("{0,-4}BPC Subtype: {1}", " ", bpc.Id.SubtypeName);
+					_report.AppendLine();
+					foreach (var bpd in bpc)
 					{
-						if (bpd.Results.Length != 1) continue;
-						if (!_preComponentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName)) continue;
-						if (bpd.Results[0].Amount != 1) continue;
-						_preComponentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
+						if (!bpd.Public) continue;
+						_report.AppendFormat("{0,-6}BPD Subtype: {1}", " ", bpd.Id.SubtypeName);
+						_report.AppendLine();
+						_report.AppendFormat("{0,-8}[P]", " ");
+						foreach (var pre in bpd.Prerequisites)
+						{
+							_report.AppendFormat(" [{1:00.00}] {2}", " ", (float)pre.Amount, pre.Id.SubtypeName);
+						}
+						_report.AppendLine();
+						_report.AppendFormat("{0,-8}[R]", " ");
+						foreach (var res in bpd.Results)
+						{
+							_report.AppendFormat(" [{1:00.00}] {2}", " ", (float)res.Amount, res.Id.SubtypeName);
+						}
+						//if(bpd.Results.Length == 1 && _preComponentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName))
+						//	_preComponentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
+						_report.AppendLine();
+					}
+					_report.AppendLine();
+				}
+				_report.AppendLine();
+			}
+			_report.AppendLine();
+			_report.AppendLine("--------------------------- End Refineries -----------------------------");
+			_report.AppendLine();
+
+			WriteToLog("Assemblers", _report.ToString(), LogType.General);
+		}
+
+		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _blueprintClassOutputs =
+			new Dictionary<MyBlueprintClassDefinition, List<string>>();
+
+		private void ScourRefineries()
+		{
+			foreach (var refinery in MyDefinitionManager.Static.GetDefinitionsOfType<MyRefineryDefinition>())
+			{
+				if (!refinery.Public) continue;
+				foreach (var bpc in refinery.BlueprintClasses)
+				{
+					if (!bpc.Public) continue;
+					if(!_blueprintClassOutputs.ContainsKey(bpc))
+						_blueprintClassOutputs.Add(bpc, new List<string>());
+					foreach (var bpd in bpc)
+					{
+						if (!bpd.Public) continue;
+						foreach (var res in bpd.Results)
+						{
+							if (_blueprintClassOutputs[bpc].Contains(res.Id.SubtypeName)) continue;
+							_blueprintClassOutputs[bpc].Add(res.Id.SubtypeName);
+						}
 					}
 				}
 			}
+		}
 
-			foreach (var comp in _preComponentMaps)
+		private void PrintBlueprintClassOutputs()
+		{
+			_report.Clear();
+			_report.AppendLine();
+			_report.AppendLine();
+			_report.AppendFormat("{0,-4}[{1}] BlueprintClassOutputs", " ", _blueprintClassOutputs.Count);
+			_report.AppendLine();
+			_report.AppendLine();
+
+			foreach (var bco in _blueprintClassOutputs)
 			{
-				WriteToLog("PopulateComponentBlueprintClasses", $"{comp.Value}", LogType.General);
+				_report.AppendFormat("{0,-6}[{1}] BlueprintClass: {2}", " ", bco.Value.Count, bco.Key.Id.SubtypeName);
+				_report.AppendLine();
+				_report.AppendFormat("{0,-8}", " ");
+				foreach (var str in bco.Value)
+				{
+					_report.AppendFormat("[{0}] ", str);
+				}
+				_report.AppendLine();
+			}
+			WriteToLog("PCO", _report.ToString(), LogType.General);
+		}
+
+		private void FindCompatibleBlueprints()
+		{
+			foreach (var bco in _blueprintClassOutputs)
+			{
+				foreach (var fcm in _finalComponentMaps)
+				{
+					bool compatible = true;
+					foreach (var pre in fcm.Value.ComponentPrerequisites)
+					{
+						if (!bco.Value.Contains(pre.Key))
+							compatible = false;
+					}
+					if (compatible)
+						fcm.Value.AddCompatibleRefineryBpc(bco.Key);
+				}
 			}
 		}
 
-		private readonly List<string> _ingots = new List<string>();
+		//private void BuildScrapDictionary()
+		//{
+		//	//	1) Build ScrapMap to map scrap to component definitions
+		//	foreach (var def in MyDefinitionManager.Static.GetDefinitionsOfType<MyPhysicalItemDefinition>())
+		//	{
+		//		if (!ValidateScrap(def.Id.SubtypeName)) continue;
+		//		var map = new ScrapMap
+		//		{
+		//			ScrapDef = def,
+		//			CompDef = MyDefinitionManager.Static.GetPhysicalItemDefinition(
+		//				new MyDefinitionId(typeof(MyObjectBuilder_Component),
+		//					ScrubSuffix(def.Id.SubtypeName, ScrapSuffix))) //.Substring(0, def.Id.SubtypeName.Length - ScrapSuffix.Length)))
+		//		};
+		//		if (map.CompDef == null || map.CompDef.Id.SubtypeName == "SemiAutoPistolMagazine") continue;
+		//		_scrapMaps.Add(map.ScrapDef.Id.SubtypeName, map);
+		//		WriteToLog("BuildScrapDictionary", $"Def: {map}", LogType.General);
+		//	}
+		//}
+
+		//private void BuildCompDictionary()
+		//{
+		//	foreach (var scrap in _scrapMaps)
+		//	{
+		//		if (_preComponentMaps.ContainsKey(scrap.Value.CompDef.Id.SubtypeName)) continue;
+		//		var cmp = new ComponentMap()
+		//		{
+		//			ComponentDefinition = scrap.Value.CompDef
+		//		};
+		//		_preComponentMaps.Add(scrap.Value.CompDef.Id.SubtypeName, cmp);
+		//	}
+
+		//	foreach (var comp in _preComponentMaps)
+		//	{
+		//		WriteToLog("BuildCompDictionary", $"{comp.Key}", LogType.General);
+		//	}
+		//}
+		
+		//private void PopulateComponentPrerequisites()
+		//{
+		//	foreach (MyProductionBlockDefinition def in MyDefinitionManager.Static.GetDefinitionsOfType<MyProductionBlockDefinition>())
+		//	{
+		//		foreach (MyBlueprintClassDefinition bpc in def.BlueprintClasses)
+		//		{
+		//			foreach (MyBlueprintDefinitionBase bpd in bpc)
+		//			{
+		//				if (bpd.Results.Length != 1) continue;
+		//				if (!_preComponentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName)) continue;
+		//				if (bpd.Results[0].Amount != 1) continue;
+		//				_preComponentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
+		//			}
+		//		}
+		//	}
+
+		//	foreach (var comp in _preComponentMaps)
+		//	{
+		//		WriteToLog("PopulateComponentBlueprintClasses", $"{comp.Value}", LogType.General);
+		//	}
+		//}
+
+		//private readonly List<string> _ingots = new List<string>();
 
 		
 		//private void GetUniqueIngotList()

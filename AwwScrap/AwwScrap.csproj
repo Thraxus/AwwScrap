@@ -182,7 +182,6 @@
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\OnScreenDisplay\QuestScreen.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Profiler.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\ComponentMap.cs" />
-    <Compile Include="AwwScrap\Data\Scripts\Thraxus\ComponentPrerequisites.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Helpers\Definitions.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\ScrapMap.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\ScrapAttributes.cs" />
