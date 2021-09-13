@@ -10,7 +10,12 @@ using VRage;
 using VRage.Game;
 using VRage.Game.Components;
 using AwwScrap.Support;
+using Sandbox.Game;
+using Sandbox.Game.Entities;
+using Sandbox.Game.Entities.Cube;
 using VRage.Collections;
+using VRage.Game.Entity;
+using VRage.ModAPI;
 using VRage.Utils;
 
 namespace AwwScrap
@@ -20,20 +25,33 @@ namespace AwwScrap
 	{
 		protected override string CompName { get; } = "AwwScrapCore";
 		protected override CompType Type { get; } = CompType.Server;
-		protected override MyUpdateOrder Schedule { get; } = MyUpdateOrder.NoUpdate;
+		protected override MyUpdateOrder Schedule { get; } = MyUpdateOrder.BeforeSimulation;
 
+		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _blueprintClassOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
 		private readonly Dictionary<string, ScrapMap> _scrapMaps = new Dictionary<string, ScrapMap>();
 		private readonly CachingDictionary<string, ComponentMap> _preComponentMaps = new CachingDictionary<string, ComponentMap>();
 		private readonly Dictionary<string, ComponentMap> _finalComponentMaps = new Dictionary<string, ComponentMap>();
 		private readonly StringBuilder _report = new StringBuilder();
 		private const string ScrapSuffix = "Scrap";
 
-		public override void LoadData()
+		protected override void SuperEarlySetup()
 		{
-			base.LoadData();
-			SetSurvivalKitMenu();
+			base.SuperEarlySetup();
+			//Run();
 		}
 
+		public override void LoadData()
+		{
+			MyEntities.OnEntityCreate += EntityAdded;
+			base.LoadData();
+		}
+		
+		protected override void EarlySetup()
+		{
+			Run();
+			base.EarlySetup();
+		}
+		
 		public override void BeforeStart()
 		{
 			base.BeforeStart();
@@ -44,6 +62,100 @@ namespace AwwScrap
 		protected override void LateSetup()
 		{
 			base.LateSetup();
+			
+			PrintFinalComponentMaps();
+			PrintRefineryBlueprints();
+			ValidateRefineries();
+			PrintBlueprintClasses();
+		}
+
+		protected override void Unload()
+		{
+			foreach (var inv  in _refineryInventories)
+			{
+				inv.Key.InventoryContentChanged -= RefineryContentChanged;
+			}
+			MyEntities.OnEntityCreate -= EntityAdded;
+			base.Unload();
+		}
+
+		private readonly List<IMyRefinery> _refineryList = new List<IMyRefinery>();
+		private readonly Dictionary<MyInventory, IMyRefinery> _refineryInventories = new Dictionary<MyInventory, IMyRefinery>();
+		private void EntityAdded(MyEntity ent)
+		{
+			IMyRefinery refinery = ent as IMyRefinery;
+			if (refinery == null) return;
+			_refineryList.Add(refinery);
+			MyInventory refineryInventory = (MyInventory)refinery.GetInventory();
+			refineryInventory.InventoryContentChanged += RefineryContentChanged;
+			_refineryInventories.Add(refineryInventory, refinery);
+		}
+
+		private void RefineryContentChanged(MyInventoryBase inventory, MyPhysicalInventoryItem item, MyFixedPoint amount)
+		{
+			if (!_refineryInventories.ContainsKey((MyInventory)inventory)) return;
+
+			var m_refineryDef = ((MyCubeBlockDefinition)_refineryInventories[(MyInventory)inventory].SlimBlock.BlockDefinition) as MyRefineryDefinition;
+			if (m_refineryDef == null) return;
+			var inputItems = inventory.GetItems().ToArray();
+			for (int indx = 0; indx < inputItems.Length; indx++)
+			{
+				for (int i = 0; i < m_refineryDef.BlueprintClasses.Count; ++i)
+				{
+					foreach (var blueprint in m_refineryDef.BlueprintClasses[i])
+					{
+						bool found = false;
+						MyDefinitionId inputItemId = new MyDefinitionId(inputItems[indx].Content.TypeId, inputItems[indx].Content.SubtypeId);
+						for (int j = 0; j < blueprint.Prerequisites.Length; ++j)
+						{
+							if (blueprint.Prerequisites[j].Id.Equals(inputItemId))
+							{
+								found = true;
+								break;
+							}
+						}
+						if (found)
+						{
+							WriteToLog("RefineryContentChanged", $"Found: {blueprint.Id.SubtypeName}", LogType.General);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		private void ValidateRefineries()
+		{
+			WriteToLog("ValidateRefineries", $"{_refineryList.Count}", LogType.General);
+			//foreach (var fcm in _finalComponentMaps)
+			//{
+			//	foreach (var refinery in _refineryList)
+			//	{
+			//		MyBlueprintDefinition bpd = fcm.Value.GetScrapBlueprint();
+			//		if (bpd == null) continue;
+
+			//		WriteToLog("ValidateRefinery", $"[{refinery.EntityId}] {refinery.BlockDefinition.SubtypeName} - Can use {bpd.Id.SubtypeName}: {refinery.CanUseBlueprint(bpd)}", LogType.General);
+			//		var blockDef = ((MyCubeBlockDefinition)refinery.SlimBlock.BlockDefinition) as MyRefineryDefinition;
+			//		if (blockDef == null) continue;
+			//		bool addClass = false;
+			//		foreach (var bcd in blockDef.BlueprintClasses)
+			//		{
+			//			if (!fcm.Value.CompatibleBlueprints.Contains(bcd)) continue;
+			//			addClass = true;
+			//			break;
+			//			//bcd.AddBlueprint(fcm.Value.GetScrapBlueprint());
+			//			//WriteToLog("ValidateRefinery", $"[{refinery.EntityId}] {refinery.BlockDefinition.SubtypeName} - Added {bpd.Id.SubtypeName}", LogType.General);
+			//		}
+			//		if (!addClass) continue;
+			//		if (fcm.Value._ScrapBlueprintClass == null) continue;
+			//		blockDef.BlueprintClasses.Add(fcm.Value._ScrapBlueprintClass);
+			//		blockDef.LoadPostProcess();
+			//	}
+			//}
+		}
+
+		private void Run()
+		{
 			GrabInformation();
 			//PrintAssemblerBlueprints();
 			ScourAssemblers();
@@ -59,7 +171,25 @@ namespace AwwScrap
 			//PopulateComponentPrerequisites();
 			//GetUniqueIngotList();
 			//PrintProductionBlockDefinitions();
-			PrintFinalComponentMaps();
+			foreach (var fcm in _finalComponentMaps)
+			{
+				fcm.Value.RunScrapSetup();
+			}
+			ApplyBlueprintChanges();
+
+
+			//PrintBlueprintClassOutputs();
+
+			//Test();
+		}
+
+		private void Test()
+		{
+			WriteToLog("Test", $"{MyDefinitionManager.Static.GetBlueprintDefinitions().Count}", LogType.General);
+			foreach (var bpd in MyDefinitionManager.Static.GetBlueprintDefinitions())
+			{
+				WriteToLog("Test", $"{bpd.Id.SubtypeName}", LogType.General);
+			}
 		}
 
 		private readonly Dictionary<string, MyPhysicalItemDefinition> _oreDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
@@ -96,7 +226,7 @@ namespace AwwScrap
 					if (def.Id.SubtypeName == "ZoneChip") continue;
 					_componentDictionary.Add(def.Id.SubtypeName, def);
 					var compMap = new ComponentMap();
-					compMap.SetComponentDefinition(def);
+					compMap.SetComponentDefinition(def, ModContext);
 					_preComponentMaps.Add(def.Id.SubtypeName, compMap);
 					_preComponentMaps.ApplyChanges();
 					continue;
@@ -237,19 +367,54 @@ namespace AwwScrap
 			}
 		}
 
+		private void PrintBlueprintClasses()
+		{
+			_report.Clear();
+			_report.AppendLine();
+			_report.AppendLine();
+			_report.AppendFormat("{0,-2}[{1}] Items in Collection", " ", _blueprintClassOutputs.Count);
+			_report.AppendLine();
+			foreach (var bpc in _blueprintClassOutputs)
+			{
+				_report.AppendFormat("{0,-4}Blueprint Class: {1}", " ", bpc.Key.Id.SubtypeName);
+				_report.AppendLine();
+				foreach (var bpd in bpc.Key)
+				{
+					_report.AppendFormat("{0,-6}Blueprint Definition: {1}", " ", bpd.Id.SubtypeName);
+					_report.AppendLine();
+					_report.AppendFormat("{0,-8}[P]", " ");
+					foreach (var pre in bpd.Prerequisites)
+					{
+						_report.AppendFormat("[{0:00.00}] <{1} {2}> ", (float)pre.Amount, pre.Id.SubtypeName, pre.Id.TypeId);
+					}
+					_report.AppendLine();
+					_report.AppendFormat("{0,-8}[R]", " ");
+					foreach (var res in bpd.Results)
+					{
+						_report.AppendFormat("[{0:00.00}] <{1} {2}> ", (float)res.Amount, res.Id.SubtypeName, res.Id.TypeId);
+					}
+					_report.AppendLine();
+				}
+				_report.AppendLine();
+			}
+			_report.AppendLine();
+			_report.AppendLine();
+			WriteToLog("BPC", _report.ToString(), LogType.General);
+		}
+
 		private void PrintFinalComponentMaps()
 		{
-			var sb = new StringBuilder();
-			sb.AppendLine();
-			sb.AppendFormat("[{0}] Items in Collection", _finalComponentMaps.Count);
-			sb.AppendLine();
+			_report.Clear();
+			_report.AppendLine();
+			_report.AppendFormat("[{0}] Items in Collection", _finalComponentMaps.Count);
+			_report.AppendLine();
 			foreach (var component in _finalComponentMaps)
 			{
-				sb.AppendFormat("{1}", " ", component.Value);
-				sb.AppendLine();
+				_report.AppendFormat("{1}", " ", component.Value);
+				_report.AppendLine();
 			}
-			sb.AppendLine();
-			WriteToLog("PFC", sb.ToString(), LogType.General);
+			_report.AppendLine();
+			WriteToLog("PFC", _report.ToString(), LogType.General);
 		}
 
 		private void IdentifyTaintedComponentMaps()
@@ -260,7 +425,7 @@ namespace AwwScrap
 				preComp.Value.CheckForTaintedPrerequisites(_componentDictionary);
 				if (preComp.Value.Tainted) continue;
 				ComponentMap map = new ComponentMap();
-				map.CopyFrom(preComp.Value);
+				map.CopyFrom(preComp.Value, ModContext);
 				_finalComponentMaps.Add(preComp.Key, map);
 				_preComponentMaps.Remove(preComp.Key);
 			}
@@ -291,7 +456,7 @@ namespace AwwScrap
 						if (tainted)
 							continue;
 						var map = new ComponentMap();
-						map.SetComponentDefinition(preComp.Value.GetComponentDefinition());
+						map.SetComponentDefinition(preComp.Value.GetComponentDefinition(), ModContext);
 						foreach (var pre in preComp.Value.ComponentPrerequisites)
 						{
 							if (_finalComponentMaps.ContainsKey(pre.Key))
@@ -367,9 +532,6 @@ namespace AwwScrap
 			WriteToLog("Assemblers", _report.ToString(), LogType.General);
 		}
 
-		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _blueprintClassOutputs =
-			new Dictionary<MyBlueprintClassDefinition, List<string>>();
-
 		private void ScourRefineries()
 		{
 			foreach (var refinery in MyDefinitionManager.Static.GetDefinitionsOfType<MyRefineryDefinition>())
@@ -434,6 +596,50 @@ namespace AwwScrap
 			}
 		}
 
+		private void ApplyBlueprintChanges()
+		{
+			foreach (var refinery in MyDefinitionManager.Static.GetDefinitionsOfType<MyRefineryDefinition>())
+			{
+				refinery.LoadPostProcess();
+			}
+		}
+
+		//private void ApplyBlueprintChanges()
+		//{
+		//	foreach (var fcm in _finalComponentMaps)
+		//	{
+		//		foreach (var refinery in MyDefinitionManager.Static.GetDefinitionsOfType<MyRefineryDefinition>())
+		//		{
+		//			foreach (var bcd in refinery.BlueprintClasses)
+		//			{
+		//				if (!fcm.Value.CompatibleBlueprints.Contains(bcd)) continue;
+		//				bcd.AddBlueprint(fcm.Value.GetScrapBlueprint());
+		//			}
+		//			refinery.LoadPostProcess();
+		//		}
+		//	}
+		//}
+
+		//private void ApplyBlueprintChanges()
+		//{
+		//	foreach (var fcm in _finalComponentMaps)
+		//	{
+		//		foreach (var refinery in MyDefinitionManager.Static.GetDefinitionsOfType<MyRefineryDefinition>())
+		//		{
+		//			bool add = false;
+		//			foreach (var bcd in refinery.BlueprintClasses)
+		//			{
+		//				if (!fcm.Value.CompatibleBlueprints.Contains(bcd)) continue;
+		//				add = true;
+		//				break;
+		//			}
+		//			if(!add) continue;
+		//			refinery.BlueprintClasses.Add(fcm.Value.ScrapBlueprintClass);
+		//			refinery.LoadPostProcess();
+		//		}
+		//	}
+		//}
+
 		//private void BuildScrapDictionary()
 		//{
 		//	//	1) Build ScrapMap to map scrap to component definitions
@@ -470,7 +676,7 @@ namespace AwwScrap
 		//		WriteToLog("BuildCompDictionary", $"{comp.Key}", LogType.General);
 		//	}
 		//}
-		
+
 		//private void PopulateComponentPrerequisites()
 		//{
 		//	foreach (MyProductionBlockDefinition def in MyDefinitionManager.Static.GetDefinitionsOfType<MyProductionBlockDefinition>())
@@ -495,7 +701,7 @@ namespace AwwScrap
 
 		//private readonly List<string> _ingots = new List<string>();
 
-		
+
 		//private void GetUniqueIngotList()
 		//{
 		//	foreach (var comp in _componentMaps)
@@ -674,8 +880,8 @@ namespace AwwScrap
 		private static void Initialize()
 		{
 			MyAPIGateway.Parallel.StartBackground(ScrubCubes);
-			MyAPIGateway.Parallel.StartBackground(SetEfficiency);
-			MyAPIGateway.Parallel.StartBackground(SetAttributes);
+			//MyAPIGateway.Parallel.StartBackground(SetEfficiency);
+			//MyAPIGateway.Parallel.StartBackground(SetAttributes);
 		}
 		
 		private static void ScrubCubes()
@@ -713,49 +919,49 @@ namespace AwwScrap
 			}
 		}
 
-		private static void SetAttributes()
-		{
-			try
-			{
-				foreach (MyPhysicalItemDefinition item in MyDefinitionManager.Static.GetPhysicalItemDefinitions())
-				{
-					ScrapAttributes scrap;
-					if (!Statics.ScrapAttributesDictionary.TryGetValue(item.Id.SubtypeId, out scrap))
-						continue;
-					item.Mass = scrap.Mass;
-					item.Volume = scrap.Volume / 1000;
-				}
-			}
-			catch (Exception e)
-			{
-				MyLog.Default.WriteLine($"AwwScrap: SetAttributes - Boom!!! {e}");
-			}
-		}
+		//private static void SetAttributes()
+		//{
+		//	try
+		//	{
+		//		foreach (MyPhysicalItemDefinition item in MyDefinitionManager.Static.GetPhysicalItemDefinitions())
+		//		{
+		//			ScrapAttributes scrap;
+		//			if (!Statics.ScrapAttributesDictionary.TryGetValue(item.Id.SubtypeId, out scrap))
+		//				continue;
+		//			item.Mass = scrap.Mass;
+		//			item.Volume = scrap.Volume / 1000;
+		//		}
+		//	}
+		//	catch (Exception e)
+		//	{
+		//		MyLog.Default.WriteLine($"AwwScrap: SetAttributes - Boom!!! {e}");
+		//	}
+		//}
 
-		private static void SetEfficiency()
-		{
-			try
-			{
-				// This loop accounts for World Settings for the Assembler Efficiency Modifier (x1, x3, x10)
-				foreach (MyBlueprintDefinitionBase myBlueprintDefinitionBase in Statics.AwwScrapSubTypeIds.Select(
-					subtype => MyDefinitionManager.Static.GetBlueprintDefinition(
-						new MyDefinitionId(typeof(MyObjectBuilder_BlueprintDefinition), subtype))))
-				{
-					for (int index = 0; index < myBlueprintDefinitionBase.Results.Length; index++)
-					{   // MyFixedPoint can't do /= operations, so have to do a work around
-						float f = (float)myBlueprintDefinitionBase.Results[index].Amount;
-						f /= MyAPIGateway.Session.SessionSettings.AssemblerEfficiencyMultiplier;
-						myBlueprintDefinitionBase.Results[index].Amount = (MyFixedPoint)f;
-					}
-				}
-				//MyRefineryDefinition basicRefinery = MyDefinitionManager.Static.GetCubeBlockDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Refinery), "Blast Furnace")) as MyRefineryDefinition;
-				//if (basicRefinery != null) basicRefinery.MaterialEfficiency = 1.0f;
-			}
-			catch (Exception e)
-			{
-				MyLog.Default.WriteLine($"AwwScrap: SetEfficiency - Boom!!! {e}");
-			}
-		}
+		//private static void SetEfficiency()
+		//{
+		//	try
+		//	{
+		//		// This loop accounts for World Settings for the Assembler Efficiency Modifier (x1, x3, x10)
+		//		foreach (MyBlueprintDefinitionBase myBlueprintDefinitionBase in Statics.AwwScrapSubTypeIds.Select(
+		//			subtype => MyDefinitionManager.Static.GetBlueprintDefinition(
+		//				new MyDefinitionId(typeof(MyObjectBuilder_BlueprintDefinition), subtype))))
+		//		{
+		//			for (int index = 0; index < myBlueprintDefinitionBase.Results.Length; index++)
+		//			{   // MyFixedPoint can't do /= operations, so have to do a work around
+		//				float f = (float)myBlueprintDefinitionBase.Results[index].Amount;
+		//				f /= MyAPIGateway.Session.SessionSettings.AssemblerEfficiencyMultiplier;
+		//				myBlueprintDefinitionBase.Results[index].Amount = (MyFixedPoint)f;
+		//			}
+		//		}
+		//		//MyRefineryDefinition basicRefinery = MyDefinitionManager.Static.GetCubeBlockDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Refinery), "Blast Furnace")) as MyRefineryDefinition;
+		//		//if (basicRefinery != null) basicRefinery.MaterialEfficiency = 1.0f;
+		//	}
+		//	catch (Exception e)
+		//	{
+		//		MyLog.Default.WriteLine($"AwwScrap: SetEfficiency - Boom!!! {e}");
+		//	}
+		//}
 
 		private static void SetSurvivalKitMenu()
 		{

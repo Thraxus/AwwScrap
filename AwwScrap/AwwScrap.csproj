@@ -189,12 +189,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AwwScrap\Data\DefenseShieldsComponents.sbc" />
-    <None Include="AwwScrap\Data\BetterScrapRecyclerSupport.sbc" />
-    <None Include="AwwScrap\Data\SplitsieQoLRefineryChange.sbc" />
-    <None Include="AwwScrap\Data\EweCompatibility.sbc" />
-    <None Include="AwwScrap\Data\ModComponentSupport.sbc" />
     <None Include="AwwScrap\Data\VanillaComponents.sbc" />
+    <None Include="AwwScrap\Models\Components\GenericScrap.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap1.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap10.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap11.mwm" />
@@ -229,6 +225,7 @@
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\power_cell.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\radio_communication_components.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\reactor_components.dds" />
+    <Content Include="AwwScrap\Textures\GUI\Icons\Components\generic_scrap.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\small_steel_tube.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\solar_cell.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\steel_plate.dds" />
