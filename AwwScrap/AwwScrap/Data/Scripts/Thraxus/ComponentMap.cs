@@ -4,6 +4,7 @@ using System.Text;
 using AwwScrap.Support;
 using Sandbox.Definitions;
 using VRage;
+using VRage.Collections;
 using VRage.Game;
 
 namespace AwwScrap
@@ -20,8 +21,39 @@ namespace AwwScrap
 		public Dictionary<string, MyFixedPoint> ComponentPrerequisites = new Dictionary<string, MyFixedPoint>();
 		public List<MyBlueprintClassDefinition> CompatibleBlueprints = new List<MyBlueprintClassDefinition>();
 
-		public bool Tainted;
-		
+		private void RecalculateResourceCount()
+		{
+			_resourceCount = 0;
+			foreach (var cpr in ComponentPrerequisites)
+			{
+				_resourceCount += (float)cpr.Value;
+			}
+		}
+
+		public void ReconcileCompoundComponents(CachingDictionary<string, ComponentMap> compMap)
+		{
+			foreach (var map in compMap)
+			{
+				if (!ComponentPrerequisites.ContainsKey(map.Key)) continue;
+				foreach (var cpr in map.Value.ComponentPrerequisites)
+				{
+					AddToPrerequisites(cpr.Key, cpr.Value * ComponentPrerequisites[map.Key]);
+				}
+				ComponentPrerequisites.Remove(map.Key);
+			}
+			RecalculateResourceCount();
+		}
+
+		public void AddToPrerequisites(string key, MyFixedPoint value)
+		{
+			if (ComponentPrerequisites.ContainsKey(key))
+			{
+				ComponentPrerequisites[key] += value;
+				_resourceCount += (float)value;
+				return;
+			}
+			ComponentPrerequisites.Add(key, value);
+		}
 
 		public void SetComponentDefinition(MyPhysicalItemDefinition def)
 		{
@@ -30,6 +62,7 @@ namespace AwwScrap
 			if (_scrapDefinition == null)
 				SetScrapDefinition();
 		}
+
 		private void SetScrapDefinition()
 		{
 			_scrapDefinition = MyDefinitionManager.Static.GetPhysicalItemDefinition(
@@ -139,40 +172,8 @@ namespace AwwScrap
 			if (ComponentPrerequisites.Count > 0) return;
 			foreach (var pre in bpd.Prerequisites)
 			{
-				ComponentPrerequisites.Add(pre.Id.SubtypeName, pre.Amount);
+				ComponentPrerequisites.Add(pre.Id.SubtypeName, (MyFixedPoint)((float)pre.Amount / Constants.AssemblerMultiplier));
 				_resourceCount += (float)pre.Amount;
-			}
-		}
-
-		public void AddToPrerequisites(string key, MyFixedPoint value)
-		{
-			if (ComponentPrerequisites.ContainsKey(key))
-			{
-				ComponentPrerequisites[key] += value;
-				_resourceCount += (float)value;
-				return;
-			}
-			ComponentPrerequisites.Add(key, value);
-			_resourceCount += (float)value;
-		}
-
-		public void CheckForTaintedPrerequisites(Dictionary<string, MyPhysicalItemDefinition> validationDictionary)
-		{
-			foreach (var component in ComponentPrerequisites)
-			{
-				if (validationDictionary.ContainsKey(component.Key)) Tainted = true;
-			}
-		}
-
-		public void CopyFrom(ComponentMap map)
-		{
-			SetComponentDefinition(map._componentDefinition);
-			foreach (var pre in map.ComponentPrerequisites)
-			{
-				if (ComponentPrerequisites.ContainsKey(pre.Key))
-					ComponentPrerequisites[pre.Key] += pre.Value;
-				else ComponentPrerequisites.Add(pre.Key, pre.Value);
-				_resourceCount += (float)pre.Value;
 			}
 		}
 
@@ -180,7 +181,7 @@ namespace AwwScrap
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.AppendFormat("{0,-1}[{1}] [{2}]", " ", ComponentPrerequisites.Count, CompatibleBlueprints.Count);
-			sb.AppendFormat("{0,-1}[{1:000.00}] [{2}]", " ", _resourceCount, Tainted ? "T" : "F");
+			sb.AppendFormat("{0,-1}[{1:000.00}] ", " ", _resourceCount);
 			sb.AppendLine();
 			sb.AppendFormat("{0,-2}Item: {1}", " ", _componentDefinition?.Id.SubtypeName);
 			sb.AppendLine();

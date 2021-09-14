@@ -22,11 +22,8 @@ namespace AwwScrap
 		protected override MyUpdateOrder Schedule { get; } = MyUpdateOrder.BeforeSimulation;
 
 		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _blueprintClassOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
-		private readonly CachingDictionary<string, ComponentMap> _preComponentMaps = new CachingDictionary<string, ComponentMap>();
-		private readonly Dictionary<string, ComponentMap> _finalComponentMaps = new Dictionary<string, ComponentMap>();
+		private readonly CachingDictionary<string, ComponentMap> _componentMaps = new CachingDictionary<string, ComponentMap>();
 		private readonly StringBuilder _report = new StringBuilder();
-		
-		
 		
 		protected override void EarlySetup()
 		{
@@ -58,7 +55,7 @@ namespace AwwScrap
 			//PrintAssemblerBlueprints();
 			ScourAssemblers();
 			//PrintPreComponentMapsSimple();
-			IdentifyTaintedComponentMaps();
+			EliminateCompoundComponents();
 			//PrintRefineryBlueprints();
 			ScourRefineries();
 			//PrintBlueprintClassOutputs();
@@ -69,7 +66,7 @@ namespace AwwScrap
 			//PopulateComponentPrerequisites();
 			//GetUniqueIngotList();
 			//PrintProductionBlockDefinitions();
-			foreach (var fcm in _finalComponentMaps)
+			foreach (var fcm in _componentMaps)
 			{
 				fcm.Value.RunScrapSetup();
 			}
@@ -119,8 +116,8 @@ namespace AwwScrap
 					_componentDictionary.Add(def.Id.SubtypeName, def);
 					var compMap = new ComponentMap();
 					compMap.SetComponentDefinition(def);
-					_preComponentMaps.Add(def.Id.SubtypeName, compMap);
-					_preComponentMaps.ApplyChanges();
+					_componentMaps.Add(def.Id.SubtypeName, compMap);
+					_componentMaps.ApplyChanges();
 					continue;
 				}
 				_remainingDictionary.Add(def.Id.SubtypeName, def);
@@ -138,113 +135,47 @@ namespace AwwScrap
 					foreach (var bpd in bpc)
 					{
 						if (!bpd.Public) continue;
-						if (bpd.Results.Length == 1 && _preComponentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName))
-							_preComponentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
+						if (bpd.Results.Length == 1 && _componentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName))
+							_componentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
 					}
 				}
 			}
 		}
 
-
-
-		private void IdentifyTaintedComponentMaps()
+		private void EliminateCompoundComponents()
 		{
-			//	1) Filter out all non-tainted components
-			foreach (var preComp in _preComponentMaps)
-			{
-				preComp.Value.CheckForTaintedPrerequisites(_componentDictionary);
-				if (preComp.Value.Tainted) continue;
-				ComponentMap map = new ComponentMap();
-				map.CopyFrom(preComp.Value);
-				_finalComponentMaps.Add(preComp.Key, map);
-				_preComponentMaps.Remove(preComp.Key);
-			}
-			_preComponentMaps.ApplyRemovals();
-
-			if (!_preComponentMaps.Any()) return;
-
-			//	2) Take each tainted component and fix the taint
-			
-			const int iterationCap = 50;
-			int iterationCount = 0;
-			
 			try
 			{
+				var componentMapQueue = new Queue<ComponentMap>();
+
 				do
 				{
-					iterationCount++;
-					foreach (var preComp in _preComponentMaps)
+					if (componentMapQueue.Count > 0)
 					{
-						bool tainted = false;
-						foreach (var pre in preComp.Value.ComponentPrerequisites)
+						ComponentMap map = componentMapQueue.Dequeue();
+						map.ReconcileCompoundComponents(_componentMaps);
+						_componentMaps.Add(map.GetComponentDefinition().Id.SubtypeName, map);
+						_componentMaps.ApplyAdditionsAndModifications();
+					}
+
+					foreach (var cm in _componentMaps)
+					{
+						foreach (var cpr in cm.Value.ComponentPrerequisites)
 						{
-							if (!_preComponentMaps.ContainsKey(pre.Key)) continue;
-							tainted = true;
+							if (!_componentMaps.ContainsKey(cpr.Key)) continue;
+							componentMapQueue.Enqueue(cm.Value);
+							_componentMaps.Remove(cm.Key);
 							break;
 						}
-						if (tainted)
-							continue;
-						var map = new ComponentMap();
-						map.SetComponentDefinition(preComp.Value.GetComponentDefinition());
-						foreach (var pre in preComp.Value.ComponentPrerequisites)
-						{
-							if (_finalComponentMaps.ContainsKey(pre.Key))
-							{
-								foreach (var fPre in _finalComponentMaps[pre.Key].ComponentPrerequisites)
-								{
-									map.AddToPrerequisites(fPre.Key, fPre.Value * pre.Value);
-								}
-								continue;
-							}
-							map.AddToPrerequisites(pre.Key, pre.Value);
-						}
-						_preComponentMaps.Remove(preComp.Key);
-						_finalComponentMaps.Add(preComp.Key, map);
 					}
-					_preComponentMaps.ApplyRemovals();
-				} while (_preComponentMaps.Any() && iterationCount <= iterationCap);
-
-				//do
-				//{
-				//	iterationCount++;
-				//	foreach (var preComp in _preComponentMaps)
-				//	{
-				//		bool tainted = false;
-				//		foreach (var pre in preComp.Value.ComponentPrerequisites)
-				//		{
-				//			if (!_preComponentMaps.ContainsKey(pre.Key)) continue;
-				//			tainted = true;
-				//			break;
-				//		}
-				//		if (tainted)
-				//			continue;
-				//		var map = new ComponentMap();
-				//		map.SetComponentDefinition(preComp.Value.GetComponentDefinition());
-				//		foreach (var pre in preComp.Value.ComponentPrerequisites)
-				//		{
-				//			if (_finalComponentMaps.ContainsKey(pre.Key))
-				//			{
-				//				foreach (var fPre in _finalComponentMaps[pre.Key].ComponentPrerequisites)
-				//				{
-				//					map.AddToPrerequisites(fPre.Key, fPre.Value * pre.Value);
-				//				}
-				//				continue;
-				//			}
-				//			map.AddToPrerequisites(pre.Key, pre.Value);
-				//		}
-				//		_preComponentMaps.Remove(preComp.Key);
-				//		_finalComponentMaps.Add(preComp.Key, map);
-				//	}
-				//	_preComponentMaps.ApplyRemovals();
-				//} while (_preComponentMaps.Any() && iterationCount <= iterationCap);
+					_componentMaps.ApplyRemovals();
+				} while (componentMapQueue.Count > 0);
 			}
 			catch (Exception e)
 			{
 				WriteToLog("IdentifyTaintedComponentMaps", $"Shit broke..... \n{e}", LogType.General);
 			}
 		}
-
-
 
 		private void ScourRefineries()
 		{
@@ -273,16 +204,16 @@ namespace AwwScrap
 		{
 			foreach (var bco in _blueprintClassOutputs)
 			{
-				foreach (var fcm in _finalComponentMaps)
+				foreach (var cm in _componentMaps)
 				{
 					bool compatible = true;
-					foreach (var pre in fcm.Value.ComponentPrerequisites)
+					foreach (var pre in cm.Value.ComponentPrerequisites)
 					{
 						if (!bco.Value.Contains(pre.Key))
 							compatible = false;
 					}
 					if (compatible)
-						fcm.Value.AddCompatibleRefineryBpc(bco.Key);
+						cm.Value.AddCompatibleRefineryBpc(bco.Key);
 				}
 			}
 		}
@@ -584,7 +515,7 @@ namespace AwwScrap
 
 		private void PrintScrapDefManagerOutput()
 		{
-			foreach (var fcm in _finalComponentMaps)
+			foreach (var fcm in _componentMaps)
 			{
 				WriteToLog("PSD", $"{fcm.Key} - Def in Manager: {fcm.Value.HasDefinitionInManager()}  |  Needs Post Process: {fcm.Value.NeedPostProcess()}", LogType.General);
 			}
@@ -592,8 +523,8 @@ namespace AwwScrap
 
 		private void PrintPreComponentMapsSimple()
 		{
-			WriteToLog("PPC", $"[{_preComponentMaps.Count()}] Items in Collection", LogType.General);
-			foreach (var component in _preComponentMaps)
+			WriteToLog("PPC", $"[{_componentMaps.Count()}] Items in Collection", LogType.General);
+			foreach (var component in _componentMaps)
 			{
 				WriteToLog("PPC", $"{component.Value}", LogType.General);
 			}
@@ -603,9 +534,9 @@ namespace AwwScrap
 		{
 			_report.Clear();
 			_report.AppendLine();
-			_report.AppendFormat("[{0}] Items in Collection", _finalComponentMaps.Count);
+			_report.AppendFormat("[{0}] Items in Collection", _componentMaps.Count());
 			_report.AppendLine();
-			foreach (var component in _finalComponentMaps)
+			foreach (var component in _componentMaps)
 			{
 				_report.AppendFormat("{1}", " ", component.Value);
 				_report.AppendLine();
