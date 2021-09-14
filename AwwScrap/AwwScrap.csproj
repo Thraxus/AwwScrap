@@ -181,14 +181,17 @@
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\OnScreenDisplay\QuestlogDetail.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\OnScreenDisplay\QuestScreen.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Profiler.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\ComponentMapBackup.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\ComponentMap.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Helpers\Definitions.cs" />
-    <Compile Include="AwwScrap\Data\Scripts\Thraxus\ScrapMap.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\Constants.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\ScrapAttributes.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\Statics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AwwScrap\Data\DefenseShields.sbc" />
+    <None Include="AwwScrap\Data\IndustrialOverhaul.sbc" />
     <None Include="AwwScrap\Data\VanillaComponents.sbc" />
     <None Include="AwwScrap\Models\Components\GenericScrap.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap1.mwm" />

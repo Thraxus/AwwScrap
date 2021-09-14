@@ -423,6 +423,388 @@
 
   </PhysicalItems>
 
+  <Blueprints>
+    <!-- Bulletproof Glass -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>BulletproofGlassScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Bulletproof Glass Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\bulletproof_glass.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="BulletproofGlassScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Computer -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ComputerScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Computer Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\computer.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ComputerScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="0.22" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="0.09" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Construction Component -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ConstructionScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Construction Component Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\construction_components.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ConstructionScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="3.6" TypeId="Ingot" SubtypeId="Iron" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Detector Component -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>DetectorScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Detector Component Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\detector_components.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="DetectorScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Nickel" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Display -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>DisplayScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Display Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\display.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="DisplayScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="0.45" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Explosives -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ExplosivesScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Explosives Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\explosives.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ExplosivesScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="0.9" TypeId="Ingot" SubtypeId="Magnesium" />
+        <Item Amount="0.22" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Girder -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>GirderScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Girder Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\girder.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="GirderScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="2.7" TypeId="Ingot" SubtypeId="Iron" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Gravity Component -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>GravityGeneratorScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Gravity Generator Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\gravity_generator_components.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="GravityGeneratorScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="99" TypeId="Ingot" SubtypeId="Cobalt" />
+        <Item Amount="4.5" TypeId="Ingot" SubtypeId="Gold" />
+        <Item Amount="270" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Silver" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Interior Plate -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>InteriorPlateScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Interior Plate Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\interior_plate.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="InteriorPlateScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="1.35" TypeId="Ingot" SubtypeId="Iron" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Large Steel Tube -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>LargeTubeScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Large Steel Tube Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\large_steel_tube.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="LargeTubeScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="13.5" TypeId="Ingot" SubtypeId="Iron" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Medical Component -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>MedicalScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Medical Component Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\medical_components.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="MedicalScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="27" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="31.5" TypeId="Ingot" SubtypeId="Nickel" />
+        <Item Amount="9" TypeId="Ingot" SubtypeId="Silver" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Metal Grid -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>MetalGridScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Metal Grid Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\metal_grid.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="MetalGridScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="1.35" TypeId="Ingot" SubtypeId="Cobalt" />
+        <Item Amount="5.4" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Nickel" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Motor -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>MotorScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Motor Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\motor.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="MotorScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="9" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Nickel" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Power Cell -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>PowerCellScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Power Cell Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\power_cell.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="PowerCellScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="4.5" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="0.9" TypeId="Ingot" SubtypeId="Nickel" />
+        <Item Amount="0.45" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Radio-comm Component -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>RadioCommunicationScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Radio Communication Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\radio_communication_components.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="RadioCommunicationScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="3.6" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="0.45" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Reactor Component -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ReactorScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Reactor Component Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\reactor_components.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ReactorScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Silver" />
+        <Item Amount="9" TypeId="Ingot" SubtypeId="Stone" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Scrap Small Steel Tube -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>SmallTubeScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Small Steel Tube Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\small_steel_tube.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="SmallTubeScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Iron" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Scrap Solar Cell -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>SolarCellScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Solar Cell Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\solar_cell.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="SolarCellScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="1.35" TypeId="Ingot" SubtypeId="Nickel" />
+        <Item Amount="2.7" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Scrap Steel Plate -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>SteelPlateScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Steel Plate Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\steel_plate.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="SteelPlateScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="9.45" TypeId="Ingot" SubtypeId="Iron" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Scrap Superconductor -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>SuperconductorScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Superconductor Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\superconductor_conducts.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="SuperconductorScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="0.9" TypeId="Ingot" SubtypeId="Gold" />
+        <Item Amount="4.5" TypeId="Ingot" SubtypeId="Iron" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Scrap Thruster-->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ThrustScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Thrust Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\thrust_components.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ThrustScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="4.5" TypeId="Ingot" SubtypeId="Cobalt" />
+        <Item Amount="0.45" TypeId="Ingot" SubtypeId="Gold" />
+        <Item Amount="13.5" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="0.18" TypeId="Ingot" SubtypeId="Platinum" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+  </Blueprints>
+
   <BlueprintClasses>
     <Class>
       <Id>
