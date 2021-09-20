@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using AwwScrap.Support;
 using Sandbox.Definitions;
-using Sandbox.Game.Entities;
-using Sandbox.Game.Entities.Cube;
 using VRage;
 using VRage.Collections;
 using VRage.Game;
-using VRage.Game.ModAPI;
 
 namespace AwwScrap
 {
@@ -24,6 +21,7 @@ namespace AwwScrap
 		private float _productionTime;
 		private float _resourceCount;
 		private string _error;
+		public bool HasFalseCompatibleBlueprintClasses;
 
 		public readonly Dictionary<string, MyFixedPoint> ComponentPrerequisites = new Dictionary<string, MyFixedPoint>();
 		private readonly List<MyBlueprintClassDefinition> _compatibleBlueprints = new List<MyBlueprintClassDefinition>();
@@ -36,6 +34,28 @@ namespace AwwScrap
 		public bool HasValidScrap()
 		{
 			return _scrapDefinition != null && _scrapBlueprint != null;
+		}
+
+		public string PrintCompatibleBlueprintClasses()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.AppendFormat("{0,-1}[{1}][{2:00}] {3}", " ",HasFalseCompatibleBlueprintClasses ? "T" : "F", _compatibleBlueprints.Count, _componentDefinition.Id.SubtypeName);
+			foreach (var cbp in _compatibleBlueprints)
+			{
+				sb.AppendFormat("{0,-1}[{1}]", " ", cbp.Id.SubtypeName);
+			}
+			return sb.ToString();
+		}
+
+		public string PrintComponentPrerequisites()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.AppendFormat("{0,-1}[{1:00}] {2}", " ", ComponentPrerequisites.Count, _componentDefinition.Id.SubtypeName);
+			foreach (var cpr in ComponentPrerequisites)
+			{
+				sb.AppendFormat("{0,-1}[{1}]", " ", cpr.Key);
+			}
+			return sb.ToString();
 		}
 
 		public void RunScrapSetup()
@@ -126,9 +146,23 @@ namespace AwwScrap
 			_scrapDefinition = null;
 		}
 
-		public void AddCompatibleRefineryBpc(MyBlueprintClassDefinition bcd)
+		public void AddCompatibleRefineryBpc(MyBlueprintClassDefinition bcd, bool isFalseHit)
 		{
 			if (_compatibleBlueprints.Contains(bcd)) return;
+			if (isFalseHit && !HasFalseCompatibleBlueprintClasses && _compatibleBlueprints.Count > 0) return;
+			if (!isFalseHit && HasFalseCompatibleBlueprintClasses)
+			{
+				_compatibleBlueprints.Clear();
+				HasFalseCompatibleBlueprintClasses = false;
+				_compatibleBlueprints.Add(bcd);
+				return;
+			}
+			if (!isFalseHit && !HasFalseCompatibleBlueprintClasses)
+			{
+				_compatibleBlueprints.Add(bcd);
+				return;
+			}
+			HasFalseCompatibleBlueprintClasses = isFalseHit;
 			_compatibleBlueprints.Add(bcd);
 		}
 		

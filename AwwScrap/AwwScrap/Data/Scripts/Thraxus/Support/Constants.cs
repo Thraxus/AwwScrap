@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Sandbox.ModAPI;
-using VRage.Utils;
 
 namespace AwwScrap.Support
 {
@@ -15,12 +14,7 @@ namespace AwwScrap.Support
 
 		public static readonly List<string> ScrapReturnsBlacklist = new List<string>
 		{
-			"Polymer",
-			"Ice",
-			"Lithium",
-			"Oil Sand",
-			"Sulfur",
-			"Niter",
+			"Ice"
 		};
 
 		public static readonly List<string> ComponentBlacklist = new List<string>

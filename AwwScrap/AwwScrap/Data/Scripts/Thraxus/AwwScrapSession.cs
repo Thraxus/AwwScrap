@@ -5,7 +5,6 @@ using System.Text;
 using AwwScrap.Common.BaseClasses;
 using AwwScrap.Common.Enums;
 using Sandbox.Definitions;
-using Sandbox.ModAPI;
 using VRage.Game;
 using VRage.Game.Components;
 using AwwScrap.Support;
@@ -22,11 +21,16 @@ namespace AwwScrap
 		protected override MyUpdateOrder Schedule { get; } = MyUpdateOrder.NoUpdate;
 
 		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _blueprintClassOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
-		private readonly Dictionary<string, MyBlueprintDefinitionBase> _assemblerBlueprints = new Dictionary<string, MyBlueprintDefinitionBase>();
-		private readonly Dictionary<string, MyBlueprintDefinitionBase> _refineryBlueprints = new Dictionary<string, MyBlueprintDefinitionBase>();
 		private readonly CachingDictionary<string, ComponentMap> _componentMaps = new CachingDictionary<string, ComponentMap>();
 		private readonly StringBuilder _report = new StringBuilder();
-		MyPhysicalItemDefinition _genericScrap = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), "Scrap"));
+		private readonly MyPhysicalItemDefinition _genericScrap = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), "Scrap"));
+
+		// Useless, remove after dev cycle, or bake into scrap output on mod init
+		private readonly Dictionary<string, MyPhysicalItemDefinition> _oreDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
+		private readonly Dictionary<string, MyPhysicalItemDefinition> _ingotDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
+		private readonly Dictionary<string, MyPhysicalItemDefinition> _scrapDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
+		private readonly Dictionary<string, MyPhysicalItemDefinition> _componentDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
+		private readonly Dictionary<string, MyPhysicalItemDefinition> _remainingDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
 
 		protected override void EarlySetup()
 		{
@@ -55,8 +59,34 @@ namespace AwwScrap
 			//PrintBlueprints(_assemblerBlueprints);
 			//PrintBlueprints(_refineryBlueprints);
 			PrintProductionTimes();
+			PrintComponentPrerequisites();
+			PrintCompatibleBps();
 		}
-		
+
+		private void PrintProductionTimes()
+		{
+			foreach (var map in _componentMaps)
+			{
+				WriteToLog("PPT", $"[{map.Value.GetProductionTime():00.00}] [{map.Value.GetAmountProduced():00.00}] {map.Key}", LogType.General);
+			}
+		}
+
+		private void PrintCompatibleBps()
+		{
+			foreach (var map in _componentMaps)
+			{
+				WriteToLog("PCB", map.Value.PrintCompatibleBlueprintClasses(), LogType.General);
+			}
+		}
+
+		private void PrintComponentPrerequisites()
+		{
+			foreach (var map in _componentMaps)
+			{
+				WriteToLog("PCP", map.Value.PrintComponentPrerequisites(), LogType.General);
+			}
+		}
+
 		private void Run()
 		{
 			GrabInformation();
@@ -92,12 +122,6 @@ namespace AwwScrap
 
 			//Test();
 		}
-
-		private readonly Dictionary<string, MyPhysicalItemDefinition> _oreDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
-		private readonly Dictionary<string, MyPhysicalItemDefinition> _ingotDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
-		private readonly Dictionary<string, MyPhysicalItemDefinition> _scrapDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
-		private readonly Dictionary<string, MyPhysicalItemDefinition> _componentDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
-		private readonly Dictionary<string, MyPhysicalItemDefinition> _remainingDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
 
 		private void GrabInformation()
 		{
@@ -158,14 +182,6 @@ namespace AwwScrap
 			}
 		}
 
-		private void PrintProductionTimes()
-		{
-			foreach (var map in _componentMaps)
-			{
-				WriteToLog("PPT", $"[{map.Value.GetProductionTime():00.00}] [{map.Value.GetAmountProduced():00.00}] {map.Key}", LogType.General);
-			}
-		}
-		
 		private void EliminateCompoundComponents()
 		{
 			try
@@ -231,7 +247,34 @@ namespace AwwScrap
 			}
 		}
 
+
 		private void FindCompatibleBlueprints()
+		{
+			foreach (var bco in _blueprintClassOutputs)
+			{
+				foreach (var cm in _componentMaps)
+				{
+					bool compatible = true;
+					int maxCompatibility = cm.Value.ComponentPrerequisites.Count;
+					int falseHits = 0;
+					foreach (var pre in cm.Value.ComponentPrerequisites)
+					{
+						if (bco.Value.Contains(pre.Key)) continue;
+						compatible = false;
+						falseHits++;
+					}
+					if (compatible)
+					{
+						cm.Value.AddCompatibleRefineryBpc(bco.Key, false);
+						continue;
+					}
+					if (falseHits <= maxCompatibility * 0.5f)
+						cm.Value.AddCompatibleRefineryBpc(bco.Key, true);
+				}
+			}
+		}
+
+		private void FindCompatibleBlueprints2()
 		{
 			foreach (var bco in _blueprintClassOutputs)
 			{
@@ -244,7 +287,7 @@ namespace AwwScrap
 							compatible = false;
 					}
 					if (compatible)
-						cm.Value.AddCompatibleRefineryBpc(bco.Key);
+						cm.Value.AddCompatibleRefineryBpc(bco.Key, false);
 				}
 			}
 		}
@@ -262,12 +305,12 @@ namespace AwwScrap
 			return compName.EndsWith(Constants.ScrapSuffix, StringComparison.OrdinalIgnoreCase) && !compName.Equals(Constants.ScrapSuffix, StringComparison.OrdinalIgnoreCase);
 		}
 		
-		private static void Initialize()
-		{
-			//MyAPIGateway.Parallel.StartBackground(ScrubCubes);
-			//MyAPIGateway.Parallel.StartBackground(SetEfficiency);
-			//MyAPIGateway.Parallel.StartBackground(SetAttributes);
-		}
+		//private static void Initialize()
+		//{
+		//	//MyAPIGateway.Parallel.StartBackground(ScrubCubes);
+		//	//MyAPIGateway.Parallel.StartBackground(SetEfficiency);
+		//	//MyAPIGateway.Parallel.StartBackground(SetAttributes);
+		//}
 
 		private void SetDeconstructItems()
 		{
@@ -292,40 +335,40 @@ namespace AwwScrap
 			}
 		}
 
-		private static void ScrubCubes()
-		{
-			try
-			{
-				MyPhysicalItemDefinition scrapDef = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), "Scrap"));
+		//private static void ScrubCubes()
+		//{
+		//	try
+		//	{
+		//		MyPhysicalItemDefinition scrapDef = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), "Scrap"));
 			
-				foreach (MyCubeBlockDefinition myCubeBlockDefinition in MyDefinitionManager.Static.GetAllDefinitions().OfType<MyCubeBlockDefinition>().Where(myCubeBlockDefinition => myCubeBlockDefinition?.Components != null))
-				{
-					if (Statics.IgnoredBlocks.Contains(myCubeBlockDefinition.Id.SubtypeId)) continue;
+		//		foreach (MyCubeBlockDefinition myCubeBlockDefinition in MyDefinitionManager.Static.GetAllDefinitions().OfType<MyCubeBlockDefinition>().Where(myCubeBlockDefinition => myCubeBlockDefinition?.Components != null))
+		//		{
+		//			if (Statics.IgnoredBlocks.Contains(myCubeBlockDefinition.Id.SubtypeId)) continue;
 
-					foreach (MyCubeBlockDefinition.Component component in myCubeBlockDefinition.Components)
-					{
-						if (!component.Definition.Public)
-							continue;
+		//			foreach (MyCubeBlockDefinition.Component component in myCubeBlockDefinition.Components)
+		//			{
+		//				if (!component.Definition.Public)
+		//					continue;
 
-						string subtypeName;
-						if (Statics.ComponentDictionary.TryGetValue(component.Definition.Id.SubtypeId, out subtypeName))
-						{
-							component.DeconstructItem = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), subtypeName));
-							continue;
-						}
+		//				string subtypeName;
+		//				if (Statics.ComponentDictionary.TryGetValue(component.Definition.Id.SubtypeId, out subtypeName))
+		//				{
+		//					component.DeconstructItem = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), subtypeName));
+		//					continue;
+		//				}
 
-						if (Statics.SkipTieredTech)
-							if (component.Definition.Id.SubtypeId.ToString() == "Tech2x" || component.Definition.Id.SubtypeId.ToString() == "Tech4x" || component.Definition.Id.SubtypeId.ToString() == "Tech8x")
-								continue;
-						component.DeconstructItem = scrapDef;
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				MyLog.Default.WriteLine($"AwwScrap: ScrubCubes - Boom!!! {e}");
-			}
-		}
+		//				if (Statics.SkipTieredTech)
+		//					if (component.Definition.Id.SubtypeId.ToString() == "Tech2x" || component.Definition.Id.SubtypeId.ToString() == "Tech4x" || component.Definition.Id.SubtypeId.ToString() == "Tech8x")
+		//						continue;
+		//				component.DeconstructItem = scrapDef;
+		//			}
+		//		}
+		//	}
+		//	catch (Exception e)
+		//	{
+		//		MyLog.Default.WriteLine($"AwwScrap: ScrubCubes - Boom!!! {e}");
+		//	}
+		//}
 
 		private static void SetSurvivalKitMenu()
 		{
