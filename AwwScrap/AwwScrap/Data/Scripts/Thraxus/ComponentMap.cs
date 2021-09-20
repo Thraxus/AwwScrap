@@ -19,8 +19,6 @@ namespace AwwScrap
 
 		private MyFixedPoint _amountProduced;
 		private float _productionTime;
-		private float _resourceCount;
-		private string _error;
 
 		public bool HasFalseCompatibleBlueprintClasses;
 		public bool SkitCompatible;
@@ -33,6 +31,11 @@ namespace AwwScrap
 			return _scrapBlueprint;
 		}
 
+		public void SetScrapPrivate()
+		{
+			_scrapDefinition.Public = false;
+		}
+
 		public MyPhysicalItemDefinition GetScrapDefinition()
 		{
 			return _scrapDefinition;
@@ -43,42 +46,11 @@ namespace AwwScrap
 			return _scrapDefinition != null && _scrapBlueprint != null;
 		}
 
-		public string PrintCompatibleBlueprintClasses()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("{0,-1}[{1}][{2:00}] {3}", " ",HasFalseCompatibleBlueprintClasses ? "T" : "F", _compatibleBlueprints.Count, _componentDefinition.Id.SubtypeName);
-			foreach (var cbp in _compatibleBlueprints)
-			{
-				sb.AppendFormat("{0,-1}[{1}]", " ", cbp.Id.SubtypeName);
-			}
-			return sb.ToString();
-		}
-
-		public string PrintComponentPrerequisites()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("{0,-1}[{1:00}] {2}", " ", ComponentPrerequisites.Count, _componentDefinition.Id.SubtypeName);
-			foreach (var cpr in ComponentPrerequisites)
-			{
-				sb.AppendFormat("{0,-1}[{1}]", " ", cpr.Key);
-			}
-			return sb.ToString();
-		}
-
 		public void RunScrapSetup()
 		{
 			SetScrapAttributes();
 			GenerateScrapBlueprint();
 			ApplyScrapBlueprint();
-		}
-
-		private void RecalculateResourceCount()
-		{
-			_resourceCount = 0;
-			foreach (var cpr in ComponentPrerequisites)
-			{
-				_resourceCount += (float)cpr.Value;
-			}
 		}
 
 		public void AddBlueprint(MyBlueprintDefinitionBase bp)
@@ -90,12 +62,7 @@ namespace AwwScrap
 			_productionTime = bp.BaseProductionTimeInSeconds;
 			_amountProduced = bp.Results[0].Amount;
 		}
-
-		public float GetAmountProduced()
-		{
-			return (float)_amountProduced;
-		}
-
+		
 		public void ScrubBlacklistedScrapReturns()
 		{
 			foreach (var srb in Constants.ScrapReturnsBlacklist)
@@ -118,7 +85,6 @@ namespace AwwScrap
 				_productionTime += map.Value.GetProductionTime();
 				ComponentPrerequisites.Remove(map.Key);
 			}
-			RecalculateResourceCount();
 		}
 
 		public float GetProductionTime()
@@ -131,7 +97,6 @@ namespace AwwScrap
 			if (ComponentPrerequisites.ContainsKey(key))
 			{
 				ComponentPrerequisites[key] += value;
-				_resourceCount += (float)value;
 				return;
 			}
 			ComponentPrerequisites.Add(key, value);
@@ -187,49 +152,37 @@ namespace AwwScrap
 		{
 			if (_scrapDefinition == null) return;
 			if (_compatibleBlueprints.Count <= 0) return;
-			try
+			
+			_scrapBlueprint = (
+				MyBlueprintDefinition)MyDefinitionManager.Static.GetBlueprintDefinition(
+				new MyDefinitionId(typeof(MyObjectBuilder_BlueprintDefinition), 
+					_componentDefinition.Id.SubtypeName + Constants.ScrapSuffix + Constants.ScrapBpSuffix));
+
+			var items = new List<MyBlueprintDefinitionBase.Item>();
+			foreach (var cpr in ComponentPrerequisites)
 			{
-				_scrapBlueprint = (
-					MyBlueprintDefinition)MyDefinitionManager.Static.GetBlueprintDefinition(
-					new MyDefinitionId(typeof(MyObjectBuilder_BlueprintDefinition), 
-						_componentDefinition.Id.SubtypeName + Constants.ScrapSuffix + Constants.ScrapBpSuffix));
-				
-				if (_scrapBlueprint == null)
-				{
-					_error = "          Blueprint was Null!!";
-					return;
-				}
-
-				var items = new List<MyBlueprintDefinitionBase.Item>();
-				foreach (var cpr in ComponentPrerequisites)
-				{
-					items.Add(
-						new MyBlueprintDefinitionBase.Item
-						{
-							// This will account for items that have more than 1 count of the resulting item, such as Light Bulbs and Armor Plates from IO
-							Amount = (MyFixedPoint)((float)(cpr.Value * Constants.ScrapScalar) / (float)_amountProduced),
-							Id = new MyDefinitionId(typeof(MyObjectBuilder_Ingot), cpr.Key)
-						});
-				}
-
-				_scrapBlueprint.Prerequisites = new[]
-				{
+				items.Add(
 					new MyBlueprintDefinitionBase.Item
 					{
-						Amount = 1,
-						Id = _scrapDefinition.Id
-					}
-				};
+						// This will account for items that have more than 1 count of the resulting item, such as Light Bulbs and Armor Plates from IO
+						Amount = (MyFixedPoint)((float)(cpr.Value * Constants.ScrapScalar) / (float)_amountProduced),
+						Id = new MyDefinitionId(typeof(MyObjectBuilder_Ingot), cpr.Key)
+					});
+			}
 
-				_scrapBlueprint.DisplayNameString = _componentDefinition.DisplayNameText + " " + Constants.ScrapSuffix;
-				_scrapBlueprint.BaseProductionTimeInSeconds = _productionTime * Constants.ScrapProductionTimeScalar;
-				_scrapBlueprint.Results = items.ToArray();
-				_scrapBlueprint.Postprocess();
-			}
-			catch (Exception e)
+			_scrapBlueprint.Prerequisites = new[]
 			{
-				_error = e.ToString();
-			}
+				new MyBlueprintDefinitionBase.Item
+				{
+					Amount = 1,
+					Id = _scrapDefinition.Id
+				}
+			};
+
+			_scrapBlueprint.DisplayNameString = _componentDefinition.DisplayNameText + " " + Constants.ScrapSuffix;
+			_scrapBlueprint.BaseProductionTimeInSeconds = _productionTime * Constants.ScrapProductionTimeScalar;
+			_scrapBlueprint.Results = items.ToArray();
+			_scrapBlueprint.Postprocess();
 		}
 		
 		private void ApplyScrapBlueprint()
@@ -242,19 +195,7 @@ namespace AwwScrap
 					cbp.AddBlueprint(_scrapBlueprint);
 			}
 		}
-
-		public bool HasDefinitionInManager()
-		{
-			if (_scrapBlueprint == null) return false;
-			MyBlueprintDefinitionBase b = MyDefinitionManager.Static.GetBlueprintDefinition(_scrapBlueprint.Id);
-			return b != null;
-		}
-
-		public bool NeedPostProcess()
-		{
-			return _scrapBlueprint == null || _scrapBlueprint.PostprocessNeeded;
-		}
-
+		
 		public MyPhysicalItemDefinition GetComponentDefinition()
 		{
 			return _componentDefinition;
@@ -266,15 +207,38 @@ namespace AwwScrap
 			foreach (var pre in bpd.Prerequisites)
 			{
 				ComponentPrerequisites.Add(pre.Id.SubtypeName, (MyFixedPoint)((float)pre.Amount / Constants.AssemblerMultiplier));
-				_resourceCount += (float)pre.Amount;
 			}
 		}
+
+		#region Unused / Debug Only
+
+		public string PrintCompatibleBlueprintClasses()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.AppendFormat("{0,-1}[{1}][{2:00}] {3}", " ", HasFalseCompatibleBlueprintClasses ? "T" : "F", _compatibleBlueprints.Count, _componentDefinition.Id.SubtypeName);
+			foreach (var cbp in _compatibleBlueprints)
+			{
+				sb.AppendFormat("{0,-1}[{1}]", " ", cbp.Id.SubtypeName);
+			}
+			return sb.ToString();
+		}
+
+		public string PrintComponentPrerequisites()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.AppendFormat("{0,-1}[{1:00}] {2}", " ", ComponentPrerequisites.Count, _componentDefinition.Id.SubtypeName);
+			foreach (var cpr in ComponentPrerequisites)
+			{
+				sb.AppendFormat("{0,-1}[{1}]", " ", cpr.Key);
+			}
+			return sb.ToString();
+		}
+
 
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.AppendFormat("{0,-1}[{1}] [{2}]", " ", ComponentPrerequisites.Count, _compatibleBlueprints.Count);
-			sb.AppendFormat("{0,-1}[{1:000.00}] ", " ", _resourceCount);
 			sb.AppendLine();
 			sb.AppendFormat("{0,-2}Item: {1}", " ", _componentDefinition?.Id.SubtypeName);
 			sb.AppendLine();
@@ -314,11 +278,10 @@ namespace AwwScrap
 			{
 				sb.AppendFormat(" [{0}]", cb.Id.SubtypeId);
 			}
-
-			if (!string.IsNullOrEmpty(_error))
-				sb.AppendLine($"\nError!!!\n{_error}");
-
+			
 			return sb.ToString();
 		}
+
+		#endregion
 	}
 }

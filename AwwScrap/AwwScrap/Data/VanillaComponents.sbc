@@ -22,6 +22,25 @@
       <PhysicalMaterial>Metal</PhysicalMaterial>
     </PhysicalItem>
 
+    <!-- Canvas -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>CanvasScrap</SubtypeId>
+      </Id>
+      <DisplayName>Canvas Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\Scrap8.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
     <!-- Computer -->
     <PhysicalItem>
       <Id>
@@ -417,7 +436,24 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="BulletproofGlassScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Canvas -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>CanvasScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>Canvas Scrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\computer.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="CanvasScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -434,8 +470,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="ComputerScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="0.22" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="0.09" TypeId="Ingot" SubtypeId="Silicon" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -452,7 +487,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="ConstructionScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="3.6" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -469,8 +504,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="DetectorScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Nickel" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -487,8 +521,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="DisplayScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="0.45" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Silicon" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -505,8 +538,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="ExplosivesScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="0.9" TypeId="Ingot" SubtypeId="Magnesium" />
-        <Item Amount="0.22" TypeId="Ingot" SubtypeId="Silicon" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -523,7 +555,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="GirderScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="2.7" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -540,10 +572,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="GravityGeneratorScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="99" TypeId="Ingot" SubtypeId="Cobalt" />
-        <Item Amount="4.5" TypeId="Ingot" SubtypeId="Gold" />
-        <Item Amount="270" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Silver" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -560,7 +589,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="InteriorPlateScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="1.35" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -577,7 +606,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="LargeTubeScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="13.5" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -594,9 +623,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="MedicalScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="27" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="31.5" TypeId="Ingot" SubtypeId="Nickel" />
-        <Item Amount="9" TypeId="Ingot" SubtypeId="Silver" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -613,9 +640,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="MetalGridScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="1.35" TypeId="Ingot" SubtypeId="Cobalt" />
-        <Item Amount="5.4" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Nickel" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -632,8 +657,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="MotorScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="9" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Nickel" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -650,9 +674,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="PowerCellScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="4.5" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="0.9" TypeId="Ingot" SubtypeId="Nickel" />
-        <Item Amount="0.45" TypeId="Ingot" SubtypeId="Silicon" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -669,8 +691,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="RadioCommunicationScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="3.6" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="0.45" TypeId="Ingot" SubtypeId="Silicon" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -687,9 +708,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="ReactorScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Silver" />
-        <Item Amount="9" TypeId="Ingot" SubtypeId="Stone" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -706,7 +725,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="SmallTubeScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="2.25" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -723,8 +742,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="SolarCellScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="1.35" TypeId="Ingot" SubtypeId="Nickel" />
-        <Item Amount="2.7" TypeId="Ingot" SubtypeId="Silicon" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -741,7 +759,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="SteelPlateScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="9.45" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -758,8 +776,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="SuperconductorScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="0.9" TypeId="Ingot" SubtypeId="Gold" />
-        <Item Amount="4.5" TypeId="Ingot" SubtypeId="Iron" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -776,10 +793,7 @@
         <Item Amount="1" TypeId="Ore" SubtypeId="ThrustScrap" />
       </Prerequisites>
       <Results>
-        <Item Amount="4.5" TypeId="Ingot" SubtypeId="Cobalt" />
-        <Item Amount="0.45" TypeId="Ingot" SubtypeId="Gold" />
-        <Item Amount="13.5" TypeId="Ingot" SubtypeId="Iron" />
-        <Item Amount="0.18" TypeId="Ingot" SubtypeId="Platinum" />
+        <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
@@ -800,16 +814,5 @@
       <OutputConstraintIcon>Textures\GUI\Icons\filter_ingot.dds</OutputConstraintIcon>
     </Class>
   </BlueprintClasses>
-
-  <!--<BlueprintClassEntries>
-    <Entry Class="AwwScrap" BlueprintSubtypeId="ComputerToIngot" />
-    <Entry Class="AwwScrap" BlueprintSubtypeId="ConstructionToIngot" />
-    <Entry Class="AwwScrap" BlueprintSubtypeId="DisplayToIngot" />
-    <Entry Class="AwwScrap" BlueprintSubtypeId="GirderToIngot" />
-    <Entry Class="AwwScrap" BlueprintSubtypeId="InteriorPlateToIngot" />
-    <Entry Class="AwwScrap" BlueprintSubtypeId="MotorToIngot" />
-    <Entry Class="AwwScrap" BlueprintSubtypeId="SolarCellToIngot" />
-    <Entry Class="AwwScrap" BlueprintSubtypeId="SteelPlateToIngot" />
-  </BlueprintClassEntries>-->
 
 </Definitions>
