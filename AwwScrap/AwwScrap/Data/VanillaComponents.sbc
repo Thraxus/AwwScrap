@@ -801,7 +801,7 @@
     </Class>
   </BlueprintClasses>
 
-  <BlueprintClassEntries>
+  <!--<BlueprintClassEntries>
     <Entry Class="AwwScrap" BlueprintSubtypeId="ComputerToIngot" />
     <Entry Class="AwwScrap" BlueprintSubtypeId="ConstructionToIngot" />
     <Entry Class="AwwScrap" BlueprintSubtypeId="DisplayToIngot" />
@@ -810,6 +810,6 @@
     <Entry Class="AwwScrap" BlueprintSubtypeId="MotorToIngot" />
     <Entry Class="AwwScrap" BlueprintSubtypeId="SolarCellToIngot" />
     <Entry Class="AwwScrap" BlueprintSubtypeId="SteelPlateToIngot" />
-  </BlueprintClassEntries>
+  </BlueprintClassEntries>-->
 
 </Definitions>

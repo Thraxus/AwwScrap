@@ -21,10 +21,17 @@ namespace AwwScrap
 		private float _productionTime;
 		private float _resourceCount;
 		private string _error;
+
 		public bool HasFalseCompatibleBlueprintClasses;
+		public bool SkitCompatible;
 
 		public readonly Dictionary<string, MyFixedPoint> ComponentPrerequisites = new Dictionary<string, MyFixedPoint>();
 		private readonly List<MyBlueprintClassDefinition> _compatibleBlueprints = new List<MyBlueprintClassDefinition>();
+
+		public MyBlueprintDefinition GetScrapBlueprint()
+		{
+			return _scrapBlueprint;
+		}
 
 		public MyPhysicalItemDefinition GetScrapDefinition()
 		{
@@ -165,7 +172,7 @@ namespace AwwScrap
 			HasFalseCompatibleBlueprintClasses = isFalseHit;
 			_compatibleBlueprints.Add(bcd);
 		}
-		
+
 		private void SetScrapAttributes()
 		{
 			if (_componentDefinition == null) return;

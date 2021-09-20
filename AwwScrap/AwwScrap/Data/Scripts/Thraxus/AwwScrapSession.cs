@@ -21,9 +21,12 @@ namespace AwwScrap
 		protected override MyUpdateOrder Schedule { get; } = MyUpdateOrder.NoUpdate;
 
 		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _blueprintClassOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
+		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _skitOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
 		private readonly CachingDictionary<string, ComponentMap> _componentMaps = new CachingDictionary<string, ComponentMap>();
 		private readonly StringBuilder _report = new StringBuilder();
 		private readonly MyPhysicalItemDefinition _genericScrap = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), "Scrap"));
+
+		private MyBlueprintClassDefinition _awwScrapBlueprintClassDefinition = MyDefinitionManager.Static.GetBlueprintClass("AwwScrap");
 
 		// Useless, remove after dev cycle, or bake into scrap output on mod init
 		private readonly Dictionary<string, MyPhysicalItemDefinition> _oreDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
@@ -99,6 +102,7 @@ namespace AwwScrap
 			ScrubBlacklistedScrapReturns();
 			//PrintRefineryBlueprints();
 			ScourRefineries();
+			ScourSkits();
 			//GetBlueprints(_refineryBlueprints);
 			//PrintBlueprintClassOutputs();
 			FindCompatibleBlueprints();
@@ -112,7 +116,8 @@ namespace AwwScrap
 			{
 				fcm.Value.RunScrapSetup();
 			}
-
+			FindCompatibleSkitBlueprints();
+			SetupSkits();
 			//SetBlueprintClasses();
 
 			ApplyBlueprintChanges();
@@ -247,6 +252,28 @@ namespace AwwScrap
 			}
 		}
 
+		private void ScourSkits()
+		{
+			foreach (var skit in MyDefinitionManager.Static.GetDefinitionsOfType<MySurvivalKitDefinition>())
+			{
+				if (!skit.Public) continue;
+				foreach (var bpc in skit.BlueprintClasses)
+				{
+					if (!bpc.Public) continue;
+					if (!_skitOutputs.ContainsKey(bpc))
+						_skitOutputs.Add(bpc, new List<string>());
+					foreach (var bpd in bpc)
+					{
+						if (!bpd.Public) continue;
+						foreach (var res in bpd.Results)
+						{
+							if (_skitOutputs[bpc].Contains(res.Id.SubtypeName)) continue;
+							_skitOutputs[bpc].Add(res.Id.SubtypeName);
+						}
+					}
+				}
+			}
+		}
 
 		private void FindCompatibleBlueprints()
 		{
@@ -270,6 +297,42 @@ namespace AwwScrap
 					}
 					if (falseHits <= maxCompatibility * 0.5f)
 						cm.Value.AddCompatibleRefineryBpc(bco.Key, true);
+				}
+			}
+		}
+
+		private void FindCompatibleSkitBlueprints()
+		{
+			foreach (var sko in _skitOutputs)
+			{
+				foreach (var cm in _componentMaps)
+				{
+					bool compatible = true;
+					foreach (var pre in cm.Value.ComponentPrerequisites)
+					{
+						if (!sko.Value.Contains(pre.Key))
+							compatible = false;
+					}
+
+					if (!compatible) continue;
+					MyBlueprintDefinition scrapDef = cm.Value.GetScrapBlueprint();
+					if (scrapDef == null) continue;
+					cm.Value.SkitCompatible = true;
+					_awwScrapBlueprintClassDefinition.AddBlueprint(scrapDef);
+				}
+			}
+		}
+
+		private void SetupSkits()
+		{
+			foreach (MyCubeBlockDefinition sKitDef in MyDefinitionManager.Static.GetAllDefinitions().OfType<MyCubeBlockDefinition>().Where(myCubeBlockDefinition => myCubeBlockDefinition is MySurvivalKitDefinition))
+			{
+				((MySurvivalKitDefinition)sKitDef).BlueprintClasses.Add(_awwScrapBlueprintClassDefinition);
+				foreach (var cm in _componentMaps)
+				{
+					if (!cm.Value.SkitCompatible) continue;
+					((MySurvivalKitDefinition)sKitDef).InputInventoryConstraint.Add(cm.Value.GetScrapDefinition().Id);
+					((MySurvivalKitDefinition)sKitDef).LoadPostProcess();
 				}
 			}
 		}
@@ -334,6 +397,8 @@ namespace AwwScrap
 				}
 			}
 		}
+
+
 
 		//private static void ScrubCubes()
 		//{
