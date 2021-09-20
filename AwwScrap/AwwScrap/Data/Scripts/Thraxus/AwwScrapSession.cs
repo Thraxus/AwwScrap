@@ -19,45 +19,57 @@ namespace AwwScrap
 	{
 		protected override string CompName { get; } = "AwwScrapCore";
 		protected override CompType Type { get; } = CompType.Server;
-		protected override MyUpdateOrder Schedule { get; } = MyUpdateOrder.BeforeSimulation;
+		protected override MyUpdateOrder Schedule { get; } = MyUpdateOrder.NoUpdate;
 
 		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _blueprintClassOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
+		private readonly Dictionary<string, MyBlueprintDefinitionBase> _assemblerBlueprints = new Dictionary<string, MyBlueprintDefinitionBase>();
+		private readonly Dictionary<string, MyBlueprintDefinitionBase> _refineryBlueprints = new Dictionary<string, MyBlueprintDefinitionBase>();
 		private readonly CachingDictionary<string, ComponentMap> _componentMaps = new CachingDictionary<string, ComponentMap>();
 		private readonly StringBuilder _report = new StringBuilder();
-		
+		MyPhysicalItemDefinition _genericScrap = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), "Scrap"));
+
 		protected override void EarlySetup()
 		{
-			Run();
+			//Run();
 			base.EarlySetup();
 		}
 		
 		public override void BeforeStart()
 		{
 			base.BeforeStart();
-			
-			Initialize();
+			Run();
+			SetDeconstructItems();
+			//Initialize();
 		}
 
 		protected override void LateSetup()
 		{
 			base.LateSetup();
-			
+
 			PrintFinalComponentMaps();
 			//PrintRefineryBlueprints();
 			//ValidateRefineries();
 			//PrintBlueprintClasses();
-			PrintScrapDefManagerOutput();
+			//PrintScrapDefManagerOutput();
+			//PrintPrerequisiteDefinitions();
+			//PrintBlueprints(_assemblerBlueprints);
+			//PrintBlueprints(_refineryBlueprints);
+			PrintProductionTimes();
 		}
 		
 		private void Run()
 		{
 			GrabInformation();
+			PrintLists();
 			//PrintAssemblerBlueprints();
 			ScourAssemblers();
+			//GetBlueprints(_assemblerBlueprints);
 			//PrintPreComponentMapsSimple();
 			EliminateCompoundComponents();
+			ScrubBlacklistedScrapReturns();
 			//PrintRefineryBlueprints();
 			ScourRefineries();
+			//GetBlueprints(_refineryBlueprints);
 			//PrintBlueprintClassOutputs();
 			FindCompatibleBlueprints();
 			//PrintFinalComponentMaps();
@@ -112,7 +124,7 @@ namespace AwwScrap
 
 				if(def.Id.TypeId == typeof(MyObjectBuilder_Component))
 				{
-					if (def.Id.SubtypeName == "ZoneChip") continue;
+					if (Constants.ComponentBlacklist.Contains(def.Id.SubtypeName)) continue;
 					_componentDictionary.Add(def.Id.SubtypeName, def);
 					var compMap = new ComponentMap();
 					compMap.SetComponentDefinition(def);
@@ -123,7 +135,7 @@ namespace AwwScrap
 				_remainingDictionary.Add(def.Id.SubtypeName, def);
 			}
 		}
-
+		
 		private void ScourAssemblers()
 		{
 			foreach (var assembler in MyDefinitionManager.Static.GetDefinitionsOfType<MyAssemblerDefinition>())
@@ -135,19 +147,30 @@ namespace AwwScrap
 					foreach (var bpd in bpc)
 					{
 						if (!bpd.Public) continue;
-						if (bpd.Results.Length == 1 && _componentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName))
-							_componentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
+						if (bpd.Id.SubtypeName.Contains("/"))
+							break;
+						if (bpd.Results.Length != 1 || !_componentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName))
+							continue;
+						_componentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
+						_componentMaps[bpd.Results[0].Id.SubtypeName].AddBlueprint(bpd);
 					}
 				}
 			}
 		}
 
+		private void PrintProductionTimes()
+		{
+			foreach (var map in _componentMaps)
+			{
+				WriteToLog("PPT", $"[{map.Value.GetProductionTime():00.00}] [{map.Value.GetAmountProduced():00.00}] {map.Key}", LogType.General);
+			}
+		}
+		
 		private void EliminateCompoundComponents()
 		{
 			try
 			{
 				var componentMapQueue = new Queue<ComponentMap>();
-
 				do
 				{
 					if (componentMapQueue.Count > 0)
@@ -173,7 +196,15 @@ namespace AwwScrap
 			}
 			catch (Exception e)
 			{
-				WriteToLog("IdentifyTaintedComponentMaps", $"Shit broke..... \n{e}", LogType.General);
+				WriteToLog("EliminateCompoundComponents", $"Shit broke..... \n{e}", LogType.General);
+			}
+		}
+
+		private void ScrubBlacklistedScrapReturns()
+		{
+			foreach (var cm in _componentMaps)
+			{
+				cm.Value.ScrubBlacklistedScrapReturns();
 			}
 		}
 
@@ -233,11 +264,34 @@ namespace AwwScrap
 		
 		private static void Initialize()
 		{
-			MyAPIGateway.Parallel.StartBackground(ScrubCubes);
+			//MyAPIGateway.Parallel.StartBackground(ScrubCubes);
 			//MyAPIGateway.Parallel.StartBackground(SetEfficiency);
 			//MyAPIGateway.Parallel.StartBackground(SetAttributes);
 		}
-		
+
+		private void SetDeconstructItems()
+		{
+			foreach (MyCubeBlockDefinition def in MyDefinitionManager.Static.GetAllDefinitions()
+				.OfType<MyCubeBlockDefinition>()
+				.Where(myCubeBlockDefinition => myCubeBlockDefinition?.Components != null))
+			{
+				if (Constants.IgnoredBlocks.Contains(def.Id.SubtypeName)) continue;
+				foreach (var comp in def.Components)
+				{
+					if (!comp.Definition.Public) continue;
+					if (Constants.DoNotScrap.Contains(comp.Definition.Id.SubtypeName)) continue;
+					if (_componentMaps.ContainsKey(comp.Definition.Id.SubtypeName))
+					{
+						comp.DeconstructItem = _componentMaps[comp.Definition.Id.SubtypeName].HasValidScrap()
+							? _componentMaps[comp.Definition.Id.SubtypeName].GetScrapDefinition()
+							: _genericScrap;
+						continue;
+					}
+					comp.DeconstructItem = _genericScrap;
+				}
+			}
+		}
+
 		private static void ScrubCubes()
 		{
 			try
@@ -292,8 +346,7 @@ namespace AwwScrap
 				MyLog.Default.WriteLine($"AwwScrap: SetSurvivalKitMenu - Boom!!! {e}");
 			}
 		}
-
-
+		
 		#region Debug Outputs
 
 		private void PrintBlueprintClassOutputs()

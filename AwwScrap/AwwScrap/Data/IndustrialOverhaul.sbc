@@ -3,14 +3,14 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
   <PhysicalItems>
-    
-    <!-- IO Copper Wire Scrap -->
+
+    <!-- AcidPowerCell -->
     <PhysicalItem>
       <Id>
         <TypeId>Ore</TypeId>
-        <SubtypeId>CopperWireScrap</SubtypeId>
+        <SubtypeId>AcidPowerCellScrap</SubtypeId>
       </Id>
-      <DisplayName>Copper Wire Scrap</DisplayName>
+      <DisplayName>AcidPowerCellScrap</DisplayName>
       <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
       <Size>
         <X>0.2</X>
@@ -23,20 +23,703 @@
       <PhysicalMaterial>Metal</PhysicalMaterial>
     </PhysicalItem>
 
+    <!-- AdvancedComputer -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>AdvancedComputerScrap</SubtypeId>
+      </Id>
+      <DisplayName>AdvancedComputerScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- AlkalinePowerCell -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>AlkalinePowerCellScrap</SubtypeId>
+      </Id>
+      <DisplayName>AlkalinePowerCellScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- ArmoredPlate -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>ArmoredPlateScrap</SubtypeId>
+      </Id>
+      <DisplayName>ArmoredPlateScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- ArmorGlass -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>ArmorGlassScrap</SubtypeId>
+      </Id>
+      <DisplayName>ArmorGlassScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- Asphalt -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>AsphaltScrap</SubtypeId>
+      </Id>
+      <DisplayName>AsphaltScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- Ceramic -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>CeramicScrap</SubtypeId>
+      </Id>
+      <DisplayName>CeramicScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- Concrete -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>ConcreteScrap</SubtypeId>
+      </Id>
+      <DisplayName>ConcreteScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- CopperWire -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>CopperWireScrap</SubtypeId>
+      </Id>
+      <DisplayName>CopperWireScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- Electromagnet -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>ElectromagnetScrap</SubtypeId>
+      </Id>
+      <DisplayName>ElectromagnetScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- Fabric -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>FabricScrap</SubtypeId>
+      </Id>
+      <DisplayName>FabricScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- GoldWire -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>GoldWireScrap</SubtypeId>
+      </Id>
+      <DisplayName>GoldWireScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- HeatingElement -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>HeatingElementScrap</SubtypeId>
+      </Id>
+      <DisplayName>HeatingElementScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- LaserEmitter -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>LaserEmitterScrap</SubtypeId>
+      </Id>
+      <DisplayName>LaserEmitterScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- Lightbulb -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>LightbulbScrap</SubtypeId>
+      </Id>
+      <DisplayName>LightbulbScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- Plastic -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>PlasticScrap</SubtypeId>
+      </Id>
+      <DisplayName>PlasticScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- QuantumComputer -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>QuantumComputerScrap</SubtypeId>
+      </Id>
+      <DisplayName>QuantumComputerScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- Rubber -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>RubberScrap</SubtypeId>
+      </Id>
+      <DisplayName>RubberScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- Thermocouple -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>ThermocoupleScrap</SubtypeId>
+      </Id>
+      <DisplayName>ThermocoupleScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
+
+    <!-- TitaniumPlate -->
+    <PhysicalItem>
+      <Id>
+        <TypeId>Ore</TypeId>
+        <SubtypeId>TitaniumPlateScrap</SubtypeId>
+      </Id>
+      <DisplayName>TitaniumPlateScrap</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Size>
+        <X>0.2</X>
+        <Y>0.2</Y>
+        <Z>0.1</Z>
+      </Size>
+      <Mass>1</Mass>
+      <Volume>0.254</Volume>
+      <Model>Models\Components\GenericScrap.mwm</Model>
+      <PhysicalMaterial>Metal</PhysicalMaterial>
+    </PhysicalItem>
   </PhysicalItems>
 
   <Blueprints>
 
-    <!-- IO Copper Wire Scrap -->
+    <!-- AcidPowerCell -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>AcidPowerCellScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>AcidPowerCellScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="AcidPowerCellScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- AdvancedComputer -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>AdvancedComputerScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>AdvancedComputerScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="AcidPowerCellScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- AlkalinePowerCell -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>AlkalinePowerCellScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>AlkalinePowerCellScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="AlkalinePowerCellScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- ArmoredPlate -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ArmoredPlateScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>ArmoredPlateScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ArmoredPlateScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- ArmorGlass -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ArmorGlassScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>ArmorGlassScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ArmorGlassScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Asphalt -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>AsphaltScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>ArmorGlassScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="AsphaltScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Ceramic -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>CeramicScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>CeramicScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="CeramicScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Concrete -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ConcreteScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>ConcreteScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ConcreteScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- CopperWire -->
     <Blueprint>
       <Id>
         <TypeId>BlueprintDefinition</TypeId>
         <SubtypeId>CopperWireScrapToIngot</SubtypeId>
       </Id>
-      <DisplayName>Bulletproof Glass Scrap</DisplayName>
+      <DisplayName>CopperWireScrapToIngot</DisplayName>
       <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
       <Prerequisites>
         <Item Amount="1" TypeId="Ore" SubtypeId="CopperWireScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Electromagnet -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ElectromagnetScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>ElectromagnetScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ElectromagnetScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Fabric -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>FabricScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>FabricScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="FabricScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- GoldWire -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>GoldWireScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>GoldWireScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="GoldWireScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- HeatingElement -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>HeatingElementScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>HeatingElementScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="HeatingElementScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- LaserEmitter -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>LaserEmitterScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>LaserEmitterScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="LaserEmitterScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Lightbulb -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>LightbulbScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>LightbulbScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="LightbulbScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Plastic -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>PlasticScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>PlasticScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="PlasticScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- QuantumComputer -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>QuantumComputerScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>QuantumComputerScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="QuantumComputerScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Rubber -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>RubberScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>RubberScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="RubberScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- Thermocouple -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>ThermocoupleScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>ThermocoupleScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="ThermocoupleScrap" />
+      </Prerequisites>
+      <Results>
+        <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
+      </Results>
+      <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+    </Blueprint>
+
+    <!-- TitaniumPlate -->
+    <Blueprint>
+      <Id>
+        <TypeId>BlueprintDefinition</TypeId>
+        <SubtypeId>TitaniumPlateScrapToIngot</SubtypeId>
+      </Id>
+      <DisplayName>TitaniumPlateScrapToIngot</DisplayName>
+      <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+      <Prerequisites>
+        <Item Amount="1" TypeId="Ore" SubtypeId="TitaniumPlateScrap" />
       </Prerequisites>
       <Results>
         <Item Amount="6.75" TypeId="Ingot" SubtypeId="Silicon" />
