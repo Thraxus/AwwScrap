@@ -151,18 +151,49 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\AwwScrapSession.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\BaseClasses\BaseGameLogicComp.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\BaseClasses\BaseLoggingClass.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\BaseClasses\BaseSessionComp.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\CommonCore.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Enums\CompType.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Enums\FactionRelationship.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Enums\LogType.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Factions\DataTypes\Enums\FactionTypes.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Factions\Models\FactionDictionaries.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Factions\Models\Settings.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Interfaces\ICommon.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Models\BufferedBinaryReader.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Models\FastQueue.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Models\GenericObjectPool.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Reporting\BasicGameInformation.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\CommonSettings.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\FileHandlers\Load.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\FileHandlers\Save.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Statics\Statics.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Statics\ThrusterCalculations.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Statics\VectorManipulations.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Logging\Log.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Logging\StaticLog.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Networking\ChatHandler.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Networking\MessageBase.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Networking\Messages\ExampleMessage.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Networking\Messaging.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\OnScreenDisplay\QuestlogDetail.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\OnScreenDisplay\QuestScreen.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Profiler.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\ComponentMapBackup.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\ComponentMap.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Helpers\Definitions.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\Constants.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\ScrapAttributes.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\Statics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AwwScrap\Data\DefenseShieldsComponents.sbc" />
-    <None Include="AwwScrap\Data\BetterScrapRecyclerSupport.sbc" />
-    <None Include="AwwScrap\Data\SplitsieQoLRefineryChange.sbc" />
-    <None Include="AwwScrap\Data\EweCompatibility.sbc" />
-    <None Include="AwwScrap\Data\ModComponentSupport.sbc" />
+    <None Include="AwwScrap\Data\DefenseShields.sbc" />
+    <None Include="AwwScrap\Data\IndustrialOverhaul.sbc" />
     <None Include="AwwScrap\Data\VanillaComponents.sbc" />
+    <None Include="AwwScrap\Models\Components\GenericScrap.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap1.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap10.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap11.mwm" />
@@ -197,6 +228,7 @@
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\power_cell.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\radio_communication_components.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\reactor_components.dds" />
+    <Content Include="AwwScrap\Textures\GUI\Icons\Components\generic_scrap.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\small_steel_tube.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\solar_cell.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\steel_plate.dds" />

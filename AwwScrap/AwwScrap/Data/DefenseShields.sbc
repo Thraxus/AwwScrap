@@ -45,11 +45,5 @@
 		</Blueprint>
 
 	</Blueprints>
-
-	<BlueprintClassEntries>
-
-    <Entry Class="Ingots" BlueprintSubtypeId="ShieldComponentToIngot" />
-
-  </BlueprintClassEntries>
 	
 </Definitions>
