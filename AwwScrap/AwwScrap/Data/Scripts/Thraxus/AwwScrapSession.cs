@@ -16,7 +16,7 @@ namespace AwwScrap
 	public class AwwScrapCore : BaseSessionComp
 	{
 		protected override string CompName { get; } = "AwwScrapCore";
-		protected override CompType Type { get; } = CompType.Server;
+		protected override CompType Type { get; } = CompType.Both;
 		protected override MyUpdateOrder Schedule { get; } = MyUpdateOrder.NoUpdate;
 
 		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _blueprintClassOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
