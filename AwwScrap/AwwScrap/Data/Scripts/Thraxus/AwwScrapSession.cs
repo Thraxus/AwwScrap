@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AwwScrap.Common.BaseClasses;
 using AwwScrap.Common.Enums;
 using Sandbox.Definitions;
@@ -29,9 +30,24 @@ namespace AwwScrap
 		protected override void EarlySetup()
 		{
 			base.EarlySetup();
+			//Run();
+			//SetDeconstructItems();
+			//HideBadScrap();
+		}
+
+		protected override void LateSetup()
+		{
+			base.LateSetup();
 			Run();
 			SetDeconstructItems();
 			HideBadScrap();
+			StringBuilder sb = new StringBuilder();
+			sb.AppendLine();
+			foreach (var cm in _componentMaps)
+			{
+				sb.AppendLine(cm.Value.PrintBasicInformation());
+			}
+			WriteToLog("LateSetup", sb.ToString(), LogType.General);
 		}
 
 		private void Run()

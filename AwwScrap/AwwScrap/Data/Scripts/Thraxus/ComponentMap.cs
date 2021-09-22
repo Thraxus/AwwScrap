@@ -26,6 +26,27 @@ namespace AwwScrap
 		public readonly Dictionary<string, MyFixedPoint> ComponentPrerequisites = new Dictionary<string, MyFixedPoint>();
 		private readonly List<MyBlueprintClassDefinition> _compatibleBlueprints = new List<MyBlueprintClassDefinition>();
 
+		public string PrintBasicInformation()
+		{
+			if (!HasValidScrap()) return $"No valid scrap: {_componentDefinition.Id.SubtypeName}";
+			StringBuilder sb = new StringBuilder();
+			sb.AppendFormat("{0,-2}{1} | {2}", " ", _componentDefinition.Id.SubtypeName, _scrapDefinition.Id.SubtypeName);
+			sb.AppendLine();
+			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:0000}s] ", " ", SkitCompatible ? "T" : "F", HasFalseCompatibleBlueprintClasses ? "T" : "F", (float)_amountProduced, _productionTime);
+			foreach (var cpr in ComponentPrerequisites)
+			{
+				sb.AppendFormat("[{0:00.00}] {1} ", (float)cpr.Value, cpr.Key);
+			}
+			sb.AppendLine();
+			sb.AppendFormat("{0,-4}", " ");
+			foreach (var cbp in _compatibleBlueprints)
+			{
+				sb.AppendFormat("[{0}] {1} ", cbp.ContainsBlueprint(_scrapBlueprint) ? "T" : "F", cbp.Id.SubtypeName);
+			}
+			sb.AppendLine();
+			return sb.ToString();
+		}
+
 		public MyBlueprintDefinition GetScrapBlueprint()
 		{
 			return _scrapBlueprint;
