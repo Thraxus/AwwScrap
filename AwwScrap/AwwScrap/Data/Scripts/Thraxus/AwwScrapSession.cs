@@ -30,17 +30,17 @@ namespace AwwScrap
 		protected override void EarlySetup()
 		{
 			base.EarlySetup();
-			//Run();
-			//SetDeconstructItems();
-			//HideBadScrap();
+			Run();
+			SetDeconstructItems();
+			HideBadScrap();
 		}
 
 		protected override void LateSetup()
 		{
 			base.LateSetup();
-			Run();
-			SetDeconstructItems();
-			HideBadScrap();
+			//Run();
+			//SetDeconstructItems();
+			//HideBadScrap();
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine();
 			foreach (var cm in _componentMaps)

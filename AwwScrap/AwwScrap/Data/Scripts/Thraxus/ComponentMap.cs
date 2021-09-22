@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using AwwScrap.Support;
 using Sandbox.Definitions;
@@ -163,8 +162,8 @@ namespace AwwScrap
 		{
 			if (_componentDefinition == null) return;
 			if (_scrapDefinition == null) return;
-			_scrapDefinition.Mass = _componentDefinition.Mass * Constants.ScrapScalar;
-			_scrapDefinition.Volume = _componentDefinition.Volume * Constants.ScrapScalar;
+			_scrapDefinition.Mass = _componentDefinition.Mass * Constants.ScrapMassScalar;
+			_scrapDefinition.Volume = _componentDefinition.Volume * Constants.ScrapVolumeScalar;
 			_scrapDefinition.MaxStackAmount = MyFixedPoint.MaxValue;
 			_scrapDefinition.DisplayNameString = _componentDefinition.DisplayNameText + " " + Constants.ScrapSuffix;
 		}

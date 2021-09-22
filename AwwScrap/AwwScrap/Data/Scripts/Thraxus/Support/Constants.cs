@@ -8,6 +8,8 @@ namespace AwwScrap.Support
 		public const string ScrapSuffix = "Scrap";
 		public const string ScrapBpSuffix = "ToIngot";
 		public const float ScrapScalar = (BaseAwwScrapScalar / 2);
+		public const float ScrapMassScalar = 0.80f;
+		public const float ScrapVolumeScalar = 0.70f;
 		public const float ScrapProductionTimeScalar = 0.75f;
 		public const float BaseAwwScrapScalar = 0.9f;
 		public static readonly float AssemblerMultiplier = MyAPIGateway.Session.SessionSettings.AssemblerEfficiencyMultiplier;
