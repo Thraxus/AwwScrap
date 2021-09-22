@@ -45,7 +45,7 @@ namespace AwwScrap
 			sb.AppendLine();
 			foreach (var cm in _componentMaps)
 			{
-				sb.AppendLine(cm.Value.PrintBasicInformation());
+				sb.AppendLine(cm.Value.ToString());
 			}
 			WriteToLog("LateSetup", sb.ToString(), LogType.General);
 		}

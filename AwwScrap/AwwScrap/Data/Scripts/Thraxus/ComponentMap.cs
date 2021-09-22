@@ -25,35 +25,9 @@ namespace AwwScrap
 		public readonly Dictionary<string, MyFixedPoint> ComponentPrerequisites = new Dictionary<string, MyFixedPoint>();
 		private readonly List<MyBlueprintClassDefinition> _compatibleBlueprints = new List<MyBlueprintClassDefinition>();
 
-		public string PrintBasicInformation()
-		{
-			if (!HasValidScrap()) return $"No valid scrap: {_componentDefinition.Id.SubtypeName}";
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("{0,-2}{1} | {2}", " ", _componentDefinition.Id.SubtypeName, _scrapDefinition.Id.SubtypeName);
-			sb.AppendLine();
-			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:0000}s] ", " ", SkitCompatible ? "T" : "F", HasFalseCompatibleBlueprintClasses ? "T" : "F", (float)_amountProduced, _productionTime);
-			foreach (var cpr in ComponentPrerequisites)
-			{
-				sb.AppendFormat("[{0:00.00}] {1} ", (float)cpr.Value, cpr.Key);
-			}
-			sb.AppendLine();
-			sb.AppendFormat("{0,-4}", " ");
-			foreach (var cbp in _compatibleBlueprints)
-			{
-				sb.AppendFormat("[{0}] {1} ", cbp.ContainsBlueprint(_scrapBlueprint) ? "T" : "F", cbp.Id.SubtypeName);
-			}
-			sb.AppendLine();
-			return sb.ToString();
-		}
-
 		public MyBlueprintDefinition GetScrapBlueprint()
 		{
 			return _scrapBlueprint;
-		}
-
-		public void SetScrapPrivate()
-		{
-			_scrapDefinition.Public = false;
 		}
 
 		public MyPhysicalItemDefinition GetScrapDefinition()
@@ -230,78 +204,37 @@ namespace AwwScrap
 			}
 		}
 
-		#region Unused / Debug Only
-
-		public string PrintCompatibleBlueprintClasses()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("{0,-1}[{1}][{2:00}] {3}", " ", HasFalseCompatibleBlueprintClasses ? "T" : "F", _compatibleBlueprints.Count, _componentDefinition.Id.SubtypeName);
-			foreach (var cbp in _compatibleBlueprints)
-			{
-				sb.AppendFormat("{0,-1}[{1}]", " ", cbp.Id.SubtypeName);
-			}
-			return sb.ToString();
-		}
-
-		public string PrintComponentPrerequisites()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("{0,-1}[{1:00}] {2}", " ", ComponentPrerequisites.Count, _componentDefinition.Id.SubtypeName);
-			foreach (var cpr in ComponentPrerequisites)
-			{
-				sb.AppendFormat("{0,-1}[{1}]", " ", cpr.Key);
-			}
-			return sb.ToString();
-		}
-
-
 		public override string ToString()
 		{
+			if (!HasValidScrap()) return $"No valid scrap: {_componentDefinition.Id.SubtypeName}";
 			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("{0,-1}[{1}] [{2}]", " ", ComponentPrerequisites.Count, _compatibleBlueprints.Count);
+			sb.AppendFormat("{0,-2}{1} | {2} | {3}", " ", _componentDefinition.Id.SubtypeName, _scrapDefinition.Id.SubtypeName, _scrapBlueprint.Id.SubtypeName);
 			sb.AppendLine();
-			sb.AppendFormat("{0,-2}Item: {1}", " ", _componentDefinition?.Id.SubtypeName);
+			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:00.00}s][{5:00.0000}][{6:00.0000}] | ", " ", SkitCompatible ? "T" : "F", HasFalseCompatibleBlueprintClasses ? "T" : "F", (float)_amountProduced, _productionTime, _scrapDefinition.Mass, _scrapDefinition.Volume);
+			foreach (var cpr in ComponentPrerequisites)
+			{
+				sb.AppendFormat("[{0:00.00}] {1} ", (float)cpr.Value, cpr.Key);
+			}
 			sb.AppendLine();
 			sb.AppendFormat("{0,-4}", " ");
-			if (ComponentPrerequisites.Count <= 0) return sb.ToString();
-			foreach (var pr in ComponentPrerequisites)
+			foreach (var sbp in _scrapBlueprint.Prerequisites)
 			{
-				sb.AppendFormat(" [{0:00.00}] {1}", (float)pr.Value, pr.Key);
+				sb.AppendFormat("[P][{0:00.00}] {1} ", (float)sbp.Amount, sbp.Id.SubtypeName);
 			}
 			sb.AppendLine();
-			sb.AppendFormat("{0,-2}Scrap: [{1}] {2}", " ", _scrapDefinition == null ? "N" : _scrapDefinition.IsOre ? "O" : _scrapDefinition.IsIngot ? "I" : "Z", _scrapDefinition == null ? "No Scrap Identified" : _scrapDefinition.Id.SubtypeName);
+			sb.AppendFormat("{0,-4}", " ");
+			foreach (var sbr in _scrapBlueprint.Results)
+			{
+				sb.AppendFormat("[R][{0:00.00}] {1} ", (float)sbr.Amount, sbr.Id.SubtypeName);
+			}
 			sb.AppendLine();
-			sb.AppendFormat("{0,-2}ScrapBp: {1}", " ", _scrapBlueprint == null ? "No ScrapBp created" : _scrapBlueprint.Id.SubtypeName);
+			sb.AppendFormat("{0,-4}", " ");
+			foreach (var cbp in _compatibleBlueprints)
+			{
+				sb.AppendFormat("[{0}] {1} ", cbp.ContainsBlueprint(_scrapBlueprint) ? "T" : "F", cbp.Id.SubtypeName);
+			}
 			sb.AppendLine();
-			if (_scrapBlueprint != null)
-			{
-				sb.AppendFormat("{0,-4}Prerequisites:", " ");
-				foreach (var pre in _scrapBlueprint.Prerequisites)
-				{
-					sb.AppendFormat(" [{0}] {1}", pre.Amount, pre.Id.SubtypeName);
-				}
-				sb.AppendLine();
-				sb.AppendFormat("{0,-4}Results:", " ");
-				foreach (var res in _scrapBlueprint.Results)
-				{
-					sb.AppendFormat(" [{0}] {1}", res.Amount, res.Id.SubtypeName);
-				}
-				sb.AppendLine();
-			}
-			sb.AppendFormat("{0,-4}Compatible BPCs:", " ");
-			if (_compatibleBlueprints.Count <= 0)
-			{
-				sb.AppendFormat(" No Compatible BPCs identified.");
-				return sb.ToString();
-			}
-			foreach (var cb in _compatibleBlueprints)
-			{
-				sb.AppendFormat(" [{0}]", cb.Id.SubtypeId);
-			}
-			
 			return sb.ToString();
 		}
-
-		#endregion
 	}
 }
