@@ -147,8 +147,8 @@ namespace AwwScrap
 			if (_scrapDefinition == null) return;
 			if (_compatibleBlueprints.Count <= 0) return;
 			
-			_scrapBlueprint = (
-				MyBlueprintDefinition)MyDefinitionManager.Static.GetBlueprintDefinition(
+			_scrapBlueprint = 
+				(MyBlueprintDefinition)MyDefinitionManager.Static.GetBlueprintDefinition(
 				new MyDefinitionId(typeof(MyObjectBuilder_BlueprintDefinition), 
 					_componentDefinition.Id.SubtypeName + Constants.ScrapSuffix + Constants.ScrapBpSuffix));
 

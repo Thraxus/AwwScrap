@@ -804,10 +804,22 @@
     <Class>
       <Id>
         <TypeId>BlueprintClassDefinition</TypeId>
-        <SubtypeId>AwwScrap</SubtypeId>
+        <SubtypeId>AwwScrapSkit</SubtypeId>
       </Id>
       <DisplayName>Scrap Recycling</DisplayName>
       <Description>Scrap Recycling</Description>
+      <Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
+      <HighlightIcon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</HighlightIcon>
+      <InputConstraintIcon>Textures\GUI\Icons\filter_ore.dds</InputConstraintIcon>
+      <OutputConstraintIcon>Textures\GUI\Icons\filter_ingot.dds</OutputConstraintIcon>
+    </Class>
+    <Class>
+      <Id>
+        <TypeId>BlueprintClassDefinition</TypeId>
+        <SubtypeId>AwwScrapRecycling</SubtypeId>
+      </Id>
+      <DisplayName>AwwScrapRecycling</DisplayName>
+      <Description>AwwScrapRecycling</Description>
       <Icon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</Icon>
       <HighlightIcon>Textures\GUI\Icons\component\ScrapMetalComponent.dds</HighlightIcon>
       <InputConstraintIcon>Textures\GUI\Icons\filter_ore.dds</InputConstraintIcon>

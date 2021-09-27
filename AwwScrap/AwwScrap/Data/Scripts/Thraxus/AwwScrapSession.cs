@@ -23,16 +23,23 @@ namespace AwwScrap
 		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _skitOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
 		private readonly CachingDictionary<string, ComponentMap> _componentMaps = new CachingDictionary<string, ComponentMap>();
 		private readonly MyPhysicalItemDefinition _genericScrap = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), "Scrap"));
-		private readonly MyBlueprintClassDefinition _awwScrapBlueprintClassDefinition = MyDefinitionManager.Static.GetBlueprintClass("AwwScrap");
-
+		private readonly MyBlueprintClassDefinition _awwScrapSkitBlueprintClassDefinition = MyDefinitionManager.Static.GetBlueprintClass(Constants.AwwScrapSkitClassName);
+		private readonly MyBlueprintClassDefinition _awwScrapAllScrapBlueprintClassDefinition = MyDefinitionManager.Static.GetBlueprintClass(Constants.AwwScrapAllScrapClassName);
+		private MyRefineryDefinition _awwScrapRefineryDefinition;
 		private readonly Dictionary<string, MyPhysicalItemDefinition> _scrapDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
+
+		protected override void SuperEarlySetup()
+		{
+			base.SuperEarlySetup();
+			Run();
+			SetDeconstructItems();
+			HideBadScrap();
+		}
 
 		protected override void EarlySetup()
 		{
 			base.EarlySetup();
-			Run();
-			SetDeconstructItems();
-			HideBadScrap();
+			
 		}
 
 		protected override void LateSetup()
@@ -48,6 +55,28 @@ namespace AwwScrap
 				sb.AppendLine(cm.Value.ToString());
 			}
 			WriteToLog("LateSetup", sb.ToString(), LogType.General);
+			PrintAwwScrapRecyclerStuffs();
+		}
+
+		private void PrintAwwScrapRecyclerStuffs()
+		{
+			WriteToLog(nameof(LateSetup), $"{_awwScrapRefineryDefinition.BlueprintClasses.Count}", LogType.General);
+			foreach (var bpc in _awwScrapRefineryDefinition.BlueprintClasses)
+			{
+				WriteToLog(nameof(LateSetup), $"", LogType.General);
+				WriteToLog(nameof(LateSetup), $"{bpc.Id.SubtypeName}", LogType.General);
+				foreach (var bp in bpc)
+				{
+					foreach (var pre in bp.Prerequisites)
+					{
+						WriteToLog(nameof(LateSetup), $"[P] [{(float)pre.Amount:00.00}] {pre.Id.SubtypeName}", LogType.General);
+					}
+					foreach (var res in bp.Results)
+					{
+						WriteToLog(nameof(LateSetup), $"[R] [{(float)res.Amount:00.00}] {res.Id.SubtypeName}", LogType.General);
+					}
+				}
+			}
 		}
 
 		private void Run()
@@ -65,6 +94,7 @@ namespace AwwScrap
 			}
 			FindCompatibleSkitBlueprints();
 			SetupSkits();
+			SetupAwwScrapRecycler();
 			ApplyBlueprintChanges();
 		}
 
@@ -151,6 +181,12 @@ namespace AwwScrap
 			foreach (var refinery in MyDefinitionManager.Static.GetDefinitionsOfType<MyRefineryDefinition>())
 			{
 				if (!refinery.Public) continue;
+				if (refinery.Id.SubtypeName == Constants.AwwScrapRecyclerSubtypeName)
+				{
+					_awwScrapRefineryDefinition = refinery;
+					WriteToLog(nameof(ScourRefineries), "Found the _awwScrapRefineryDefinition ...", LogType.General);
+					continue;
+				}
 				foreach (var bpc in refinery.BlueprintClasses)
 				{
 					if (!bpc.Public) continue;
@@ -235,7 +271,7 @@ namespace AwwScrap
 					MyBlueprintDefinition scrapDef = cm.Value.GetScrapBlueprint();
 					if (scrapDef == null) continue;
 					cm.Value.SkitCompatible = true;
-					_awwScrapBlueprintClassDefinition.AddBlueprint(scrapDef);
+					_awwScrapSkitBlueprintClassDefinition.AddBlueprint(scrapDef);
 				}
 			}
 		}
@@ -244,7 +280,7 @@ namespace AwwScrap
 		{
 			foreach (MyCubeBlockDefinition sKitDef in MyDefinitionManager.Static.GetAllDefinitions().OfType<MyCubeBlockDefinition>().Where(myCubeBlockDefinition => myCubeBlockDefinition is MySurvivalKitDefinition))
 			{
-				((MySurvivalKitDefinition)sKitDef).BlueprintClasses.Add(_awwScrapBlueprintClassDefinition);
+				((MySurvivalKitDefinition)sKitDef).BlueprintClasses.Add(_awwScrapSkitBlueprintClassDefinition);
 				foreach (var cm in _componentMaps)
 				{
 					if (!cm.Value.SkitCompatible) continue;
@@ -252,6 +288,20 @@ namespace AwwScrap
 					((MySurvivalKitDefinition)sKitDef).LoadPostProcess();
 				}
 			}
+		}
+
+		private void SetupAwwScrapRecycler()
+		{
+			if (_awwScrapRefineryDefinition == null) return;
+			foreach (var cm in _componentMaps)
+			{
+				if (!cm.Value.HasValidScrap()) continue;
+				_awwScrapAllScrapBlueprintClassDefinition.AddBlueprint(cm.Value.GetScrapBlueprint());
+				WriteToLog(nameof(ScourRefineries), $"Added: {cm.Value.GetScrapBlueprint().Id.SubtypeName}", LogType.General);
+			}
+			_awwScrapRefineryDefinition.BlueprintClasses.Clear();
+			_awwScrapRefineryDefinition.BlueprintClasses.Add(_awwScrapAllScrapBlueprintClassDefinition);
+			_awwScrapRefineryDefinition.LoadPostProcess();
 		}
 
 		private void ApplyBlueprintChanges()

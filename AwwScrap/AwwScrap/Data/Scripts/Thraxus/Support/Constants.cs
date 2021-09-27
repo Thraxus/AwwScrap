@@ -7,6 +7,9 @@ namespace AwwScrap.Support
 	{
 		public const string ScrapSuffix = "Scrap";
 		public const string ScrapBpSuffix = "ToIngot";
+		public const string AwwScrapSkitClassName = "AwwScrapSkit";
+		public const string AwwScrapAllScrapClassName = "AwwScrapRecycling";
+		public const string AwwScrapRecyclerSubtypeName = "AwwScrapRecycler";
 		public const float ScrapScalar = (BaseAwwScrapScalar / 2);
 		public const float ScrapMassScalar = 0.80f;
 		public const float ScrapVolumeScalar = 0.70f;
