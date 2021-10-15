@@ -56,29 +56,29 @@ namespace AwwScrap
 				sb.AppendLine(cm.Value.ToString());
 			}
 			WriteToLog("LateSetup", sb.ToString(), LogType.General);
-			PrintAwwScrapRecyclerStuffs();
+			//PrintAwwScrapRecyclerStuffs();
 		}
 
-		private void PrintAwwScrapRecyclerStuffs()
-		{
-			WriteToLog(nameof(LateSetup), $"{_awwScrapRefineryDefinition.BlueprintClasses.Count}", LogType.General);
-			foreach (var bpc in _awwScrapRefineryDefinition.BlueprintClasses)
-			{
-				WriteToLog(nameof(LateSetup), $"", LogType.General);
-				WriteToLog(nameof(LateSetup), $"{bpc.Id.SubtypeName}", LogType.General);
-				foreach (var bp in bpc)
-				{
-					foreach (var pre in bp.Prerequisites)
-					{
-						WriteToLog(nameof(LateSetup), $"[P] [{(float)pre.Amount:00.00}] {pre.Id.SubtypeName}", LogType.General);
-					}
-					foreach (var res in bp.Results)
-					{
-						WriteToLog(nameof(LateSetup), $"[R] [{(float)res.Amount:00.00}] {res.Id.SubtypeName}", LogType.General);
-					}
-				}
-			}
-		}
+		//private void PrintAwwScrapRecyclerStuffs()
+		//{
+		//	WriteToLog(nameof(LateSetup), $"{_awwScrapRefineryDefinition.BlueprintClasses.Count}", LogType.General);
+		//	foreach (var bpc in _awwScrapRefineryDefinition.BlueprintClasses)
+		//	{
+		//		WriteToLog(nameof(LateSetup), $"", LogType.General);
+		//		WriteToLog(nameof(LateSetup), $"{bpc.Id.SubtypeName}", LogType.General);
+		//		foreach (var bp in bpc)
+		//		{
+		//			foreach (var pre in bp.Prerequisites)
+		//			{
+		//				WriteToLog(nameof(LateSetup), $"[P] [{(float)pre.Amount:00.00}] {pre.Id.SubtypeName}", LogType.General);
+		//			}
+		//			foreach (var res in bp.Results)
+		//			{
+		//				WriteToLog(nameof(LateSetup), $"[R] [{(float)res.Amount:00.00}] {res.Id.SubtypeName}", LogType.General);
+		//			}
+		//		}
+		//	}
+		//}
 
 		private void Run()
 		{
