@@ -50,6 +50,7 @@ namespace AwwScrap
 			//HideBadScrap();
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine();
+			sb.AppendLine();
 			foreach (var cm in _componentMaps)
 			{
 				sb.AppendLine(cm.Value.ToString());
@@ -232,6 +233,7 @@ namespace AwwScrap
 		{
 			foreach (var bco in _blueprintClassOutputs)
 			{
+				if (Constants.IgnoredBlueprintClasses.Contains(bco.Key.Id.SubtypeName)) continue;
 				foreach (var cm in _componentMaps)
 				{
 					bool compatible = true;

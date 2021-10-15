@@ -191,6 +191,7 @@
   <ItemGroup>
     <None Include="AwwScrap\Data\DefenseShields.sbc" />
     <None Include="AwwScrap\Data\IndustrialOverhaul.sbc" />
+    <None Include="AwwScrap\Data\LWTS.sbc" />
     <None Include="AwwScrap\Data\VanillaComponents.sbc" />
     <None Include="AwwScrap\Models\Components\GenericScrap.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap1.mwm" />

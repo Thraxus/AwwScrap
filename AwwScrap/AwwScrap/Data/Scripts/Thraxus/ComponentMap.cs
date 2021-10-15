@@ -152,6 +152,8 @@ namespace AwwScrap
 				new MyDefinitionId(typeof(MyObjectBuilder_BlueprintDefinition), 
 					_componentDefinition.Id.SubtypeName + Constants.ScrapSuffix + Constants.ScrapBpSuffix));
 
+			if (_scrapBlueprint == null) return;
+
 			var items = new List<MyBlueprintDefinitionBase.Item>();
 			foreach (var cpr in ComponentPrerequisites)
 			{
@@ -206,7 +208,7 @@ namespace AwwScrap
 
 		public override string ToString()
 		{
-			if (!HasValidScrap()) return $"No valid scrap: {_componentDefinition.Id.SubtypeName}";
+			if (!HasValidScrap()) return $"  No valid scrap: {_componentDefinition.Id.SubtypeName}\n";
 			StringBuilder sb = new StringBuilder();
 			sb.AppendFormat("{0,-2}{1} | {2} | {3}", " ", _componentDefinition.Id.SubtypeName, _scrapDefinition.Id.SubtypeName, _scrapBlueprint.Id.SubtypeName);
 			sb.AppendLine();

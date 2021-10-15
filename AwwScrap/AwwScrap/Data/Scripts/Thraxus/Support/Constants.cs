@@ -31,7 +31,13 @@ namespace AwwScrap.Support
 		{
 			"Tech2x",
 			"Tech4x",
-			"Tech8x"
+			"Tech8x",
+			"MotorT6",
+			"MotorT7",
+			"ThrustT6",
+			"ThrustT7",
+			"MetalPlate_CandyCane",
+			"MetalPlate_GoldCoat"
 		};
 
 		public static readonly List<string> IgnoredBlocks = new List<string>
@@ -39,6 +45,15 @@ namespace AwwScrap.Support
 			"StorageShelf1",
 			"StorageShelf2",
 			"StorageShelf3"
+		};
+
+		public static readonly List<string> IgnoredBlueprintClasses = new List<string>
+		{
+			"IngotsTitanium_LWTS",
+			"LWTSX_Mythium",
+			"LWTSX_Legendarium",
+			"LWTSX_Rarium",
+			"LWTSX_Lead"
 		};
 	}
 }

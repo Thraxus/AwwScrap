@@ -11,7 +11,7 @@ namespace AwwScrap.Common.Utilities.Tools.Logging
 
 		private TextWriter TextWriter { get; set; }
 
-		private static string TimeStamp => DateTime.Now.ToString("MMddyy-HH:mm:ss:ffff");
+		private static string TimeStamp => DateTime.Now.ToString("ddMMMyy_HH:mm:ss:ffff");
 
 		private const int DefaultIndent = 4;
 
