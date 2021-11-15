@@ -150,7 +150,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AwwScrap\Data\Scripts\Thraxus\AwwScrapSession.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\AwwScrapCore.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\BaseClasses\BaseGameLogicComp.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\BaseClasses\BaseLoggingClass.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\BaseClasses\BaseSessionComp.cs" />
@@ -189,10 +189,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AwwScrap\Data\DefenseShields.sbc" />
-    <None Include="AwwScrap\Data\IndustrialOverhaul.sbc" />
-    <None Include="AwwScrap\Data\LWTS.sbc" />
     <None Include="AwwScrap\Data\VanillaComponents.sbc" />
+    <None Include="AwwScrap\Data\EnergyShields_484504816.sbc" />
+    <None Include="AwwScrap\Data\DefenseShields_1365616918.sbc" />
+    <None Include="AwwScrap\Data\IndustrialOverhaul_2344068716.sbc" />
+    <None Include="AwwScrap\Data\LWTS_691529112.sbc" />
+    <None Include="AwwScrap\Data\AwwScrapBlueprintClass.sbc" />
     <None Include="AwwScrap\Models\Components\GenericScrap.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap1.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap10.mwm" />
@@ -229,6 +231,7 @@
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\radio_communication_components.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\reactor_components.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\generic_scrap.dds" />
+    <Content Include="AwwScrap\Textures\GUI\Icons\Components\ScrapOverlay.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\small_steel_tube.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\solar_cell.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\steel_plate.dds" />

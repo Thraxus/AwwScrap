@@ -37,7 +37,9 @@ namespace AwwScrap.Support
 			"ThrustT6",
 			"ThrustT7",
 			"MetalPlate_CandyCane",
-			"MetalPlate_GoldCoat"
+			"MetalPlate_GoldCoat",
+			"WoodPlank",
+			"WoodLogs"
 		};
 
 		public static readonly List<string> IgnoredBlocks = new List<string>

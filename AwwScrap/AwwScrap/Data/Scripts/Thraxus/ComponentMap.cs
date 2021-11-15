@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using AwwScrap.Support;
 using Sandbox.Definitions;
 using VRage;
 using VRage.Collections;
 using VRage.Game;
+using VRage.Utils;
 
 namespace AwwScrap
 {
@@ -24,6 +26,14 @@ namespace AwwScrap
 
 		public readonly Dictionary<string, MyFixedPoint> ComponentPrerequisites = new Dictionary<string, MyFixedPoint>();
 		private readonly List<MyBlueprintClassDefinition> _compatibleBlueprints = new List<MyBlueprintClassDefinition>();
+
+		private const string GenericScrapOverlay = "\\Textures\\GUI\\Icons\\Components\\ScrapOverlay.dds";
+		private readonly string _fullOverlayIcon;
+		
+		public ComponentMap(string modPath)
+		{
+			_fullOverlayIcon = modPath + GenericScrapOverlay;
+		}
 
 		public MyBlueprintDefinition GetScrapBlueprint()
 		{
@@ -132,10 +142,53 @@ namespace AwwScrap
 			_compatibleBlueprints.Add(bcd);
 		}
 
+		private StringBuilder writeMeLast = new StringBuilder();
+
 		private void SetScrapAttributes()
 		{
 			if (_componentDefinition == null) return;
 			if (_scrapDefinition == null) return;
+			bool hasCustomIcon = false;
+			//string iconPath = "";
+
+			string[] icons = new string[_scrapDefinition.Icons.Length + 1];
+			for (var i = 0; i < _scrapDefinition.Icons.Length; i++)
+			{
+				if (string.IsNullOrEmpty(_scrapDefinition.Icons[i])) continue;
+				icons[i] = _scrapDefinition.Icons[i];
+				if (_scrapDefinition.Icons[i].EndsWith("generic_scrap.dds"))
+				{
+					icons[i] = _componentDefinition.Icons[0];
+					continue;
+				}
+				hasCustomIcon = true;
+			}
+
+			if (!hasCustomIcon)
+			{
+				icons[_scrapDefinition.Icons.Length] = _fullOverlayIcon;
+				_scrapDefinition.Icons = icons;
+			}
+
+			//	//writeMeLast.AppendLine(_scrapDefinition.Icons[i]);
+			//if (!hasCustomIcon)
+			//{
+			//	for (var i = 0; i < _scrapDefinition.Icons.Length; i++)
+			//	{
+			//		if (_scrapDefinition.Icons[i].EndsWith("generic_scrap.dds"))
+			//			icons[i] = _componentDefinition.Icons[0];
+			//	}
+
+			//	icons[_scrapDefinition.Icons.Length + 1] = _fullOverlayIcon;
+			//	_scrapDefinition.Icons = icons;
+			//	//string newIcon = iconPath.Replace("generic_scrap.dds", "ScrapOverlay.dds");
+			//	//	_scrapDefinition.Icons = new[]
+			//	//{
+			//	//	_componentDefinition.Icons[0],
+			//	//	_fullOverlayIcon
+			//	//};
+			//}
+			//_scrapDefinition.IconSymbol = MyStringId.GetOrCompute("Scrap");
 			_scrapDefinition.Mass = _componentDefinition.Mass * Constants.ScrapMassScalar;
 			_scrapDefinition.Volume = _componentDefinition.Volume * Constants.ScrapVolumeScalar;
 			_scrapDefinition.MaxStackAmount = MyFixedPoint.MaxValue;
@@ -208,8 +261,20 @@ namespace AwwScrap
 
 		public override string ToString()
 		{
-			if (!HasValidScrap()) return $"  No valid scrap: {_componentDefinition.Id.SubtypeName}\n";
 			StringBuilder sb = new StringBuilder();
+			sb.AppendFormat("{0,-2}Component Origin: [{1} ({2})]", " ", _componentDefinition.Context.ModName, _componentDefinition.Context.ModId);
+			sb.AppendLine();
+			if (!HasValidScrap())
+			{
+				sb.AppendFormat("{0,-4}{1}{2}", " ", 
+					Constants.DoNotScrap.Contains(_componentDefinition.Id.SubtypeName) ? 
+						"Scrap Intentionally Skipped for: " : 
+						"No valid scrap: ", 
+					_componentDefinition.Id.SubtypeName);
+				sb.AppendLine();
+				return sb.ToString();
+			}
+			
 			sb.AppendFormat("{0,-2}{1} | {2} | {3}", " ", _componentDefinition.Id.SubtypeName, _scrapDefinition.Id.SubtypeName, _scrapBlueprint.Id.SubtypeName);
 			sb.AppendLine();
 			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:00.00}s][{5:00.0000}][{6:00.0000}] | ", " ", SkitCompatible ? "T" : "F", HasFalseCompatibleBlueprintClasses ? "T" : "F", (float)_amountProduced, _productionTime, _scrapDefinition.Mass, _scrapDefinition.Volume);
@@ -236,6 +301,19 @@ namespace AwwScrap
 				sb.AppendFormat("[{0}] {1} ", cbp.ContainsBlueprint(_scrapBlueprint) ? "T" : "F", cbp.Id.SubtypeName);
 			}
 			sb.AppendLine();
+			foreach (var icon in _componentDefinition.Icons)
+			{
+				sb.AppendFormat("{0,-4}{1}", " ", string.IsNullOrEmpty(icon) ? "icon was empty" : icon);
+				sb.AppendLine();
+			}
+			foreach (var icon in _scrapDefinition.Icons)
+			{
+				sb.AppendFormat("{0,-4}{1}", " ", string.IsNullOrEmpty(icon) ? "icon was empty" : icon);
+				sb.AppendLine();
+			}
+			//sb.AppendLine();
+			//sb.AppendLine();
+			sb.Append(writeMeLast);
 			return sb.ToString();
 		}
 	}

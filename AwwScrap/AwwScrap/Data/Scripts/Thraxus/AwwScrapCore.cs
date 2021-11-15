@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using AwwScrap.Common.BaseClasses;
 using AwwScrap.Common.Enums;
@@ -19,8 +21,8 @@ namespace AwwScrap
 		protected override CompType Type { get; } = CompType.Both;
 		protected override MyUpdateOrder Schedule { get; } = MyUpdateOrder.NoUpdate;
 
-		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _blueprintClassOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
-		private readonly Dictionary<MyBlueprintClassDefinition, List<string>> _skitOutputs = new Dictionary<MyBlueprintClassDefinition, List<string>>();
+		private readonly Dictionary<MyBlueprintClassDefinition, HashSet<string>> _blueprintClassOutputs = new Dictionary<MyBlueprintClassDefinition, HashSet<string>>();
+		private readonly Dictionary<MyBlueprintClassDefinition, HashSet<string>> _skitOutputs = new Dictionary<MyBlueprintClassDefinition, HashSet<string>>();
 		private readonly CachingDictionary<string, ComponentMap> _componentMaps = new CachingDictionary<string, ComponentMap>();
 		private readonly MyPhysicalItemDefinition _genericScrap = MyDefinitionManager.Static.GetPhysicalItemDefinition(new MyDefinitionId(typeof(MyObjectBuilder_Ore), "Scrap"));
 		private readonly MyBlueprintClassDefinition _awwScrapSkitBlueprintClassDefinition = MyDefinitionManager.Static.GetBlueprintClass(Constants.AwwScrapSkitClassName);
@@ -28,9 +30,12 @@ namespace AwwScrap
 		private MyRefineryDefinition _awwScrapRefineryDefinition;
 		private readonly Dictionary<string, MyPhysicalItemDefinition> _scrapDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
 
+		public static AwwScrapCore StaticInstance;
+
 		protected override void SuperEarlySetup()
 		{
 			base.SuperEarlySetup();
+			StaticInstance = this;
 			Run();
 			SetDeconstructItems();
 			HideBadScrap();
@@ -112,7 +117,7 @@ namespace AwwScrap
 				if (def.Id.TypeId == typeof(MyObjectBuilder_Component))
 				{
 					if (Constants.ComponentBlacklist.Contains(def.Id.SubtypeName)) continue;
-					var compMap = new ComponentMap();
+					var compMap = new ComponentMap(ModContext.ModPath);
 					compMap.SetComponentDefinition(def);
 					_componentMaps.Add(def.Id.SubtypeName, compMap);
 					_componentMaps.ApplyChanges();
@@ -192,13 +197,13 @@ namespace AwwScrap
 				{
 					if (!bpc.Public) continue;
 					if(!_blueprintClassOutputs.ContainsKey(bpc))
-						_blueprintClassOutputs.Add(bpc, new List<string>());
+						_blueprintClassOutputs.Add(bpc, new HashSet<string>());
 					foreach (var bpd in bpc)
 					{
 						if (!bpd.Public) continue;
 						foreach (var res in bpd.Results)
 						{
-							if (_blueprintClassOutputs[bpc].Contains(res.Id.SubtypeName)) continue;
+							//if (_blueprintClassOutputs[bpc].Contains(res.Id.SubtypeName)) continue;
 							_blueprintClassOutputs[bpc].Add(res.Id.SubtypeName);
 						}
 					}
@@ -215,13 +220,13 @@ namespace AwwScrap
 				{
 					if (!bpc.Public) continue;
 					if (!_skitOutputs.ContainsKey(bpc))
-						_skitOutputs.Add(bpc, new List<string>());
+						_skitOutputs.Add(bpc, new HashSet<string>());
 					foreach (var bpd in bpc)
 					{
 						if (!bpd.Public) continue;
 						foreach (var res in bpd.Results)
 						{
-							if (_skitOutputs[bpc].Contains(res.Id.SubtypeName)) continue;
+							//if (_skitOutputs[bpc].Contains(res.Id.SubtypeName)) continue;
 							_skitOutputs[bpc].Add(res.Id.SubtypeName);
 						}
 					}
