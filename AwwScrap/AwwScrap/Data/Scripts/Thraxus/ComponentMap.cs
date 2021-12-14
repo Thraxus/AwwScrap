@@ -228,6 +228,9 @@ namespace AwwScrap
 				}
 			};
 
+			var icons = (string[])_scrapDefinition.Icons.Clone();
+			
+			_scrapBlueprint.Icons = icons;
 			_scrapBlueprint.DisplayNameString = _componentDefinition.DisplayNameText + " " + Constants.ScrapSuffix;
 			_scrapBlueprint.BaseProductionTimeInSeconds = _productionTime * Constants.ScrapProductionTimeScalar;
 			_scrapBlueprint.Results = items.ToArray();
