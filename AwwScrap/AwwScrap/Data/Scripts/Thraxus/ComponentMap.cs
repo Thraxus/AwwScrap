@@ -27,7 +27,7 @@ namespace AwwScrap
 		public readonly Dictionary<string, MyFixedPoint> ComponentPrerequisites = new Dictionary<string, MyFixedPoint>();
 		private readonly List<MyBlueprintClassDefinition> _compatibleBlueprints = new List<MyBlueprintClassDefinition>();
 
-		private const string GenericScrapOverlay = "\\Textures\\GUI\\Icons\\Components\\ScrapOverlay.dds";
+		private const string GenericScrapOverlay = "\\Textures\\GUI\\Icons\\Components\\ScrapOverlayOutlineRed.dds";
 		private readonly string _fullOverlayIcon;
 		
 		public ComponentMap(string modPath)

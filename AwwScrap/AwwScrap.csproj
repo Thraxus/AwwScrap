@@ -189,6 +189,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AwwScrap\Data\BotSpawner_2336089504.sbc" />
+    <None Include="AwwScrap\Data\StarTrek_2634862322.sbc" />
+    <None Include="AwwScrap\Data\HackingComputer3_728555954.sbc" />
+    <None Include="AwwScrap\Data\AryxWeaponEnterprises_2530716039.sbc" />
     <None Include="AwwScrap\Data\VanillaComponents.sbc" />
     <None Include="AwwScrap\Data\EnergyShields_484504816.sbc" />
     <None Include="AwwScrap\Data\DefenseShields_1365616918.sbc" />
@@ -232,6 +236,10 @@
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\reactor_components.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\generic_scrap.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\ScrapOverlay.dds" />
+    <Content Include="AwwScrap\Textures\GUI\Icons\Components\ScrapOverlayLarge.dds" />
+    <Content Include="AwwScrap\Textures\GUI\Icons\Components\ScrapOverlayOutline.dds" />
+    <Content Include="AwwScrap\Textures\GUI\Icons\Components\ScrapOverlayOutlineRed.dds" />
+    <Content Include="AwwScrap\Textures\GUI\Icons\Components\ScrapOverlayRed.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\small_steel_tube.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\solar_cell.dds" />
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\steel_plate.dds" />

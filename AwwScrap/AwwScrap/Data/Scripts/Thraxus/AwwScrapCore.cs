@@ -53,14 +53,30 @@ namespace AwwScrap
 			//Run();
 			//SetDeconstructItems();
 			//HideBadScrap();
-			StringBuilder sb = new StringBuilder();
-			sb.AppendLine();
-			sb.AppendLine();
+			StringBuilder sbValidScrap = new StringBuilder();
+            StringBuilder sbInvalidScrap = new StringBuilder();
+			sbValidScrap.AppendLine();
+			sbValidScrap.AppendLine();
+            sbValidScrap.AppendFormat("{0,-1}The following valid scrap was created...", " ");
+            sbValidScrap.AppendLine();
+            sbValidScrap.AppendLine();
+
+			sbInvalidScrap.AppendLine();
+            sbInvalidScrap.AppendLine();
+            sbInvalidScrap.AppendFormat("{0,-1}The following invalid scrap was skipped...", " ");
+            sbInvalidScrap.AppendLine();
+			sbInvalidScrap.AppendLine();
 			foreach (var cm in _componentMaps)
-			{
-				sb.AppendLine(cm.Value.ToString());
-			}
-			WriteToLog("LateSetup", sb.ToString(), LogType.General);
+            {
+                if (cm.Value.HasValidScrap())
+                    sbValidScrap.AppendLine(cm.Value.ToString());
+                else sbInvalidScrap.AppendLine(cm.Value.ToString());
+            }
+            sbInvalidScrap.AppendLine();
+			sbValidScrap.AppendLine(sbInvalidScrap.ToString());
+            sbValidScrap.AppendLine();
+
+			WriteToLog("LateSetup", sbValidScrap.ToString(), LogType.General);
 			//PrintAwwScrapRecyclerStuffs();
 		}
 
@@ -87,12 +103,19 @@ namespace AwwScrap
 
 		private void Run()
 		{
+            //WriteToLog(nameof(Run), $"Running: {nameof(GrabInformation)}", LogType.General);
 			GrabInformation();
+            //WriteToLog(nameof(Run), $"Running: {nameof(ScourAssemblers)}", LogType.General);
 			ScourAssemblers();
+            //WriteToLog(nameof(Run), $"Running: {nameof(EliminateCompoundComponents)}", LogType.General);
 			EliminateCompoundComponents();
+            //WriteToLog(nameof(Run), $"Running: {nameof(ScrubBlacklistedScrapReturns)}", LogType.General);
 			ScrubBlacklistedScrapReturns();
+            //WriteToLog(nameof(Run), $"Running: {nameof(ScourRefineries)}", LogType.General);
 			ScourRefineries();
+            //WriteToLog(nameof(Run), $"Running: {nameof(ScourSkits)}", LogType.General);
 			ScourSkits();
+            //WriteToLog(nameof(Run), $"Running: {nameof(FindCompatibleBlueprints)}", LogType.General);
 			FindCompatibleBlueprints();
 			foreach (var fcm in _componentMaps)
 			{
@@ -150,6 +173,8 @@ namespace AwwScrap
 		private void EliminateCompoundComponents()
 		{
 			var componentMapQueue = new Queue<ComponentMap>();
+            const int breakAfter = 300;
+            var currentLoop = 0;
 			do
 			{
 				if (componentMapQueue.Count > 0)
@@ -171,8 +196,21 @@ namespace AwwScrap
 					}
 				}
 				_componentMaps.ApplyRemovals();
-			} while (componentMapQueue.Count > 0);
-		}
+                currentLoop++;
+            } while (componentMapQueue.Count > 0 && currentLoop < breakAfter );
+
+            if (componentMapQueue.Count <= 0) return;
+
+            var rpt = new StringBuilder();
+            rpt.AppendLine();
+            rpt.AppendLine();
+            rpt.AppendFormat("{0, -2}Error parsing all components.  The Component Map Queue still contained the following {1} item(s).", " ", componentMapQueue.Count);
+            rpt.AppendLine();
+            rpt.AppendLine();
+			foreach (var cmq in componentMapQueue)
+                rpt.AppendLine(cmq.ToString());
+            WriteToLog(nameof(EliminateCompoundComponents), rpt.ToString(), LogType.General);
+        }
 
 		private void ScrubBlacklistedScrapReturns()
 		{

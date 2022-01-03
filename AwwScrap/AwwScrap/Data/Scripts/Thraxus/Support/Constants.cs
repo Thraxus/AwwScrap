@@ -39,7 +39,12 @@ namespace AwwScrap.Support
 			"MetalPlate_CandyCane",
 			"MetalPlate_GoldCoat",
 			"WoodPlank",
-			"WoodLogs"
+			"WoodLogs",
+			"MESThrust",
+			"ProprietaryTech",
+			"InhibitorChip",
+			"EEMPilotSoul",
+			"AdminPlate"
 		};
 
 		public static readonly List<string> IgnoredBlocks = new List<string>
