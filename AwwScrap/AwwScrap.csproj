@@ -190,9 +190,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AwwScrap\Data\BotSpawner_2336089504.sbc" />
+    <None Include="AwwScrap\Data\HomesteadWoodAndStoneBlocks_2790746375.sbc" />
     <None Include="AwwScrap\Data\StarTrek_2634862322.sbc" />
     <None Include="AwwScrap\Data\HackingComputer3_728555954.sbc" />
     <None Include="AwwScrap\Data\AryxWeaponEnterprises_2530716039.sbc" />
+    <None Include="AwwScrap\Data\TieredUpgradeModulesx2x32_1681783871.sbc" />
     <None Include="AwwScrap\Data\VanillaComponents.sbc" />
     <None Include="AwwScrap\Data\EnergyShields_484504816.sbc" />
     <None Include="AwwScrap\Data\DefenseShields_1365616918.sbc" />

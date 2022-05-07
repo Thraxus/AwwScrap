@@ -39,6 +39,7 @@ namespace AwwScrap.Support
 			"MetalPlate_CandyCane",
 			"MetalPlate_GoldCoat",
 			"WoodPlank",
+			"WoodPlanks",
 			"WoodLogs",
 			"MESThrust",
 			"ProprietaryTech",

@@ -142,7 +142,7 @@ namespace AwwScrap
 			_compatibleBlueprints.Add(bcd);
 		}
 
-		private StringBuilder writeMeLast = new StringBuilder();
+		private readonly StringBuilder _writeMeLast = new StringBuilder();
 
 		private void SetScrapAttributes()
 		{
@@ -265,7 +265,7 @@ namespace AwwScrap
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("{0,-2}Component Origin: [{1} ({2})]", " ", _componentDefinition.Context.ModName, _componentDefinition.Context.ModId);
+			sb.AppendFormat("{0,-2}Component Origin: [{1} ({2})]", " ", string.IsNullOrEmpty(_componentDefinition.Context.ModName) ? "Vanilla" : _componentDefinition.Context.ModName, string.IsNullOrEmpty(_componentDefinition.Context.ModId) ? "Base Game" : _componentDefinition.Context.ModId);
 			sb.AppendLine();
 			if (!HasValidScrap())
 			{
@@ -304,19 +304,23 @@ namespace AwwScrap
 				sb.AppendFormat("[{0}] {1} ", cbp.ContainsBlueprint(_scrapBlueprint) ? "T" : "F", cbp.Id.SubtypeName);
 			}
 			sb.AppendLine();
+            sb.AppendFormat("{0,-4}Component Icon(s)", " ");
+            sb.AppendLine();
 			foreach (var icon in _componentDefinition.Icons)
 			{
-				sb.AppendFormat("{0,-4}{1}", " ", string.IsNullOrEmpty(icon) ? "icon was empty" : icon);
+				sb.AppendFormat("{0,-6}{1}", " ", string.IsNullOrEmpty(icon) ? "icon was empty" : icon);
 				sb.AppendLine();
 			}
+            sb.AppendFormat("{0,-4}Scrap Icon(s)", " ");
+            sb.AppendLine();
 			foreach (var icon in _scrapDefinition.Icons)
 			{
-				sb.AppendFormat("{0,-4}{1}", " ", string.IsNullOrEmpty(icon) ? "icon was empty" : icon);
+				sb.AppendFormat("{0,-6}{1}", " ", string.IsNullOrEmpty(icon) ? "icon was empty" : icon);
 				sb.AppendLine();
 			}
 			//sb.AppendLine();
 			//sb.AppendLine();
-			sb.Append(writeMeLast);
+			sb.Append(_writeMeLast);
 			return sb.ToString();
 		}
 	}
