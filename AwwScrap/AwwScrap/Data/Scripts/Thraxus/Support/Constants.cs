@@ -45,14 +45,16 @@ namespace AwwScrap.Support
 			"ProprietaryTech",
 			"InhibitorChip",
 			"EEMPilotSoul",
-			"AdminPlate"
+			"AdminPlate",
+			"EngineerPlushie"
 		};
 
 		public static readonly List<string> IgnoredBlocks = new List<string>
 		{
 			"StorageShelf1",
 			"StorageShelf2",
-			"StorageShelf3"
+			"StorageShelf3",
+            "EngineerPlushie"
 		};
 
 		public static readonly List<string> IgnoredBlueprintClasses = new List<string>

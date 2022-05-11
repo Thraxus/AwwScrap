@@ -375,23 +375,6 @@
       <Model>Models\Components\GenericScrap.mwm</Model>
       <PhysicalMaterial>Metal</PhysicalMaterial>
     </PhysicalItem>
-	<PhysicalItem>
-	  <Id>
-		  <TypeId>Ore</TypeId>
-		  <SubtypeId>EngineerPlushieScrap</SubtypeId>
-	  </Id>
-	  <DisplayName>EngineerPlushieScrap</DisplayName>
-	  <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
-	  <Size>
-		  <X>0.2</X>
-		  <Y>0.2</Y>
-		  <Z>0.1</Z>
-	  </Size>
-	  <Mass>1</Mass>
-	  <Volume>0.254</Volume>
-	  <Model>Models\Components\GenericScrap.mwm</Model>
-	  <PhysicalMaterial>Metal</PhysicalMaterial>
-	</PhysicalItem>
   </PhysicalItems>
   <Blueprints>
     <Blueprint>
@@ -724,20 +707,5 @@
       </Results>
       <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
     </Blueprint>
-	<Blueprint>
-	  <Id>
-		  <TypeId>BlueprintDefinition</TypeId>
-		  <SubtypeId>EngineerPlushieScrapToIngot</SubtypeId>
-	  </Id>
-	  <DisplayName>EngineerPlushieScrapToIngot</DisplayName>
-	  <Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
-	  <Prerequisites>
-		  <Item Amount="1" TypeId="Ore" SubtypeId="EngineerPlushieScrap" />
-	  </Prerequisites>
-	  <Results>
-		  <Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
-	  </Results>
-	  <BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
-	</Blueprint>
   </Blueprints>
 </Definitions>
