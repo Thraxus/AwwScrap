@@ -189,6 +189,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AwwScrap\Data\GrapheneExpanded_2791555101.sbc" />
     <None Include="AwwScrap\Data\BotSpawner_2336089504.sbc" />
     <None Include="AwwScrap\Data\HomesteadWoodAndStoneBlocks_2790746375.sbc" />
     <None Include="AwwScrap\Data\StarTrek_2634862322.sbc" />

@@ -38,9 +38,111 @@
 		<PhysicalItem>
 			<Id>
 				<TypeId>Ore</TypeId>
+				<SubtypeId>Torpedo_CasingScrap</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_CasingScrap</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Size>
+				<X>0.2</X>
+				<Y>0.2</Y>
+				<Z>0.1</Z>
+			</Size>
+			<Mass>1</Mass>
+			<Volume>0.254</Volume>
+			<Model>Models\Components\GenericScrap.mwm</Model>
+			<PhysicalMaterial>Metal</PhysicalMaterial>
+		</PhysicalItem>
+		<PhysicalItem>
+			<Id>
+				<TypeId>Ore</TypeId>
+				<SubtypeId>Torpedo_Fuel_CellScrap</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_Fuel_CellScrap</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Size>
+				<X>0.2</X>
+				<Y>0.2</Y>
+				<Z>0.1</Z>
+			</Size>
+			<Mass>1</Mass>
+			<Volume>0.254</Volume>
+			<Model>Models\Components\GenericScrap.mwm</Model>
+			<PhysicalMaterial>Metal</PhysicalMaterial>
+		</PhysicalItem>
+		<PhysicalItem>
+			<Id>
+				<TypeId>Ore</TypeId>
+				<SubtypeId>Torpedo_GuidanceScrap</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_GuidanceScrap</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Size>
+				<X>0.2</X>
+				<Y>0.2</Y>
+				<Z>0.1</Z>
+			</Size>
+			<Mass>1</Mass>
+			<Volume>0.254</Volume>
+			<Model>Models\Components\GenericScrap.mwm</Model>
+			<PhysicalMaterial>Metal</PhysicalMaterial>
+		</PhysicalItem>
+		<PhysicalItem>
+			<Id>
+				<TypeId>Ore</TypeId>
+				<SubtypeId>Torpedo_ThrusterScrap</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_ThrusterScrap</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Size>
+				<X>0.2</X>
+				<Y>0.2</Y>
+				<Z>0.1</Z>
+			</Size>
+			<Mass>1</Mass>
+			<Volume>0.254</Volume>
+			<Model>Models\Components\GenericScrap.mwm</Model>
+			<PhysicalMaterial>Metal</PhysicalMaterial>
+		</PhysicalItem>
+		<PhysicalItem>
+			<Id>
+				<TypeId>Ore</TypeId>
+				<SubtypeId>Torpedo_WarheadScrap</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_WarheadScrap</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Size>
+				<X>0.2</X>
+				<Y>0.2</Y>
+				<Z>0.1</Z>
+			</Size>
+			<Mass>1</Mass>
+			<Volume>0.254</Volume>
+			<Model>Models\Components\GenericScrap.mwm</Model>
+			<PhysicalMaterial>Metal</PhysicalMaterial>
+		</PhysicalItem>
+		<PhysicalItem>
+			<Id>
+				<TypeId>Ore</TypeId>
 				<SubtypeId>TritaniumPlateScrap</SubtypeId>
 			</Id>
 			<DisplayName>TritaniumPlateScrap</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Size>
+				<X>0.2</X>
+				<Y>0.2</Y>
+				<Z>0.1</Z>
+			</Size>
+			<Mass>1</Mass>
+			<Volume>0.254</Volume>
+			<Model>Models\Components\GenericScrap.mwm</Model>
+			<PhysicalMaterial>Metal</PhysicalMaterial>
+		</PhysicalItem>
+		<PhysicalItem>
+			<Id>
+				<TypeId>Ore</TypeId>
+				<SubtypeId>DuraniumGridScrap</SubtypeId>
+			</Id>
+			<DisplayName>DuraniumGridScrap</DisplayName>
 			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
 			<Size>
 				<X>0.2</X>
@@ -121,12 +223,102 @@
 		<Blueprint>
 			<Id>
 				<TypeId>BlueprintDefinition</TypeId>
+				<SubtypeId>Torpedo_CasingScrapToIngot</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_CasingScrapToIngot</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Prerequisites>
+				<Item Amount="1" TypeId="Ore" SubtypeId="Torpedo_CasingScrap" />
+			</Prerequisites>
+			<Results>
+				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
+			</Results>
+			<BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+		</Blueprint>
+		<Blueprint>
+			<Id>
+				<TypeId>BlueprintDefinition</TypeId>
+				<SubtypeId>Torpedo_Fuel_CellScrapToIngot</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_Fuel_CellScrapToIngot</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Prerequisites>
+				<Item Amount="1" TypeId="Ore" SubtypeId="Torpedo_Fuel_CellScrap" />
+			</Prerequisites>
+			<Results>
+				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
+			</Results>
+			<BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+		</Blueprint>
+		<Blueprint>
+			<Id>
+				<TypeId>BlueprintDefinition</TypeId>
+				<SubtypeId>Torpedo_GuidanceScrapToIngot</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_GuidanceScrapToIngot</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Prerequisites>
+				<Item Amount="1" TypeId="Ore" SubtypeId="Torpedo_GuidanceScrap" />
+			</Prerequisites>
+			<Results>
+				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
+			</Results>
+			<BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+		</Blueprint>
+		<Blueprint>
+			<Id>
+				<TypeId>BlueprintDefinition</TypeId>
+				<SubtypeId>Torpedo_ThrusterScrapToIngot</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_ThrusterScrapToIngot</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Prerequisites>
+				<Item Amount="1" TypeId="Ore" SubtypeId="Torpedo_ThrusterScrap" />
+			</Prerequisites>
+			<Results>
+				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
+			</Results>
+			<BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+		</Blueprint>
+		<Blueprint>
+			<Id>
+				<TypeId>BlueprintDefinition</TypeId>
+				<SubtypeId>Torpedo_WarheadScrapToIngot</SubtypeId>
+			</Id>
+			<DisplayName>Torpedo_WarheadScrapToIngot</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Prerequisites>
+				<Item Amount="1" TypeId="Ore" SubtypeId="Torpedo_WarheadScrap" />
+			</Prerequisites>
+			<Results>
+				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
+			</Results>
+			<BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+		</Blueprint>
+		<Blueprint>
+			<Id>
+				<TypeId>BlueprintDefinition</TypeId>
 				<SubtypeId>TritaniumPlateScrapToIngot</SubtypeId>
 			</Id>
 			<DisplayName>TritaniumPlateScrapToIngot</DisplayName>
 			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="TritaniumPlateScrap" />
+			</Prerequisites>
+			<Results>
+				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
+			</Results>
+			<BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+		</Blueprint>
+		<Blueprint>
+			<Id>
+				<TypeId>BlueprintDefinition</TypeId>
+				<SubtypeId>DuraniumGridScrapToIngot</SubtypeId>
+			</Id>
+			<DisplayName>DuraniumGridScrapToIngot</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Prerequisites>
+				<Item Amount="1" TypeId="Ore" SubtypeId="DuraniumGridScrap" />
 			</Prerequisites>
 			<Results>
 				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
