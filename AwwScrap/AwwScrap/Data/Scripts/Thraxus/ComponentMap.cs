@@ -257,10 +257,26 @@ namespace AwwScrap
 		{
 			if (ComponentPrerequisites.Count > 0) return;
 			foreach (var pre in bpd.Prerequisites)
-			{
+            {
+                if (ComponentPrerequisites.ContainsKey(pre.Id.SubtypeName))
+                {
+                    if (_multipleComponentPrerequisitesDetected == null)
+                    {
+                        _multipleComponentPrerequisitesDetected = new StringBuilder();
+                        _multipleComponentPrerequisitesDetected.AppendFormat("{0,-4}Multiple Component Prerequisites Detected!", " ");
+                        _multipleComponentPrerequisitesDetected.AppendLine();
+                        _multipleComponentPrerequisitesDetected.AppendFormat("{0,-6}[{1:F4}] {2}", " ", (float)ComponentPrerequisites[pre.Id.SubtypeName], pre.Id.SubtypeName);
+                        _multipleComponentPrerequisitesDetected.AppendLine();
+					}
+					_multipleComponentPrerequisitesDetected.AppendFormat("{0,-6}[{1:F4}] {2}", " ", (float)pre.Amount / Constants.AssemblerMultiplier, pre.Id.SubtypeName);
+					_multipleComponentPrerequisitesDetected.AppendLine();
+					continue;
+                }
 				ComponentPrerequisites.Add(pre.Id.SubtypeName, (MyFixedPoint)((float)pre.Amount / Constants.AssemblerMultiplier));
 			}
 		}
+
+        private StringBuilder _multipleComponentPrerequisitesDetected;
 
 		public override string ToString()
 		{
@@ -275,6 +291,10 @@ namespace AwwScrap
 						"No valid scrap: ", 
 					_componentDefinition.Id.SubtypeName);
 				sb.AppendLine();
+                if (_multipleComponentPrerequisitesDetected != null)
+                {
+                    sb.Append(_multipleComponentPrerequisitesDetected);
+                }
 				return sb.ToString();
 			}
 			
@@ -320,6 +340,10 @@ namespace AwwScrap
 			}
 			//sb.AppendLine();
 			//sb.AppendLine();
+            if (_multipleComponentPrerequisitesDetected != null)
+            {
+                sb.Append(_multipleComponentPrerequisitesDetected);
+            }
 			sb.Append(_writeMeLast);
 			return sb.ToString();
 		}
