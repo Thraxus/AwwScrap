@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using AwwScrap.Common.BaseClasses;
 using AwwScrap.Common.Enums;
@@ -32,7 +30,9 @@ namespace AwwScrap
 
 		public static AwwScrapCore StaticInstance;
 
-		protected override void SuperEarlySetup()
+        //private readonly StringBuilder _debugSb = new StringBuilder();
+
+        protected override void SuperEarlySetup()
 		{
 			base.SuperEarlySetup();
 			StaticInstance = this;
@@ -54,31 +54,39 @@ namespace AwwScrap
 			//SetDeconstructItems();
 			//HideBadScrap();
 			StringBuilder sbValidScrap = new StringBuilder();
+            StringBuilder sbSkippedScrap = new StringBuilder();
             StringBuilder sbInvalidScrap = new StringBuilder();
-			sbValidScrap.AppendLine();
+			
 			sbValidScrap.AppendLine();
             sbValidScrap.AppendFormat("{0,-1}The following valid scrap was created...", " ");
             sbValidScrap.AppendLine();
-            sbValidScrap.AppendLine();
+       
+            sbSkippedScrap.AppendLine();
+            sbSkippedScrap.AppendFormat("{0,-1}The following valid scrap was intentionally skipped...", " ");
+            sbSkippedScrap.AppendLine();
 
-			sbInvalidScrap.AppendLine();
             sbInvalidScrap.AppendLine();
-            sbInvalidScrap.AppendFormat("{0,-1}The following invalid scrap was skipped...", " ");
+            sbInvalidScrap.AppendFormat("{0,-1}The following components did not contain valid scrap...", " ");
             sbInvalidScrap.AppendLine();
-			sbInvalidScrap.AppendLine();
+
 			foreach (var cm in _componentMaps)
             {
                 if (cm.Value.HasValidScrap())
                     sbValidScrap.AppendLine(cm.Value.ToString());
-                else sbInvalidScrap.AppendLine(cm.Value.ToString());
+                else if (cm.Value.ScrapIntentionallySkipped) 
+                    sbSkippedScrap.AppendLine(cm.Value.ToString());
+				else sbInvalidScrap.AppendLine(cm.Value.ToString());
             }
             sbInvalidScrap.AppendLine();
-			sbValidScrap.AppendLine(sbInvalidScrap.ToString());
+            sbValidScrap.AppendLine(sbSkippedScrap.ToString());
+            sbValidScrap.AppendLine(sbInvalidScrap.ToString());
             sbValidScrap.AppendLine();
 
 			WriteToLog("LateSetup", sbValidScrap.ToString(), LogType.General);
-			//PrintAwwScrapRecyclerStuffs();
-		}
+
+            //WriteToLog("LateSetup", $"\n{_debugSb.ToString()}", LogType.General);
+            //PrintAwwScrapRecyclerStuffs();
+        }
 
 		//private void PrintAwwScrapRecyclerStuffs()
 		//{
@@ -130,7 +138,8 @@ namespace AwwScrap
 		private void GrabInformation()
 		{
 			foreach (var def in MyDefinitionManager.Static.GetDefinitionsOfType<MyPhysicalItemDefinition>())
-			{
+            {
+                //_debugSb.AppendLine($"[{(def.Public ? "T" : "F")}] ({def.Id.TypeId}) {def.Id.SubtypeName}");
 				if (!def.Public) continue;
 				if (ValidateScrap(def.Id.SubtypeName))
 				{
@@ -143,6 +152,7 @@ namespace AwwScrap
 					var compMap = new ComponentMap(ModContext.ModPath);
 					compMap.SetComponentDefinition(def);
 					_componentMaps.Add(def.Id.SubtypeName, compMap);
+                    //_debugSb.AppendLine($"GrabInformation:  {def.Id.SubtypeName} | {compMap}");
 					_componentMaps.ApplyChanges();
 				}
 			}
@@ -188,7 +198,8 @@ namespace AwwScrap
 				foreach (var cm in _componentMaps)
 				{
 					foreach (var cpr in cm.Value.ComponentPrerequisites)
-					{
+                    {
+                        //_debugSb.AppendLine($"EliminateCompoundComponents: [{(_componentMaps.ContainsKey(cpr.Key) ? "T" : "F")}] cm.key {cm.Key} | cpr.key {cpr.Key}");
 						if (!_componentMaps.ContainsKey(cpr.Key)) continue;
 						componentMapQueue.Enqueue(cm.Value);
 						_componentMaps.Remove(cm.Key);
@@ -272,28 +283,32 @@ namespace AwwScrap
 			}
 		}
 
-		private void FindCompatibleBlueprints()
+        private void FindCompatibleBlueprints()
 		{
 			foreach (var bco in _blueprintClassOutputs)
-			{
+            {
+                //_debugSb.AppendLine($"FindCompatibleBlueprints(): {bco.Key.Id.SubtypeName}");
 				if (Constants.IgnoredBlueprintClasses.Contains(bco.Key.Id.SubtypeName)) continue;
 				foreach (var cm in _componentMaps)
 				{
-					bool compatible = true;
+                    //_debugSb.AppendLine($"  Key: {cm.Key}");
+                    bool compatible = true;
 					int maxCompatibility = cm.Value.ComponentPrerequisites.Count;
 					int falseHits = 0;
 					foreach (var pre in cm.Value.ComponentPrerequisites)
 					{
-						if (bco.Value.Contains(pre.Key)) continue;
+                        //_debugSb.AppendLine($"    Pre: [{(bco.Value.Contains(pre.Key) ? "T" : "F")}] [{pre.Value}] {pre.Key}");
+                        if (bco.Value.Contains(pre.Key)) continue;
 						compatible = false;
 						falseHits++;
 					}
-					if (compatible)
+                    //_debugSb.AppendLine($"      Compatible: [{(compatible ? "T" : "F")}][{(falseHits <= maxCompatibility * 0.5f ? "T" : "F")}]");
+                    if (compatible)
 					{
 						cm.Value.AddCompatibleRefineryBpc(bco.Key, false);
 						continue;
 					}
-					if (falseHits <= maxCompatibility * 0.5f)
+					if (falseHits != maxCompatibility * 0.5f)
 						cm.Value.AddCompatibleRefineryBpc(bco.Key, true);
 				}
 			}

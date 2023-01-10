@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using AwwScrap.Support;
 using Sandbox.Definitions;
 using VRage;
 using VRage.Collections;
 using VRage.Game;
-using VRage.Utils;
 
 namespace AwwScrap
 {
@@ -18,9 +16,10 @@ namespace AwwScrap
 		private MyPhysicalItemDefinition _scrapDefinition;
 		private MyBlueprintDefinition _scrapBlueprint;
 
-		private MyFixedPoint _amountProduced;
+		public MyFixedPoint AmountProduced;
 		private float _productionTime;
 
+        public bool ScrapIntentionallySkipped;
 		public bool HasFalseCompatibleBlueprintClasses;
 		public bool SkitCompatible;
 
@@ -29,8 +28,10 @@ namespace AwwScrap
 
 		private const string GenericScrapOverlay = "\\Textures\\GUI\\Icons\\Components\\ScrapOverlayOutlineRed.dds";
 		private readonly string _fullOverlayIcon;
-		
-		public ComponentMap(string modPath)
+
+        private readonly StringBuilder _writeMeLast = new StringBuilder();
+
+        public ComponentMap(string modPath)
 		{
 			_fullOverlayIcon = modPath + GenericScrapOverlay;
 		}
@@ -51,8 +52,13 @@ namespace AwwScrap
 		}
 
 		public void RunScrapSetup()
-		{
-			SetScrapAttributes();
+        {
+            if (Constants.DoNotScrap.Contains(_componentDefinition.Id.SubtypeName))
+            {
+                ScrapIntentionallySkipped = true;
+				return;
+            }
+            SetScrapAttributes();
 			GenerateScrapBlueprint();
 			ApplyScrapBlueprint();
 		}
@@ -64,8 +70,9 @@ namespace AwwScrap
 			if (bp.Results[0].Id.SubtypeName != _componentDefinition.Id.SubtypeName) return;
 			_componentBlueprint = bp;
 			_productionTime = bp.BaseProductionTimeInSeconds;
-			_amountProduced = bp.Results[0].Amount;
-		}
+			AmountProduced = bp.Results[0].Amount;
+            //_writeMeLast.AppendFormat("{0,-4}WML: {1}\n", " ", bp.Results[0].Amount);
+        }
 		
 		public void ScrubBlacklistedScrapReturns()
 		{
@@ -76,37 +83,12 @@ namespace AwwScrap
 			}
 		}
 
-		public void ReconcileCompoundComponents(CachingDictionary<string, ComponentMap> compMap)
-		{
-			foreach (var map in compMap)
-			{
-				if (!ComponentPrerequisites.ContainsKey(map.Key)) continue;
-				foreach (var cpr in map.Value.ComponentPrerequisites)
-				{
-					AddToPrerequisites(cpr.Key, cpr.Value * ComponentPrerequisites[map.Key]);
-					
-				}
-				_productionTime += map.Value.GetProductionTime();
-				ComponentPrerequisites.Remove(map.Key);
-			}
-		}
-
-		public float GetProductionTime()
+        public float GetProductionTime()
 		{
 			return _productionTime;
 		}
 
-		public void AddToPrerequisites(string key, MyFixedPoint value)
-		{
-			if (ComponentPrerequisites.ContainsKey(key))
-			{
-				ComponentPrerequisites[key] += value;
-				return;
-			}
-			ComponentPrerequisites.Add(key, value);
-		}
-
-		public void SetComponentDefinition(MyPhysicalItemDefinition def)
+        public void SetComponentDefinition(MyPhysicalItemDefinition def)
 		{
 			if (def == null) return;
 			_componentDefinition = def;
@@ -118,13 +100,14 @@ namespace AwwScrap
 		{
 			_scrapDefinition = MyDefinitionManager.Static.GetPhysicalItemDefinition(
 				new MyDefinitionId(typeof(MyObjectBuilder_Ore), _componentDefinition.Id.SubtypeName + Constants.ScrapSuffix));
-			if (_scrapDefinition.Id.SubtypeName == _componentDefinition.Id.SubtypeName + Constants.ScrapSuffix) return;
+            if (_scrapDefinition.Id.SubtypeName == _componentDefinition.Id.SubtypeName + Constants.ScrapSuffix) return;
 			_scrapDefinition = null;
 		}
 
 		public void AddCompatibleRefineryBpc(MyBlueprintClassDefinition bcd, bool isFalseHit)
 		{
-			if (_compatibleBlueprints.Contains(bcd)) return;
+            //_writeMeLast.AppendLine($"    AddCompatibleRefineryBpc(): [{(isFalseHit ? "T" : "F")}][{(HasFalseCompatibleBlueprintClasses ? "T" : "F")}][{_compatibleBlueprints.Count:D00}][{(_compatibleBlueprints.Contains(bcd) ? "T" : "F")}]");
+            if (_compatibleBlueprints.Contains(bcd)) return;
 			if (isFalseHit && !HasFalseCompatibleBlueprintClasses && _compatibleBlueprints.Count > 0) return;
 			if (!isFalseHit && HasFalseCompatibleBlueprintClasses)
 			{
@@ -142,11 +125,10 @@ namespace AwwScrap
 			_compatibleBlueprints.Add(bcd);
 		}
 
-		private readonly StringBuilder _writeMeLast = new StringBuilder();
-
-		private void SetScrapAttributes()
+        private void SetScrapAttributes()
 		{
-			if (_componentDefinition == null) return;
+            //_writeMeLast.AppendLine($"    SetScrapAttributes(): [{(_componentDefinition != null ? "T" : "F")}][{(_scrapDefinition != null ? "T" : "F")}]");
+            if (_componentDefinition == null) return;
 			if (_scrapDefinition == null) return;
 			bool hasCustomIcon = false;
 			//string iconPath = "";
@@ -197,14 +179,15 @@ namespace AwwScrap
 
 		private void GenerateScrapBlueprint()
 		{
-			if (_scrapDefinition == null) return;
+            //_writeMeLast.AppendLine($"    GenerateScrapBlueprint(): [{(_scrapDefinition != null ? "T" : "F")}][{(_compatibleBlueprints.Count > 0 ? "T" : "F")}]");
+            if (_scrapDefinition == null) return;
 			if (_compatibleBlueprints.Count <= 0) return;
 			
 			_scrapBlueprint = 
 				(MyBlueprintDefinition)MyDefinitionManager.Static.GetBlueprintDefinition(
 				new MyDefinitionId(typeof(MyObjectBuilder_BlueprintDefinition), 
 					_componentDefinition.Id.SubtypeName + Constants.ScrapSuffix + Constants.ScrapBpSuffix));
-
+            
 			if (_scrapBlueprint == null) return;
 
 			var items = new List<MyBlueprintDefinitionBase.Item>();
@@ -214,7 +197,7 @@ namespace AwwScrap
 					new MyBlueprintDefinitionBase.Item
 					{
 						// This will account for items that have more than 1 count of the resulting item, such as Light Bulbs and Armor Plates from IO
-						Amount = (MyFixedPoint)((float)(cpr.Value * Constants.ScrapScalar) / (float)_amountProduced),
+						Amount = (MyFixedPoint)((float)(cpr.Value * Constants.ScrapScalar) / (float)AmountProduced),
 						Id = new MyDefinitionId(typeof(MyObjectBuilder_Ingot), cpr.Key)
 					});
 			}
@@ -253,7 +236,18 @@ namespace AwwScrap
 			return _componentDefinition;
 		}
 
-		public void AddComponentPrerequisites(MyBlueprintDefinitionBase bpd)
+        public void AddToPrerequisites(string key, MyFixedPoint value)
+        {
+            _writeMeLast.AppendFormat("{0,-6}[{1}]{2}\n", " ", key, value);
+            if (ComponentPrerequisites.ContainsKey(key))
+            {
+                ComponentPrerequisites[key] += value;
+                return;
+            }
+            ComponentPrerequisites.Add(key, value);
+        }
+
+        public void AddComponentPrerequisites(MyBlueprintDefinitionBase bpd)
 		{
 			if (ComponentPrerequisites.Count > 0) return;
 			foreach (var pre in bpd.Prerequisites)
@@ -272,9 +266,23 @@ namespace AwwScrap
 					_multipleComponentPrerequisitesDetected.AppendLine();
 					continue;
                 }
-				ComponentPrerequisites.Add(pre.Id.SubtypeName, (MyFixedPoint)((float)pre.Amount / Constants.AssemblerMultiplier));
+                AddToPrerequisites(pre.Id.SubtypeName, (MyFixedPoint)((float)pre.Amount / Constants.AssemblerMultiplier));
 			}
 		}
+
+        public void ReconcileCompoundComponents(CachingDictionary<string, ComponentMap> compMap)
+        {
+            foreach (var map in compMap)
+            {
+                if (!ComponentPrerequisites.ContainsKey(map.Key)) continue;
+                foreach (var cpr in map.Value.ComponentPrerequisites)
+                {
+                    AddToPrerequisites(cpr.Key, cpr.Value * ((float)ComponentPrerequisites[map.Key] / (float)map.Value.AmountProduced));
+                }
+                _productionTime += map.Value.GetProductionTime();
+                ComponentPrerequisites.Remove(map.Key);
+            }
+        }
 
         private StringBuilder _multipleComponentPrerequisitesDetected;
 
@@ -285,22 +293,25 @@ namespace AwwScrap
 			sb.AppendLine();
 			if (!HasValidScrap())
 			{
-				sb.AppendFormat("{0,-4}{1}{2}", " ", 
-					Constants.DoNotScrap.Contains(_componentDefinition.Id.SubtypeName) ? 
+				sb.AppendFormat("{0,-4}{1}[{2}][{3}] {4}", " ", 
+					ScrapIntentionallySkipped ? 
 						"Scrap Intentionally Skipped for: " : 
-						"No valid scrap: ", 
-					_componentDefinition.Id.SubtypeName);
+						"No valid scrap: ",
+                    (GetScrapDefinition() != null ? "T" : "F"), 
+                    (GetScrapBlueprint() != null ? "T" : "F"),
+                    _componentDefinition.Id.SubtypeName);
 				sb.AppendLine();
                 if (_multipleComponentPrerequisitesDetected != null)
                 {
                     sb.Append(_multipleComponentPrerequisitesDetected);
                 }
-				return sb.ToString();
+                sb.Append(_writeMeLast);
+                return sb.ToString();
 			}
 			
 			sb.AppendFormat("{0,-2}{1} | {2} | {3}", " ", _componentDefinition.Id.SubtypeName, _scrapDefinition.Id.SubtypeName, _scrapBlueprint.Id.SubtypeName);
 			sb.AppendLine();
-			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:00.00}s][{5:00.0000}][{6:00.0000}] | ", " ", SkitCompatible ? "T" : "F", HasFalseCompatibleBlueprintClasses ? "T" : "F", (float)_amountProduced, _productionTime, _scrapDefinition.Mass, _scrapDefinition.Volume);
+			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:00.00}s][{5:00.0000}][{6:00.0000}] | ", " ", SkitCompatible ? "T" : "F", HasFalseCompatibleBlueprintClasses ? "T" : "F", (float)AmountProduced, _productionTime, _scrapDefinition.Mass, _scrapDefinition.Volume);
 			foreach (var cpr in ComponentPrerequisites)
 			{
 				sb.AppendFormat("[{0:00.00}] {1} ", (float)cpr.Value, cpr.Key);

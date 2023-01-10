@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AwwScrap</RootNamespace>
     <AssemblyName>AwwScrap</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -192,6 +193,7 @@
     <None Include="AwwScrap\Data\GrapheneExpanded_2791555101.sbc" />
     <None Include="AwwScrap\Data\BotSpawner_2336089504.sbc" />
     <None Include="AwwScrap\Data\HomesteadWoodAndStoneBlocks_2790746375.sbc" />
+    <None Include="AwwScrap\Data\EdensWrathEngineering_1759275190.sbc" />
     <None Include="AwwScrap\Data\StarTrek_2634862322.sbc" />
     <None Include="AwwScrap\Data\HackingComputer3_728555954.sbc" />
     <None Include="AwwScrap\Data\AryxWeaponEnterprises_2530716039.sbc" />
