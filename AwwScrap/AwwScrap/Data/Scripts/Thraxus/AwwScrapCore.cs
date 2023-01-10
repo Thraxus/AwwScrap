@@ -53,31 +53,51 @@ namespace AwwScrap
 			//Run();
 			//SetDeconstructItems();
 			//HideBadScrap();
-			StringBuilder sbValidScrap = new StringBuilder();
-            StringBuilder sbSkippedScrap = new StringBuilder();
-            StringBuilder sbInvalidScrap = new StringBuilder();
+			var sbValidScrap = new StringBuilder();
+            var validScrap = false;
+            var sbSkippedScrap = new StringBuilder();
+            var skippedScrap = false;
+            var sbInvalidScrap = new StringBuilder();
+            var invalidScrap = false;
 			
 			sbValidScrap.AppendLine();
             sbValidScrap.AppendFormat("{0,-1}The following valid scrap was created...", " ");
             sbValidScrap.AppendLine();
-       
+            sbSkippedScrap.AppendLine();
+
             sbSkippedScrap.AppendLine();
             sbSkippedScrap.AppendFormat("{0,-1}The following valid scrap was intentionally skipped...", " ");
+            sbSkippedScrap.AppendLine();
             sbSkippedScrap.AppendLine();
 
             sbInvalidScrap.AppendLine();
             sbInvalidScrap.AppendFormat("{0,-1}The following components did not contain valid scrap...", " ");
             sbInvalidScrap.AppendLine();
+            sbSkippedScrap.AppendLine();
 
-			foreach (var cm in _componentMaps)
+            foreach (var cm in _componentMaps)
             {
                 if (cm.Value.HasValidScrap())
+                {
                     sbValidScrap.AppendLine(cm.Value.ToString());
-                else if (cm.Value.ScrapIntentionallySkipped) 
+                    validScrap = true;
+                }
+                else if (cm.Value.ScrapIntentionallySkipped)
+                {
                     sbSkippedScrap.AppendLine(cm.Value.ToString());
-				else sbInvalidScrap.AppendLine(cm.Value.ToString());
+                    skippedScrap = true;
+                }
+				else
+                {
+                    sbInvalidScrap.AppendLine(cm.Value.ToString());
+                    invalidScrap = true;
+                }
             }
-            sbInvalidScrap.AppendLine();
+
+            if (!validScrap) sbValidScrap.AppendLine("None");
+            if (!skippedScrap) sbSkippedScrap.AppendLine("None");
+            if (!invalidScrap) sbInvalidScrap.AppendLine("None");
+
             sbValidScrap.AppendLine(sbSkippedScrap.ToString());
             sbValidScrap.AppendLine(sbInvalidScrap.ToString());
             sbValidScrap.AppendLine();
@@ -308,7 +328,7 @@ namespace AwwScrap
 						cm.Value.AddCompatibleRefineryBpc(bco.Key, false);
 						continue;
 					}
-					if (falseHits != maxCompatibility * 0.5f)
+					if (falseHits <= maxCompatibility * 0.5f)
 						cm.Value.AddCompatibleRefineryBpc(bco.Key, true);
 				}
 			}
