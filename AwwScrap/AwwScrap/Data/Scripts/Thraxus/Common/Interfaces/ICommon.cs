@@ -1,14 +1,11 @@
 ﻿using System;
-using AwwScrap.Common.Enums;
-using AwwScrap.Common.Utilities;
-using VRage.Game;
 
 namespace AwwScrap.Common.Interfaces
 {
 	public interface ICommon
 	{
 		event Action<ICommon> OnClose;
-		event Action<string, string, LogType, bool, int, string> OnWriteToLog;
+		event Action<string, string> OnWriteToLog;
 
 		void Update(ulong tick);
 
@@ -16,6 +13,6 @@ namespace AwwScrap.Common.Interfaces
 
 		void Close();
 
-		void WriteToLog(string caller, string message, LogType type, bool showOnHud = false, int duration = CommonSettings.DefaultLocalMessageDisplayTime, string color = MyFontEnum.Green);
+		void WriteGeneral(string caller, string message);
 	}
 }

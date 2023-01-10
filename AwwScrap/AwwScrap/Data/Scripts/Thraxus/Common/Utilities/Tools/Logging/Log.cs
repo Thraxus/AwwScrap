@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Sandbox.ModAPI;
-using VRage.Game;
 
 namespace AwwScrap.Common.Utilities.Tools.Logging
 {
@@ -36,9 +35,14 @@ namespace AwwScrap.Common.Utilities.Tools.Logging
 			TextWriter = null;
 		}
 
-		public void WriteToLog(string caller, string message, int duration = CommonSettings.DefaultLocalMessageDisplayTime, string color = MyFontEnum.Green)
+		public void WriteGeneral(string caller = "", string message = "")
 		{
 			BuildLogLine(caller, message);
+		}
+
+		public void WriteException(string caller = "", string message = "")
+		{
+			BuildLogLine(caller, "Exception!\n\n" + message);
 		}
 
 		private readonly object _lockObject = new object();

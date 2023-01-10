@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using AwwScrap.Common.Extensions;
 using AwwScrap.Support;
 using Sandbox.Definitions;
 using VRage;
@@ -71,7 +72,6 @@ namespace AwwScrap
 			_componentBlueprint = bp;
 			_productionTime = bp.BaseProductionTimeInSeconds;
 			AmountProduced = bp.Results[0].Amount;
-            //_writeMeLast.AppendFormat("{0,-4}WML: {1}\n", " ", bp.Results[0].Amount);
         }
 		
 		public void ScrubBlacklistedScrapReturns()
@@ -106,7 +106,6 @@ namespace AwwScrap
 
 		public void AddCompatibleRefineryBpc(MyBlueprintClassDefinition bcd, bool isFalseHit)
 		{
-            //_writeMeLast.AppendLine($"    AddCompatibleRefineryBpc(): [{(isFalseHit ? "T" : "F")}][{(HasFalseCompatibleBlueprintClasses ? "T" : "F")}][{_compatibleBlueprints.Count:D00}][{(_compatibleBlueprints.Contains(bcd) ? "T" : "F")}]");
             if (_compatibleBlueprints.Contains(bcd)) return;
 			if (isFalseHit && !HasFalseCompatibleBlueprintClasses && _compatibleBlueprints.Count > 0) return;
 			if (!isFalseHit && HasFalseCompatibleBlueprintClasses)
@@ -127,11 +126,9 @@ namespace AwwScrap
 
         private void SetScrapAttributes()
 		{
-            //_writeMeLast.AppendLine($"    SetScrapAttributes(): [{(_componentDefinition != null ? "T" : "F")}][{(_scrapDefinition != null ? "T" : "F")}]");
             if (_componentDefinition == null) return;
 			if (_scrapDefinition == null) return;
 			bool hasCustomIcon = false;
-			//string iconPath = "";
 
 			string[] icons = new string[_scrapDefinition.Icons.Length + 1];
 			for (var i = 0; i < _scrapDefinition.Icons.Length; i++)
@@ -152,25 +149,6 @@ namespace AwwScrap
 				_scrapDefinition.Icons = icons;
 			}
 
-			//	//writeMeLast.AppendLine(_scrapDefinition.Icons[i]);
-			//if (!hasCustomIcon)
-			//{
-			//	for (var i = 0; i < _scrapDefinition.Icons.Length; i++)
-			//	{
-			//		if (_scrapDefinition.Icons[i].EndsWith("generic_scrap.dds"))
-			//			icons[i] = _componentDefinition.Icons[0];
-			//	}
-
-			//	icons[_scrapDefinition.Icons.Length + 1] = _fullOverlayIcon;
-			//	_scrapDefinition.Icons = icons;
-			//	//string newIcon = iconPath.Replace("generic_scrap.dds", "ScrapOverlay.dds");
-			//	//	_scrapDefinition.Icons = new[]
-			//	//{
-			//	//	_componentDefinition.Icons[0],
-			//	//	_fullOverlayIcon
-			//	//};
-			//}
-			//_scrapDefinition.IconSymbol = MyStringId.GetOrCompute("Scrap");
 			_scrapDefinition.Mass = _componentDefinition.Mass * Constants.ScrapMassScalar;
 			_scrapDefinition.Volume = _componentDefinition.Volume * Constants.ScrapVolumeScalar;
 			_scrapDefinition.MaxStackAmount = MyFixedPoint.MaxValue;
@@ -238,7 +216,6 @@ namespace AwwScrap
 
         public void AddToPrerequisites(string key, MyFixedPoint value)
         {
-            _writeMeLast.AppendFormat("{0,-6}[{1}]{2}\n", " ", key, value);
             if (ComponentPrerequisites.ContainsKey(key))
             {
                 ComponentPrerequisites[key] += value;
@@ -311,7 +288,7 @@ namespace AwwScrap
 			
 			sb.AppendFormat("{0,-2}{1} | {2} | {3}", " ", _componentDefinition.Id.SubtypeName, _scrapDefinition.Id.SubtypeName, _scrapBlueprint.Id.SubtypeName);
 			sb.AppendLine();
-			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:00.00}s][{5:00.0000}][{6:00.0000}] | ", " ", SkitCompatible ? "T" : "F", HasFalseCompatibleBlueprintClasses ? "T" : "F", (float)AmountProduced, _productionTime, _scrapDefinition.Mass, _scrapDefinition.Volume);
+			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:00.00}s][{5:00.0000}][{6:00.0000}] | ", " ", SkitCompatible.ToSingleChar(), HasFalseCompatibleBlueprintClasses.ToSingleChar(), (float)AmountProduced, _productionTime, _scrapDefinition.Mass, _scrapDefinition.Volume);
 			foreach (var cpr in ComponentPrerequisites)
 			{
 				sb.AppendFormat("[{0:00.00}] {1} ", (float)cpr.Value, cpr.Key);
@@ -332,7 +309,7 @@ namespace AwwScrap
 			sb.AppendFormat("{0,-4}", " ");
 			foreach (var cbp in _compatibleBlueprints)
 			{
-				sb.AppendFormat("[{0}] {1} ", cbp.ContainsBlueprint(_scrapBlueprint) ? "T" : "F", cbp.Id.SubtypeName);
+				sb.AppendFormat("[{0}] {1} ", cbp.ContainsBlueprint(_scrapBlueprint).ToSingleChar(), cbp.Id.SubtypeName);
 			}
 			sb.AppendLine();
             sb.AppendFormat("{0,-4}Component Icon(s)", " ");
@@ -349,8 +326,6 @@ namespace AwwScrap
 				sb.AppendFormat("{0,-6}{1}", " ", string.IsNullOrEmpty(icon) ? "icon was empty" : icon);
 				sb.AppendLine();
 			}
-			//sb.AppendLine();
-			//sb.AppendLine();
             if (_multipleComponentPrerequisitesDetected != null)
             {
                 sb.Append(_multipleComponentPrerequisitesDetected);

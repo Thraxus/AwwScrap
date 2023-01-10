@@ -102,7 +102,7 @@ namespace AwwScrap
             sbValidScrap.AppendLine(sbInvalidScrap.ToString());
             sbValidScrap.AppendLine();
 
-			WriteToLog("LateSetup", sbValidScrap.ToString(), LogType.General);
+            WriteGeneral("LateSetup", sbValidScrap.ToString());
 
             //WriteToLog("LateSetup", $"\n{_debugSb.ToString()}", LogType.General);
             //PrintAwwScrapRecyclerStuffs();
@@ -240,7 +240,7 @@ namespace AwwScrap
             rpt.AppendLine();
 			foreach (var cmq in componentMapQueue)
                 rpt.AppendLine(cmq.ToString());
-            WriteToLog(nameof(EliminateCompoundComponents), rpt.ToString(), LogType.General);
+            WriteGeneral(nameof(EliminateCompoundComponents), rpt.ToString());
         }
 
 		private void ScrubBlacklistedScrapReturns()
@@ -259,7 +259,7 @@ namespace AwwScrap
 				if (refinery.Id.SubtypeName == Constants.AwwScrapRecyclerSubtypeName)
 				{
 					_awwScrapRefineryDefinition = refinery;
-					WriteToLog(nameof(ScourRefineries), "Found the _awwScrapRefineryDefinition ...", LogType.General);
+                    WriteGeneral(nameof(ScourRefineries), "Found the _awwScrapRefineryDefinition ...");
 					continue;
 				}
 				foreach (var bpc in refinery.BlueprintClasses)
@@ -377,7 +377,7 @@ namespace AwwScrap
 			{
 				if (!cm.Value.HasValidScrap()) continue;
 				_awwScrapAllScrapBlueprintClassDefinition.AddBlueprint(cm.Value.GetScrapBlueprint());
-				WriteToLog(nameof(ScourRefineries), $"Added: {cm.Value.GetScrapBlueprint().Id.SubtypeName}", LogType.General);
+                WriteGeneral(nameof(ScourRefineries), $"Added: {cm.Value.GetScrapBlueprint().Id.SubtypeName}");
 			}
 			_awwScrapRefineryDefinition.BlueprintClasses.Clear();
 			_awwScrapRefineryDefinition.BlueprintClasses.Add(_awwScrapAllScrapBlueprintClassDefinition);

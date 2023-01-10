@@ -1,5 +1,5 @@
-﻿using AwwScrap.Common.Enums;
-using AwwScrap.Common.Utilities;
+﻿using System.Text;
+using AwwScrap.Common.Enums;
 using AwwScrap.Common.Utilities.Tools.Logging;
 using Sandbox.ModAPI;
 using VRage.Game;
@@ -15,8 +15,6 @@ namespace AwwScrap.Common.BaseClasses
 
 		protected abstract MyUpdateOrder Schedule { get; }
 
-		internal long TickCounter;
-
 		private Log _generalLog;
 
 		private bool _superEarlySetupComplete;
@@ -30,9 +28,9 @@ namespace AwwScrap.Common.BaseClasses
 				case CompType.Both:
 					return false;
 				case CompType.Client:
-					return CommonSettings.IsServer;
+					return References.IsServer;
 				case CompType.Server:
-					return !CommonSettings.IsServer;
+					return !References.IsServer;
 				default:
 					return false;
 			}
@@ -77,7 +75,7 @@ namespace AwwScrap.Common.BaseClasses
 		{
 			_superEarlySetupComplete = true;
 			_generalLog = new Log(CompName);
-			WriteToLog("SuperEarlySetup", $"Waking up.  Is Server: {CommonSettings.IsServer}", LogType.General);
+			WriteGeneral("SuperEarlySetup", $"Waking up.  Is Server: {References.IsServer}");
 		}
 
 		/// <summary>
@@ -87,6 +85,17 @@ namespace AwwScrap.Common.BaseClasses
 		{
 			if (BlockUpdates()) return;
 			base.BeforeStart();
+			BasicInformationDump();
+		}
+
+        private void BasicInformationDump()
+        {
+            var sb = new StringBuilder();
+            Reporting.GameSettings.Report(sb);
+            Reporting.InstalledMods.Report(sb);
+            Reporting.ExistingFactions.Report(sb);
+            Reporting.StoredIdentities.Report(sb);
+			WriteGeneral(sb.ToString());
 		}
 
 		/// <summary>
@@ -113,44 +122,17 @@ namespace AwwScrap.Common.BaseClasses
 			if (BlockUpdates()) return;
 			base.UpdateBeforeSimulation();
 			if (!_lateSetupComplete) LateSetup();
-			RunBeforeSimUpdate();
+            UpdateBeforeSim();
 		}
 
-		private void RunBeforeSimUpdate()
-		{
-			TickCounter++;
-			BeforeSimUpdate();
-			if (TickCounter % 2 == 0) BeforeSimUpdate2Ticks();
-			if (TickCounter % 10 == 0) BeforeSimUpdate5Ticks();
-			if (TickCounter % 20 == 0) BeforeSimUpdate10Ticks();
-			if (TickCounter % (CommonSettings.TicksPerSecond / 2) == 0) BeforeSimUpdateHalfSecond();
-			if (TickCounter % CommonSettings.TicksPerSecond == 0) BeforeSimUpdate1Second();
-			if (TickCounter % (CommonSettings.TicksPerSecond * 30) == 0) BeforeSimUpdate30Seconds();
-			if (TickCounter % (CommonSettings.TicksPerMinute) == 0) BeforeSimUpdate1Minute();
-		}
-
-		protected virtual void BeforeSimUpdate() { }
-
-		protected virtual void BeforeSimUpdate2Ticks() { }
-
-		protected virtual void BeforeSimUpdate5Ticks() { }
-
-		protected virtual void BeforeSimUpdate10Ticks() { }
-
-		protected virtual void BeforeSimUpdateHalfSecond() { }
-
-		protected virtual void BeforeSimUpdate1Second() { }
-
-		protected virtual void BeforeSimUpdate30Seconds() { }
-
-		protected virtual void BeforeSimUpdate1Minute() { }
+		protected virtual void UpdateBeforeSim() { }
 
 		protected virtual void LateSetup()
 		{
 			_lateSetupComplete = true;
 			if (UpdateOrder != Schedule)
 				MyAPIGateway.Utilities.InvokeOnGameThread(() => SetUpdateOrder(Schedule)); // sets the proper update schedule to the desired schedule
-			WriteToLog("LateSetup", $"Fully online.", LogType.General);
+			WriteGeneral("LateSetup", $"Fully online.");
 		}
 
 		/// <summary>
@@ -159,8 +141,11 @@ namespace AwwScrap.Common.BaseClasses
 		public override void UpdateAfterSimulation()
 		{
 			if (BlockUpdates()) return;
-			base.UpdateAfterSimulation();
-		}
+            base.UpdateAfterSimulation();
+			UpdateAfterSim();
+        }
+
+        protected virtual void UpdateAfterSim() { }
 
 		protected override void UnloadData()
 		{
@@ -171,23 +156,8 @@ namespace AwwScrap.Common.BaseClasses
 		protected virtual void Unload()
 		{
 			if (BlockUpdates()) return;
-			WriteToLog("Unload", $"Retired.", LogType.General);
+			WriteGeneral("Unload", $"Retired.");
 			_generalLog?.Close();
-		}
-
-		public void WriteToLog(string caller, string message, LogType type, bool showOnHud = false, int duration = CommonSettings.DefaultLocalMessageDisplayTime, string color = MyFontEnum.Green)
-		{
-			switch (type)
-			{
-				case LogType.Exception:
-					WriteException(caller, message, duration, color);
-					return;
-				case LogType.General:
-					WriteGeneral(caller, message, duration, color);
-					return;
-				default:
-					return;
-			}
 		}
 
 		/// <summary>
@@ -195,7 +165,7 @@ namespace AwwScrap.Common.BaseClasses
 		/// </summary>
 		public override void HandleInput()
 		{
-
+			base.HandleInput();
 		}
 
 		/// <summary>
@@ -204,7 +174,7 @@ namespace AwwScrap.Common.BaseClasses
 		/// </summary>
 		public override void Simulate()
 		{
-
+			base.Simulate();
 		}
 
 		/// <summary>
@@ -213,7 +183,7 @@ namespace AwwScrap.Common.BaseClasses
 		/// </summary>
 		public override void Draw()
 		{
-
+			base.Draw();
 		}
 
 		/// <summary>
@@ -221,22 +191,18 @@ namespace AwwScrap.Common.BaseClasses
 		/// </summary>
 		public override void UpdatingStopped()
 		{
-
+			base.UpdatingStopped();
 		}
 
-		private readonly object _writeLocker = new object();
 
-		private void WriteException(string caller, string message, int duration, string color)
+		public void WriteException(string caller, string message)
 		{
-			StaticLog.WriteToLog($"{CompName}: {caller}", $"Exception! {message}", LogType.Exception, duration, color);
+			_generalLog?.WriteException($"{CompName}: {caller}", message);
 		}
 
-		private void WriteGeneral(string caller, string message, int duration, string color)
+		public void WriteGeneral(string caller = "", string message = "")
 		{
-			lock (_writeLocker)
-			{
-				_generalLog?.WriteToLog($"{CompName}: {caller}", message, duration, color);
-			}
+			_generalLog?.WriteGeneral($"{CompName}: {caller}", message);
 		}
 	}
 }
