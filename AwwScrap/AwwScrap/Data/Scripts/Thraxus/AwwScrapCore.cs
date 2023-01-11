@@ -9,6 +9,7 @@ using VRage.Game;
 using VRage.Game.Components;
 using AwwScrap.Support;
 using VRage.Collections;
+using VRage.Utils;
 
 namespace AwwScrap
 {
@@ -27,32 +28,22 @@ namespace AwwScrap
 		private readonly MyBlueprintClassDefinition _awwScrapAllScrapBlueprintClassDefinition = MyDefinitionManager.Static.GetBlueprintClass(Constants.AwwScrapAllScrapClassName);
 		private MyRefineryDefinition _awwScrapRefineryDefinition;
 		private readonly Dictionary<string, MyPhysicalItemDefinition> _scrapDictionary = new Dictionary<string, MyPhysicalItemDefinition>();
-
-		public static AwwScrapCore StaticInstance;
+        private readonly HashSet<MyStringHash> _ingots = new HashSet<MyStringHash>();
+        private readonly Dictionary<MyStringHash, HashSet<MyStringHash>> _compoundIngots = new Dictionary<MyStringHash, HashSet<MyStringHash>>();
 
         //private readonly StringBuilder _debugSb = new StringBuilder();
 
         protected override void SuperEarlySetup()
 		{
 			base.SuperEarlySetup();
-			StaticInstance = this;
 			Run();
 			SetDeconstructItems();
 			HideBadScrap();
 		}
 
-		protected override void EarlySetup()
-		{
-			base.EarlySetup();
-			
-		}
-
 		protected override void LateSetup()
 		{
 			base.LateSetup();
-			//Run();
-			//SetDeconstructItems();
-			//HideBadScrap();
 			var sbValidScrap = new StringBuilder();
             var validScrap = false;
             var sbSkippedScrap = new StringBuilder();
@@ -60,20 +51,15 @@ namespace AwwScrap
             var sbInvalidScrap = new StringBuilder();
             var invalidScrap = false;
 			
-			sbValidScrap.AppendLine();
+			sbValidScrap.AppendLine("\n");
             sbValidScrap.AppendFormat("{0,-1}The following valid scrap was created...", " ");
-            sbValidScrap.AppendLine();
-            sbSkippedScrap.AppendLine();
-
-            sbSkippedScrap.AppendLine();
+            sbValidScrap.AppendLine("\n");
+			
             sbSkippedScrap.AppendFormat("{0,-1}The following valid scrap was intentionally skipped...", " ");
-            sbSkippedScrap.AppendLine();
-            sbSkippedScrap.AppendLine();
-
-            sbInvalidScrap.AppendLine();
+            sbSkippedScrap.AppendLine("\n");
+			
             sbInvalidScrap.AppendFormat("{0,-1}The following components did not contain valid scrap...", " ");
-            sbInvalidScrap.AppendLine();
-            sbSkippedScrap.AppendLine();
+            sbInvalidScrap.AppendLine("\n");
 
             foreach (var cm in _componentMaps)
             {
@@ -94,17 +80,17 @@ namespace AwwScrap
                 }
             }
 
-            if (!validScrap) sbValidScrap.AppendLine("None");
-            if (!skippedScrap) sbSkippedScrap.AppendLine("None");
-            if (!invalidScrap) sbInvalidScrap.AppendLine("None");
+            if (!validScrap) sbValidScrap.AppendLine("  None");
+            if (!skippedScrap) sbSkippedScrap.AppendLine("  None");
+            if (!invalidScrap) sbInvalidScrap.AppendLine("  None");
 
             sbValidScrap.AppendLine(sbSkippedScrap.ToString());
             sbValidScrap.AppendLine(sbInvalidScrap.ToString());
             sbValidScrap.AppendLine();
 
             WriteGeneral("LateSetup", sbValidScrap.ToString());
-
-            //WriteToLog("LateSetup", $"\n{_debugSb.ToString()}", LogType.General);
+			 
+            //WriteGeneral("LateSetup", $"\n{_debugSb}");
             //PrintAwwScrapRecyclerStuffs();
         }
 
@@ -131,19 +117,12 @@ namespace AwwScrap
 
 		private void Run()
 		{
-            //WriteToLog(nameof(Run), $"Running: {nameof(GrabInformation)}", LogType.General);
 			GrabInformation();
-            //WriteToLog(nameof(Run), $"Running: {nameof(ScourAssemblers)}", LogType.General);
 			ScourAssemblers();
-            //WriteToLog(nameof(Run), $"Running: {nameof(EliminateCompoundComponents)}", LogType.General);
 			EliminateCompoundComponents();
-            //WriteToLog(nameof(Run), $"Running: {nameof(ScrubBlacklistedScrapReturns)}", LogType.General);
 			ScrubBlacklistedScrapReturns();
-            //WriteToLog(nameof(Run), $"Running: {nameof(ScourRefineries)}", LogType.General);
 			ScourRefineries();
-            //WriteToLog(nameof(Run), $"Running: {nameof(ScourSkits)}", LogType.General);
 			ScourSkits();
-            //WriteToLog(nameof(Run), $"Running: {nameof(FindCompatibleBlueprints)}", LogType.General);
 			FindCompatibleBlueprints();
 			foreach (var fcm in _componentMaps)
 			{
@@ -159,7 +138,6 @@ namespace AwwScrap
 		{
 			foreach (var def in MyDefinitionManager.Static.GetDefinitionsOfType<MyPhysicalItemDefinition>())
             {
-                //_debugSb.AppendLine($"[{(def.Public ? "T" : "F")}] ({def.Id.TypeId}) {def.Id.SubtypeName}");
 				if (!def.Public) continue;
 				if (ValidateScrap(def.Id.SubtypeName))
 				{
@@ -172,13 +150,17 @@ namespace AwwScrap
 					var compMap = new ComponentMap(ModContext.ModPath);
 					compMap.SetComponentDefinition(def);
 					_componentMaps.Add(def.Id.SubtypeName, compMap);
-                    //_debugSb.AppendLine($"GrabInformation:  {def.Id.SubtypeName} | {compMap}");
 					_componentMaps.ApplyChanges();
 				}
+
+                if (def.IsIngot)
+                {
+                    _ingots.Add(def.Id.SubtypeId);
+                }
 			}
 		}
-		
-		private void ScourAssemblers()
+
+        private void ScourAssemblers()
 		{
 			foreach (var assembler in MyDefinitionManager.Static.GetDefinitionsOfType<MyAssemblerDefinition>())
 			{
@@ -191,16 +173,33 @@ namespace AwwScrap
 						if (!bpd.Public) continue;
 						if (bpd.Id.SubtypeName.Contains("/"))
 							break;
+                        CheckBpdAgainstIngots(bpd);
 						if (bpd.Results.Length != 1 || !_componentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName))
 							continue;
-						_componentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
+                        // TODO: Figure out why the below aren't just one method since the both use the same object.
+                        // TODO: If no reasonable answer, combine them for sanity sake.
+                        _componentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
 						_componentMaps[bpd.Results[0].Id.SubtypeName].AddBlueprint(bpd);
 					}
 				}
 			}
 		}
 
-		private void EliminateCompoundComponents()
+        private void CheckBpdAgainstIngots(MyBlueprintDefinitionBase bpd)
+        {
+            foreach (var result in bpd.Results)
+            {
+                if (!_ingots.Contains(result.Id.SubtypeId)) continue;
+				if (!_compoundIngots.ContainsKey(result.Id.SubtypeId))
+					_compoundIngots.Add(result.Id.SubtypeId, new HashSet<MyStringHash>());
+                foreach (var pre in bpd.Prerequisites)
+                {
+                    _compoundIngots[result.Id.SubtypeId].Add(pre.Id.SubtypeId);
+                }
+            }
+        }
+
+        private void EliminateCompoundComponents()
 		{
 			var componentMapQueue = new Queue<ComponentMap>();
             const int breakAfter = 300;
@@ -219,7 +218,6 @@ namespace AwwScrap
 				{
 					foreach (var cpr in cm.Value.ComponentPrerequisites)
                     {
-                        //_debugSb.AppendLine($"EliminateCompoundComponents: [{(_componentMaps.ContainsKey(cpr.Key) ? "T" : "F")}] cm.key {cm.Key} | cpr.key {cpr.Key}");
 						if (!_componentMaps.ContainsKey(cpr.Key)) continue;
 						componentMapQueue.Enqueue(cm.Value);
 						_componentMaps.Remove(cm.Key);
@@ -272,7 +270,6 @@ namespace AwwScrap
 						if (!bpd.Public) continue;
 						foreach (var res in bpd.Results)
 						{
-							//if (_blueprintClassOutputs[bpc].Contains(res.Id.SubtypeName)) continue;
 							_blueprintClassOutputs[bpc].Add(res.Id.SubtypeName);
 						}
 					}
@@ -295,34 +292,32 @@ namespace AwwScrap
 						if (!bpd.Public) continue;
 						foreach (var res in bpd.Results)
 						{
-							//if (_skitOutputs[bpc].Contains(res.Id.SubtypeName)) continue;
 							_skitOutputs[bpc].Add(res.Id.SubtypeName);
 						}
 					}
 				}
 			}
 		}
-
+		
         private void FindCompatibleBlueprints()
 		{
 			foreach (var bco in _blueprintClassOutputs)
             {
-                //_debugSb.AppendLine($"FindCompatibleBlueprints(): {bco.Key.Id.SubtypeName}");
 				if (Constants.IgnoredBlueprintClasses.Contains(bco.Key.Id.SubtypeName)) continue;
 				foreach (var cm in _componentMaps)
 				{
-                    //_debugSb.AppendLine($"  Key: {cm.Key}");
                     bool compatible = true;
 					int maxCompatibility = cm.Value.ComponentPrerequisites.Count;
 					int falseHits = 0;
-					foreach (var pre in cm.Value.ComponentPrerequisites)
+                    //	TODO: Add a container here that stores composite ingot types and check against this when the "if (bco.Value.Contains(pre.Key)) continue;" loop fails,
+                    //	TODO:	Do this before setting compatible = false since the bco is compatible if the composite ingots inputs are compatible.
+                    foreach (var pre in cm.Value.ComponentPrerequisites)
 					{
-                        //_debugSb.AppendLine($"    Pre: [{(bco.Value.Contains(pre.Key) ? "T" : "F")}] [{pre.Value}] {pre.Key}");
                         if (bco.Value.Contains(pre.Key)) continue;
+                        if (CheckCompoundIngots(bco.Value, pre.Key)) continue;
 						compatible = false;
 						falseHits++;
 					}
-                    //_debugSb.AppendLine($"      Compatible: [{(compatible ? "T" : "F")}][{(falseHits <= maxCompatibility * 0.5f ? "T" : "F")}]");
                     if (compatible)
 					{
 						cm.Value.AddCompatibleRefineryBpc(bco.Key, false);
@@ -334,7 +329,19 @@ namespace AwwScrap
 			}
 		}
 
-		private void FindCompatibleSkitBlueprints()
+        private bool CheckCompoundIngots(ICollection<string> bcoValue, string preKey)
+        {
+            MyStringHash check = MyStringHash.GetOrCompute(preKey);
+			if (!_compoundIngots.ContainsKey(check)) return false;
+			foreach (var results in _compoundIngots[check])
+            {
+                if (bcoValue.Contains(results.ToString())) continue;
+                return false;
+            }
+            return true;
+        }
+
+        private void FindCompatibleSkitBlueprints()
 		{
 			foreach (var sko in _skitOutputs)
 			{
