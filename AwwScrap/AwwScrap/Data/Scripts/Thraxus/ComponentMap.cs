@@ -64,16 +64,6 @@ namespace AwwScrap
 			ApplyScrapBlueprint();
 		}
 
-		public void AddBlueprint(MyBlueprintDefinitionBase bp)
-		{
-			if (bp.Results.Length != 1) return;
-			if (_componentBlueprint != null) return;
-			if (bp.Results[0].Id.SubtypeName != _componentDefinition.Id.SubtypeName) return;
-			_componentBlueprint = bp;
-			_productionTime = bp.BaseProductionTimeInSeconds;
-			AmountProduced = bp.Results[0].Amount;
-        }
-		
 		public void ScrubBlacklistedScrapReturns()
 		{
 			foreach (var srb in Constants.ScrapReturnsBlacklist)
@@ -224,7 +214,18 @@ namespace AwwScrap
             ComponentPrerequisites.Add(key, value);
         }
 
-        public void AddComponentPrerequisites(MyBlueprintDefinitionBase bpd)
+        public void AddBlueprint(MyBlueprintDefinitionBase bpd)
+        {
+            if (bpd.Results.Length != 1) return;
+            if (_componentBlueprint != null) return;
+            if (bpd.Results[0].Id.SubtypeName != _componentDefinition.Id.SubtypeName) return;
+            _componentBlueprint = bpd;
+            _productionTime = bpd.BaseProductionTimeInSeconds;
+            AmountProduced = bpd.Results[0].Amount;
+			AddComponentPrerequisites(bpd);
+        }
+
+        private void AddComponentPrerequisites(MyBlueprintDefinitionBase bpd)
 		{
 			if (ComponentPrerequisites.Count > 0) return;
 			foreach (var pre in bpd.Prerequisites)

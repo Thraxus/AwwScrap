@@ -176,9 +176,6 @@ namespace AwwScrap
                         CheckBpdAgainstIngots(bpd);
 						if (bpd.Results.Length != 1 || !_componentMaps.ContainsKey(bpd.Results[0].Id.SubtypeName))
 							continue;
-                        // TODO: Figure out why the below aren't just one method since the both use the same object.
-                        // TODO: If no reasonable answer, combine them for sanity sake.
-                        _componentMaps[bpd.Results[0].Id.SubtypeName].AddComponentPrerequisites(bpd);
 						_componentMaps[bpd.Results[0].Id.SubtypeName].AddBlueprint(bpd);
 					}
 				}
@@ -309,8 +306,6 @@ namespace AwwScrap
                     bool compatible = true;
 					int maxCompatibility = cm.Value.ComponentPrerequisites.Count;
 					int falseHits = 0;
-                    //	TODO: Add a container here that stores composite ingot types and check against this when the "if (bco.Value.Contains(pre.Key)) continue;" loop fails,
-                    //	TODO:	Do this before setting compatible = false since the bco is compatible if the composite ingots inputs are compatible.
                     foreach (var pre in cm.Value.ComponentPrerequisites)
 					{
                         if (bco.Value.Contains(pre.Key)) continue;

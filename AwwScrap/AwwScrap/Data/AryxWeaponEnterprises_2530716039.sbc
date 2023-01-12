@@ -18,6 +18,40 @@
 			<Model>Models\Components\GenericScrap.mwm</Model>
 			<PhysicalMaterial>Metal</PhysicalMaterial>
 		</PhysicalItem>
+		<PhysicalItem>
+			<Id>
+				<TypeId>Ore</TypeId>
+				<SubtypeId>SuperchargerAWEScrap</SubtypeId>
+			</Id>
+			<DisplayName>SuperchargerAWEScrap</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Size>
+				<X>0.2</X>
+				<Y>0.2</Y>
+				<Z>0.1</Z>
+			</Size>
+			<Mass>1</Mass>
+			<Volume>0.254</Volume>
+			<Model>Models\Components\GenericScrap.mwm</Model>
+			<PhysicalMaterial>Metal</PhysicalMaterial>
+		</PhysicalItem>
+		<PhysicalItem>
+			<Id>
+				<TypeId>Ore</TypeId>
+				<SubtypeId>MilitaryPlateAWEScrap</SubtypeId>
+			</Id>
+			<DisplayName>MilitaryPlateAWEScrap</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Size>
+				<X>0.2</X>
+				<Y>0.2</Y>
+				<Z>0.1</Z>
+			</Size>
+			<Mass>1</Mass>
+			<Volume>0.254</Volume>
+			<Model>Models\Components\GenericScrap.mwm</Model>
+			<PhysicalMaterial>Metal</PhysicalMaterial>
+		</PhysicalItem>
 	</PhysicalItems>
 	<Blueprints>
 		<Blueprint>
@@ -29,6 +63,36 @@
 			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
 			<Prerequisites>
 				<Item Amount="1" TypeId="Ore" SubtypeId="ElectromagnetAWEScrap" />
+			</Prerequisites>
+			<Results>
+				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
+			</Results>
+			<BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+		</Blueprint>
+		<Blueprint>
+			<Id>
+				<TypeId>BlueprintDefinition</TypeId>
+				<SubtypeId>SuperchargerAWEScrapToIngot</SubtypeId>
+			</Id>
+			<DisplayName>SuperchargerAWEScrapToIngot</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Prerequisites>
+				<Item Amount="1" TypeId="Ore" SubtypeId="SuperchargerAWEScrap" />
+			</Prerequisites>
+			<Results>
+				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
+			</Results>
+			<BaseProductionTimeInSeconds>0.04</BaseProductionTimeInSeconds>
+		</Blueprint>
+		<Blueprint>
+			<Id>
+				<TypeId>BlueprintDefinition</TypeId>
+				<SubtypeId>MilitaryPlateAWEScrapToIngot</SubtypeId>
+			</Id>
+			<DisplayName>MilitaryPlateAWEScrapToIngot</DisplayName>
+			<Icon>Textures\GUI\Icons\Components\generic_scrap.dds</Icon>
+			<Prerequisites>
+				<Item Amount="1" TypeId="Ore" SubtypeId="MilitaryPlateAWEScrap" />
 			</Prerequisites>
 			<Results>
 				<Item Amount="1" TypeId="Ingot" SubtypeId="Silicon" />
