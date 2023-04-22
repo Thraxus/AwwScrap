@@ -203,6 +203,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AwwScrap\Data\BetterResources_2841960221.sbc" />
     <None Include="AwwScrap\Data\HighTechSolarArrays_2221990774.sbc" />
     <None Include="AwwScrap\Data\GrapheneExpanded_2791555101.sbc" />
     <None Include="AwwScrap\Data\BotSpawner_2336089504.sbc" />

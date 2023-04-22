@@ -192,6 +192,12 @@ namespace AwwScrap
 		{
 			if (_compatibleBlueprints.Count <= 0) return;
 			if (_scrapBlueprint == null) return;
+            if (_scrapBlueprint.Results == null || _scrapBlueprint.Results.Length <= 0)
+            {
+                _scrapBlueprint = null;
+                _scrapDefinition = null;
+                return;
+            }
 			foreach (var cbp in _compatibleBlueprints)
 			{
 				if (!cbp.ContainsBlueprint(_scrapBlueprint))
@@ -230,14 +236,15 @@ namespace AwwScrap
 			if (ComponentPrerequisites.Count > 0) return;
 			foreach (var pre in bpd.Prerequisites)
             {
-                if (ComponentPrerequisites.ContainsKey(pre.Id.SubtypeName))
+                MyFixedPoint prerequisite;
+                if (ComponentPrerequisites.TryGetValue(pre.Id.SubtypeName, out prerequisite))
                 {
                     if (_multipleComponentPrerequisitesDetected == null)
                     {
                         _multipleComponentPrerequisitesDetected = new StringBuilder();
                         _multipleComponentPrerequisitesDetected.AppendFormat("{0,-4}Multiple Component Prerequisites Detected!", " ");
                         _multipleComponentPrerequisitesDetected.AppendLine();
-                        _multipleComponentPrerequisitesDetected.AppendFormat("{0,-6}[{1:F4}] {2}", " ", (float)ComponentPrerequisites[pre.Id.SubtypeName], pre.Id.SubtypeName);
+                        _multipleComponentPrerequisitesDetected.AppendFormat("{0,-6}[{1:F4}] {2}", " ", (float)prerequisite, pre.Id.SubtypeName);
                         _multipleComponentPrerequisitesDetected.AppendLine();
 					}
 					_multipleComponentPrerequisitesDetected.AppendFormat("{0,-6}[{1:F4}] {2}", " ", (float)pre.Amount / Constants.AssemblerMultiplier, pre.Id.SubtypeName);
@@ -289,7 +296,7 @@ namespace AwwScrap
 			
 			sb.AppendFormat("{0,-2}{1} | {2} | {3}", " ", _componentDefinition.Id.SubtypeName, _scrapDefinition.Id.SubtypeName, _scrapBlueprint.Id.SubtypeName);
 			sb.AppendLine();
-			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:00.00}s][{5:00.0000}][{6:00.0000}] | ", " ", SkitCompatible.ToSingleChar(), HasFalseCompatibleBlueprintClasses.ToSingleChar(), (float)AmountProduced, _productionTime, _scrapDefinition.Mass, _scrapDefinition.Volume);
+			sb.AppendFormat("{0,-4}[{1}][{2}][{3:00}][{4:00.00}s][{5:00.0000}][{6:00.0000}][{7:D3}] | ", " ", SkitCompatible.ToSingleChar(), HasFalseCompatibleBlueprintClasses.ToSingleChar(), (float)AmountProduced, _productionTime, _scrapDefinition.Mass, _scrapDefinition.Volume, _scrapBlueprint.Results.Length);
 			foreach (var cpr in ComponentPrerequisites)
 			{
 				sb.AppendFormat("[{0:00.00}] {1} ", (float)cpr.Value, cpr.Key);
