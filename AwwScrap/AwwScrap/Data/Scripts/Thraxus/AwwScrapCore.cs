@@ -49,6 +49,7 @@ namespace AwwScrap
             var sbSkippedScrap = new StringBuilder();
             var skippedScrap = false;
             var sbInvalidScrap = new StringBuilder();
+            var sbEasyDefGenerator = new StringBuilder();
             var invalidScrap = false;
 			
 			sbValidScrap.AppendLine("\n");
@@ -60,6 +61,9 @@ namespace AwwScrap
 			
             sbInvalidScrap.AppendFormat("{0,-1}The following components did not contain valid scrap...", " ");
             sbInvalidScrap.AppendLine("\n");
+
+            sbEasyDefGenerator.AppendFormat("{0,-1}The following is used by Thraxus for setting up new scrap...", " ");
+            sbEasyDefGenerator.AppendLine("\n");
 
             foreach (var cm in _componentMaps)
             {
@@ -76,16 +80,22 @@ namespace AwwScrap
 				else
                 {
                     sbInvalidScrap.AppendLine(cm.Value.ToString());
+                    sbEasyDefGenerator.AppendLine(cm.Value.GetEasyDefGeneratorString());
                     invalidScrap = true;
                 }
             }
 
             if (!validScrap) sbValidScrap.AppendLine("  None");
             if (!skippedScrap) sbSkippedScrap.AppendLine("  None");
-            if (!invalidScrap) sbInvalidScrap.AppendLine("  None");
+            if (!invalidScrap)
+            {
+                sbInvalidScrap.AppendLine("  None");
+                sbEasyDefGenerator.Clear();
+            };
 
             sbValidScrap.AppendLine(sbSkippedScrap.ToString());
             sbValidScrap.AppendLine(sbInvalidScrap.ToString());
+            sbValidScrap.AppendLine(sbEasyDefGenerator.ToString());
             sbValidScrap.AppendLine();
 
             WriteGeneral("LateSetup", sbValidScrap.ToString());

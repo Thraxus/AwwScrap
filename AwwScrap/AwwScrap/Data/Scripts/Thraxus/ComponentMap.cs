@@ -271,6 +271,11 @@ namespace AwwScrap
 
         private StringBuilder _multipleComponentPrerequisitesDetected;
 
+        public string GetEasyDefGeneratorString()
+		{
+			return $"\"{_componentDefinition.Id.SubtypeName}\",";
+        }
+
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();

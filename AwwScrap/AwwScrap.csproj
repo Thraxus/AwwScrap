@@ -209,6 +209,7 @@
     <None Include="AwwScrap\Data\BotSpawner_2336089504.sbc" />
     <None Include="AwwScrap\Data\HomesteadWoodAndStoneBlocks_2790746375.sbc" />
     <None Include="AwwScrap\Data\EdensWrathEngineering_1759275190.sbc" />
+    <None Include="AwwScrap\Data\SpaceEngineersComplete_875707065.sbc" />
     <None Include="AwwScrap\Data\StarTrek_2634862322.sbc" />
     <None Include="AwwScrap\Data\HackingComputer3_728555954.sbc" />
     <None Include="AwwScrap\Data\AryxWeaponEnterprises_2530716039.sbc" />
@@ -219,6 +220,7 @@
     <None Include="AwwScrap\Data\IndustrialOverhaul_2344068716.sbc" />
     <None Include="AwwScrap\Data\LWTS_691529112.sbc" />
     <None Include="AwwScrap\Data\AwwScrapBlueprintClass.sbc" />
+    <None Include="AwwScrap\Data\ExtendedSurvivalTechnology_2842844421.sbc" />
     <None Include="AwwScrap\Models\Components\GenericScrap.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap1.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap10.mwm" />
