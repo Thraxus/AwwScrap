@@ -72,7 +72,7 @@ namespace AwwScrap
                     sbValidScrap.AppendLine(cm.Value.ToString());
                     validScrap = true;
                 }
-                else if (cm.Value.ScrapIntentionallySkipped)
+                else if (cm.Value.IntentionallySkipped)
                 {
                     sbSkippedScrap.AppendLine(cm.Value.ToString());
                     skippedScrap = true;

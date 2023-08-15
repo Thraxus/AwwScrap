@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using AwwScrap.Common.Extensions;
 using AwwScrap.Support;
@@ -6,6 +7,7 @@ using Sandbox.Definitions;
 using VRage;
 using VRage.Collections;
 using VRage.Game;
+using VRage.ObjectBuilders;
 
 namespace AwwScrap
 {
@@ -20,12 +22,13 @@ namespace AwwScrap
 		public MyFixedPoint AmountProduced;
 		private float _productionTime;
 
-        public bool ScrapIntentionallySkipped;
+        public bool IntentionallySkipped;
 		public bool HasFalseCompatibleBlueprintClasses;
 		public bool SkitCompatible;
 
 		public readonly Dictionary<string, MyFixedPoint> ComponentPrerequisites = new Dictionary<string, MyFixedPoint>();
-		private readonly List<MyBlueprintClassDefinition> _compatibleBlueprints = new List<MyBlueprintClassDefinition>();
+        private readonly Dictionary<string, MyObjectBuilderType> _prerequisiteTypeMap = new Dictionary<string, MyObjectBuilderType>();
+        private readonly List<MyBlueprintClassDefinition> _compatibleBlueprints = new List<MyBlueprintClassDefinition>();
 
 		private const string GenericScrapOverlay = "\\Textures\\GUI\\Icons\\Components\\ScrapOverlayOutlineRed.dds";
 		private readonly string _fullOverlayIcon;
@@ -56,7 +59,7 @@ namespace AwwScrap
         {
             if (Constants.DoNotScrap.Contains(_componentDefinition.Id.SubtypeName))
             {
-                ScrapIntentionallySkipped = true;
+                IntentionallySkipped = true;
 				return;
             }
             SetScrapAttributes();
@@ -166,7 +169,7 @@ namespace AwwScrap
 					{
 						// This will account for items that have more than 1 count of the resulting item, such as Light Bulbs and Armor Plates from IO
 						Amount = (MyFixedPoint)((float)(cpr.Value * Constants.ScrapScalar) / (float)AmountProduced),
-						Id = new MyDefinitionId(typeof(MyObjectBuilder_Ingot), cpr.Key)
+						Id = new MyDefinitionId(GetPrerequisiteType(cpr.Key), cpr.Key)
 					});
 			}
 
@@ -187,7 +190,14 @@ namespace AwwScrap
 			_scrapBlueprint.Results = items.ToArray();
 			_scrapBlueprint.Postprocess();
 		}
-		
+
+        private MyObjectBuilderType GetPrerequisiteType(string subtypeId)
+        {
+            MyObjectBuilderType type;
+            if (_prerequisiteTypeMap.TryGetValue(subtypeId, out type)) return type;
+            return typeof(MyObjectBuilder_Ingot);
+        }
+
 		private void ApplyScrapBlueprint()
 		{
 			if (_compatibleBlueprints.Count <= 0) return;
@@ -219,7 +229,7 @@ namespace AwwScrap
             }
             ComponentPrerequisites.Add(key, value);
         }
-
+		
         public void AddBlueprint(MyBlueprintDefinitionBase bpd)
         {
             if (bpd.Results.Length != 1) return;
@@ -252,8 +262,16 @@ namespace AwwScrap
 					continue;
                 }
                 AddToPrerequisites(pre.Id.SubtypeName, (MyFixedPoint)((float)pre.Amount / Constants.AssemblerMultiplier));
-			}
+                AddToPrerequisiteTypeMap(pre.Id.SubtypeName, pre.Id.TypeId);
+
+            }
 		}
+
+        private void AddToPrerequisiteTypeMap(string subtypeName, MyObjectBuilderType typeId)
+        {
+            if (_prerequisiteTypeMap.ContainsKey(subtypeName)) return;
+			_prerequisiteTypeMap.Add(subtypeName, typeId);
+        }
 
         public void ReconcileCompoundComponents(CachingDictionary<string, ComponentMap> compMap)
         {
@@ -284,7 +302,7 @@ namespace AwwScrap
 			if (!HasValidScrap())
 			{
 				sb.AppendFormat("{0,-4}{1}[{2}][{3}] {4}", " ", 
-					ScrapIntentionallySkipped ? 
+					IntentionallySkipped ? 
 						"Scrap Intentionally Skipped for: " : 
 						"No valid scrap: ",
                     (GetScrapDefinition() != null ? "T" : "F"), 
