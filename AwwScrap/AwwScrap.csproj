@@ -197,30 +197,33 @@
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Common\Utilities\Tools\Profiler.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\ComponentMap.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Helpers\Definitions.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\UserConfig\Settings\DefaultSettings.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\UserConfig\Controller\SettingsController.cs" />
+    <Compile Include="AwwScrap\Data\Scripts\Thraxus\UserConfig\Settings\UserSettings.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\Constants.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\ScrapAttributes.cs" />
     <Compile Include="AwwScrap\Data\Scripts\Thraxus\Support\Statics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AwwScrap\Data\BetterResources_2841960221.sbc" />
-    <None Include="AwwScrap\Data\HighTechSolarArrays_2221990774.sbc" />
-    <None Include="AwwScrap\Data\GrapheneExpanded_2791555101.sbc" />
-    <None Include="AwwScrap\Data\BotSpawner_2336089504.sbc" />
-    <None Include="AwwScrap\Data\HomesteadWoodAndStoneBlocks_2790746375.sbc" />
-    <None Include="AwwScrap\Data\EdensWrathEngineering_1759275190.sbc" />
-    <None Include="AwwScrap\Data\SpaceEngineersComplete_875707065.sbc" />
-    <None Include="AwwScrap\Data\StarTrek_2634862322.sbc" />
-    <None Include="AwwScrap\Data\HackingComputer3_728555954.sbc" />
-    <None Include="AwwScrap\Data\AryxWeaponEnterprises_2530716039.sbc" />
-    <None Include="AwwScrap\Data\TieredUpgradeModulesx2x32_1681783871.sbc" />
-    <None Include="AwwScrap\Data\VanillaComponents.sbc" />
-    <None Include="AwwScrap\Data\EnergyShields_484504816.sbc" />
-    <None Include="AwwScrap\Data\DefenseShields_1365616918.sbc" />
-    <None Include="AwwScrap\Data\IndustrialOverhaul_2344068716.sbc" />
-    <None Include="AwwScrap\Data\LWTS_691529112.sbc" />
-    <None Include="AwwScrap\Data\AwwScrapBlueprintClass.sbc" />
-    <None Include="AwwScrap\Data\ExtendedSurvivalTechnology_2842844421.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\BetterResources_2841960221.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\HighTechSolarArrays_2221990774.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\GrapheneExpanded_2791555101.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\BotSpawner_2336089504.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\HomesteadWoodAndStoneBlocks_2790746375.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\EdensWrathEngineering_1759275190.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\SpaceEngineersComplete_875707065.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\StarTrek_2634862322.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\HackingComputer3_728555954.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\AryxWeaponEnterprises_2530716039.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\TieredUpgradeModulesx2x32_1681783871.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\VanillaComponents.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\EnergyShields_484504816.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\DefenseShields_1365616918.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\IndustrialOverhaul_2344068716.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\LWTS_691529112.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\AwwScrapBlueprintClass.sbc" />
+    <None Include="AwwScrap\Data\ScrapDefinitions\ExtendedSurvivalTechnology_2842844421.sbc" />
     <None Include="AwwScrap\Models\Components\GenericScrap.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap1.mwm" />
     <None Include="AwwScrap\Models\Components\Scrap10.mwm" />
@@ -269,6 +272,8 @@
     <Content Include="AwwScrap\Textures\GUI\Icons\Components\thrust_components.dds" />
     <Content Include="AwwScrap\Thumb.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AwwScrap\Data\Scripts\Thraxus\References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
