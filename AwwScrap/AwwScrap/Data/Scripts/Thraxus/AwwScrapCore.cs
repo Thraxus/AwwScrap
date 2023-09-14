@@ -10,6 +10,8 @@ using VRage.Game.Components;
 using AwwScrap.Support;
 using VRage.Collections;
 using VRage.Utils;
+using AwwScrap.UserConfig.Controller;
+using AwwScrap.UserConfig.Settings;
 
 namespace AwwScrap
 {
@@ -31,12 +33,16 @@ namespace AwwScrap
         private readonly HashSet<MyStringHash> _ingots = new HashSet<MyStringHash>();
         private readonly Dictionary<MyStringHash, HashSet<MyStringHash>> _compoundIngots = new Dictionary<MyStringHash, HashSet<MyStringHash>>();
 
+        private SettingsController _settings;
+
         //private readonly StringBuilder _debugSb = new StringBuilder();
 
         protected override void SuperEarlySetup()
 		{
 			base.SuperEarlySetup();
-			Run();
+            _settings = new SettingsController(ModContext.ModName);
+            _settings.Initialize();
+            Run();
 			SetDeconstructItems();
 			HideBadScrap();
 		}
@@ -96,6 +102,7 @@ namespace AwwScrap
             sbValidScrap.AppendLine(sbSkippedScrap.ToString());
             sbValidScrap.AppendLine(sbInvalidScrap.ToString());
             sbValidScrap.AppendLine(sbEasyDefGenerator.ToString());
+            sbValidScrap.AppendLine(DefaultSettings.PrintSettings().ToString());
             sbValidScrap.AppendLine();
 
             WriteGeneral("LateSetup", sbValidScrap.ToString());

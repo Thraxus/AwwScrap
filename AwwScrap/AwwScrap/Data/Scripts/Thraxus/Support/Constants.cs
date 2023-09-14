@@ -10,11 +10,11 @@ namespace AwwScrap.Support
 		public const string AwwScrapSkitClassName = "AwwScrapSkit";
 		public const string AwwScrapAllScrapClassName = "AwwScrapRecycling";
 		public const string AwwScrapRecyclerSubtypeName = "AwwScrapRecycler";
-		public const float ScrapScalar = (BaseAwwScrapScalar / 2);
-		public const float ScrapMassScalar = 0.80f;
-		public const float ScrapVolumeScalar = 0.70f;
-		public const float ScrapProductionTimeScalar = 0.75f;
-		public const float BaseAwwScrapScalar = 0.9f;
+		//public const float ScrapScalar = (BaseAwwScrapScalar / 2);
+		//public const float ScrapMassScalar = 0.80f;
+		//public const float ScrapVolumeScalar = 0.70f;
+		//public const float ScrapProductionTimeScalar = 0.75f;
+		//public const float BaseAwwScrapScalar = 0.9f;
 		public static readonly float AssemblerMultiplier = MyAPIGateway.Session.SessionSettings.AssemblerEfficiencyMultiplier;
 
 		public static readonly List<string> ScrapReturnsBlacklist = new List<string>

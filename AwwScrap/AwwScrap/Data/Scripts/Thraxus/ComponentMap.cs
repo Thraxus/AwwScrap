@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
 using AwwScrap.Common.Extensions;
 using AwwScrap.Support;
+using AwwScrap.UserConfig.Settings;
 using Sandbox.Definitions;
 using VRage;
 using VRage.Collections;
@@ -142,8 +142,8 @@ namespace AwwScrap
 				_scrapDefinition.Icons = icons;
 			}
 
-			_scrapDefinition.Mass = _componentDefinition.Mass * Constants.ScrapMassScalar;
-			_scrapDefinition.Volume = _componentDefinition.Volume * Constants.ScrapVolumeScalar;
+			_scrapDefinition.Mass = _componentDefinition.Mass * DefaultSettings.ScrapMassScalar;
+			_scrapDefinition.Volume = _componentDefinition.Volume * DefaultSettings.ScrapVolumeScalar;
 			_scrapDefinition.MaxStackAmount = MyFixedPoint.MaxValue;
 			_scrapDefinition.DisplayNameString = _componentDefinition.DisplayNameText + " " + Constants.ScrapSuffix;
 		}
@@ -168,7 +168,7 @@ namespace AwwScrap
 					new MyBlueprintDefinitionBase.Item
 					{
 						// This will account for items that have more than 1 count of the resulting item, such as Light Bulbs and Armor Plates from IO
-						Amount = (MyFixedPoint)((float)(cpr.Value * Constants.ScrapScalar) / (float)AmountProduced),
+						Amount = (MyFixedPoint)((float)(cpr.Value * DefaultSettings.ScrapScalar) / (float)AmountProduced),
 						Id = new MyDefinitionId(GetPrerequisiteType(cpr.Key), cpr.Key)
 					});
 			}
@@ -186,7 +186,7 @@ namespace AwwScrap
 			
 			_scrapBlueprint.Icons = icons;
 			_scrapBlueprint.DisplayNameString = _componentDefinition.DisplayNameText + " " + Constants.ScrapSuffix;
-			_scrapBlueprint.BaseProductionTimeInSeconds = _productionTime * Constants.ScrapProductionTimeScalar;
+			_scrapBlueprint.BaseProductionTimeInSeconds = _productionTime * DefaultSettings.ScrapProductionTimeScalar;
 			_scrapBlueprint.Results = items.ToArray();
 			_scrapBlueprint.Postprocess();
 		}
