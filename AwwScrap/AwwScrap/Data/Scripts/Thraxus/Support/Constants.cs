@@ -122,6 +122,8 @@ namespace AwwScrap.Support
             "BrokenWoodGirder",
             "BrokenWoodPlanks",
             "WoodGirder",
+            "LicenseProduction",
+            "LicenseUpgradeX4"
         };
 
 		public static readonly List<string> IgnoredBlocks = new List<string>
