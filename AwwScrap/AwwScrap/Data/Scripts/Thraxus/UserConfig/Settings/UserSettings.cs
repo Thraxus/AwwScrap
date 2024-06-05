@@ -19,5 +19,8 @@ namespace AwwScrap.UserConfig.Settings
 
         [XmlElement(nameof(ScrapVolumeScalar))]
         public string ScrapVolumeScalar;
+
+        [XmlElement(nameof(ScrapUnknownItems))]
+        public bool ScrapUnknownItems;
     }
 }

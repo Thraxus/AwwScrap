@@ -9,9 +9,9 @@ using VRage.Collections;
 using VRage.Game;
 using VRage.ObjectBuilders;
 
-namespace AwwScrap
+namespace AwwScrap.Controllers
 {
-	public class ComponentMap
+	public class ScrapController
 	{
 		private MyPhysicalItemDefinition _componentDefinition;
 		private MyBlueprintDefinitionBase _componentBlueprint;
@@ -35,7 +35,7 @@ namespace AwwScrap
 
         private readonly StringBuilder _writeMeLast = new StringBuilder();
 
-        public ComponentMap(string modPath)
+        public ScrapController(string modPath)
 		{
 			_fullOverlayIcon = modPath + GenericScrapOverlay;
 		}
@@ -273,7 +273,7 @@ namespace AwwScrap
 			_prerequisiteTypeMap.Add(subtypeName, typeId);
         }
 
-        public void ReconcileCompoundComponents(CachingDictionary<string, ComponentMap> compMap)
+        public void ReconcileCompoundComponents(CachingDictionary<string, ScrapController> compMap)
         {
             foreach (var map in compMap)
             {

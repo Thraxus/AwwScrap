@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using AwwScrap.Common.Extensions;
 
 // ReSharper disable SpecifyACultureInStringConversionExplicitly
 
@@ -11,6 +12,7 @@ namespace AwwScrap.UserConfig.Settings
             "\n\t\t1) ScrapMassScalar default is 0.8f [Floating Point].  Value must be between 0.01f and 1.0f.  This is the ratio of scrap mass to component mass." +
             "\n\t\t1) ScrapProductionTimeScalar default is 0.75f [Floating Point].  Value must be between 0.01f and 100.0f.  This is the ratio of scrap production time to component production time." +
             "\n\t\t1) ScrapVolumeScalar default is 0.7f [Floating Point].  Value must be between 0.01f and 1.0f.  This is the ratio of scrap volume to component volume." +
+            "\n\t\t1) ScrapUnknownItems default is true [Bool].  Value must be true or false.  This determines whether to set an unknown item to generic scrap or return the unknown item to the player (unaltered)." +
             "\n\t";
 
         // User set settings
@@ -19,17 +21,19 @@ namespace AwwScrap.UserConfig.Settings
         public static float ScrapMassScalar = 0.80f;
         public static float ScrapProductionTimeScalar = 0.75f;
         public static float ScrapVolumeScalar = 0.70f;
-        
+        public static bool ScrapUnknownItems = true;
+
         // Mod hardcoded settings
         public static float ScrapScalar => (BaseAwwScrapScalar / 2);
         
         public static UserSettings CopyTo(UserSettings userSettings)
         {
-            userSettings.SettingsDescription= SettingsDescription;
+            userSettings.SettingsDescription = SettingsDescription;
             userSettings.BaseAwwScrapScalar = BaseAwwScrapScalar.ToString().ToLower();
             userSettings.ScrapMassScalar = ScrapMassScalar.ToString().ToLower();
             userSettings.ScrapProductionTimeScalar = ScrapProductionTimeScalar.ToString().ToLower();
             userSettings.ScrapVolumeScalar = ScrapVolumeScalar.ToString().ToLower();
+            userSettings.ScrapUnknownItems = ScrapUnknownItems;
             return userSettings;
         }
 
@@ -48,6 +52,8 @@ namespace AwwScrap.UserConfig.Settings
             sb.AppendFormat("{0, -4}[{1}] ScrapProductionTimeScalar", " ", ScrapProductionTimeScalar);
             sb.AppendLine();
             sb.AppendFormat("{0, -4}[{1}] ScrapVolumeScalar", " ", ScrapVolumeScalar);
+            sb.AppendLine();
+            sb.AppendFormat("{0, -4}[{1}] ScrapUnknownItems", " ", ScrapUnknownItems.ToSingleChar());
             sb.AppendLine();
             sb.AppendLine();
             return sb;

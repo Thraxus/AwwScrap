@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using AwwScrap.Common.BaseClasses;
+using AwwScrap.Common.Extensions;
 using AwwScrap.UserConfig.Settings;
 using VRage.Scripting;
+using VRageRender;
 
 // ReSharper disable SpecifyACultureInStringConversionExplicitly
 
@@ -10,6 +12,9 @@ namespace AwwScrap.UserConfig.Controller
     public class SettingsController : BaseXmlUserSettings
     {
         private UserSettings _userSettings;
+        private readonly StringBuilder _sb = new StringBuilder();
+
+        public bool ScrapUnknownItems => _userSettings.ScrapUnknownItems;
 
         public SettingsController(string modName) : base(modName) { }
 
@@ -26,13 +31,11 @@ namespace AwwScrap.UserConfig.Controller
             // Nothing to do here, just leaving it in as a reminder.
         }
 
-        private StringBuilder sb = new StringBuilder();
-
         public override string ToString()
         {
-            sb.AppendLine();
-            sb.AppendLine();
-            return sb.ToString();
+            _sb.AppendLine();
+            _sb.AppendLine();
+            return _sb.ToString();
         }
 
         private void AppendToLog(string str1, string str2, int messageNumber)
@@ -40,24 +43,24 @@ namespace AwwScrap.UserConfig.Controller
             switch (messageNumber)
             {
                 case 1:
-                    sb.AppendLine($"{str1} parsed! {str2}");
+                    _sb.AppendLine($"{str1} parsed! {str2}");
                     break;
                 case 2:
-                    sb.AppendLine($"{str1} was within expected range! {str2}");
+                    _sb.AppendLine($"{str1} was within expected range! {str2}");
                     break;
                 case 3:
-                    sb.AppendLine($"{str1} was not within expected range! {str2}");
+                    _sb.AppendLine($"{str1} was not within expected range! {str2}");
                     break;
                 case 4:
-                    sb.AppendLine($"{str1} failed to parse: {str2}");
+                    _sb.AppendLine($"{str1} failed to parse: {str2}");
                     break;
             }
         }
 
         protected sealed override void SettingsMapper()
         {
-            sb.AppendLine();
-            sb.AppendLine();
+            _sb.AppendLine();
+            _sb.AppendLine();
 
             if (_userSettings == null)
             {
@@ -144,6 +147,18 @@ namespace AwwScrap.UserConfig.Controller
                 _userSettings.ScrapVolumeScalar = DefaultSettings.ScrapVolumeScalar.ToString().ToLower();
             }
 
+            bool scrapUnknownItems;
+            if (bool.TryParse(_userSettings.ScrapVolumeScalar, out scrapUnknownItems))
+            {
+                AppendToLog(nameof(scrapUnknownItems), scrapUnknownItems.ToString(), 1);
+                // must be true or false
+                AppendToLog(nameof(scrapUnknownItems), DefaultSettings.ScrapUnknownItems.ToString(), 3);
+            }
+            else
+            {
+                AppendToLog(nameof(scrapUnknownItems), _userSettings.ScrapUnknownItems.ToSingleChar(), 4);
+                _userSettings.ScrapUnknownItems = DefaultSettings.ScrapUnknownItems;
+            }
         }
     }
 }
