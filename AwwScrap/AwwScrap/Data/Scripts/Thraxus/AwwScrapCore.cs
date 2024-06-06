@@ -22,6 +22,12 @@ namespace AwwScrap
         private SettingsController _settingsController;
         private DefinitionController _definitionController;
 
+        protected override void Unload()
+        {
+            _definitionController.OnWriteToLog -= WriteGeneral;
+            base.Unload();
+        }
+
         protected override void SuperEarlySetup()
 		{
 			base.SuperEarlySetup();
