@@ -9,6 +9,7 @@ using VRage.Utils;
 using System.Linq;
 using System.Text;
 using System;
+using AwwScrap.UserConfig.Settings;
 
 namespace AwwScrap.Controllers
 {
@@ -261,6 +262,8 @@ namespace AwwScrap.Controllers
 
         private void FindCompatibleSkitBlueprints()
         {
+            if (!DefaultSettings.SurvivalKitRecycling) return;
+
             foreach (var sko in _skitOutputs)
             {
                 foreach (var cm in ScrapControllers)
@@ -283,7 +286,13 @@ namespace AwwScrap.Controllers
 
         private void SetupSkits()
         {
-            foreach (MyCubeBlockDefinition sKitDef in MyDefinitionManager.Static.GetAllDefinitions().OfType<MyCubeBlockDefinition>().Where(myCubeBlockDefinition => myCubeBlockDefinition is MySurvivalKitDefinition))
+            if (!DefaultSettings.SurvivalKitRecycling) return;
+
+            foreach (MyCubeBlockDefinition sKitDef in 
+                     MyDefinitionManager.Static.GetAllDefinitions()
+                         .OfType<MyCubeBlockDefinition>()
+                         .Where(
+                             myCubeBlockDefinition => myCubeBlockDefinition is MySurvivalKitDefinition))
             {
                 ((MySurvivalKitDefinition)sKitDef).BlueprintClasses.Add(_awwScrapSkitBlueprintClassDefinition);
                 foreach (var cm in ScrapControllers)

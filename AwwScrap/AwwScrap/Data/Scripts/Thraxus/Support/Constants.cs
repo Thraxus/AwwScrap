@@ -123,7 +123,14 @@ namespace AwwScrap.Support
             "BrokenWoodPlanks",
             "WoodGirder",
             "LicenseProduction",
-            "LicenseUpgradeX4"
+            "LicenseUpgradeX4",
+            "PrototechFrame",
+            "PrototechPanel",
+            "PrototechCapacitor",
+            "PrototechPropulsionUnit",
+            "PrototechMachinery",
+            "PrototechCircuitry",
+            "PrototechCoolingUnit",
         };
 
 		public static readonly List<string> IgnoredBlocks = new List<string>

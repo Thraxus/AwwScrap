@@ -22,5 +22,8 @@ namespace AwwScrap.UserConfig.Settings
 
         [XmlElement(nameof(ScrapUnknownItems))]
         public bool ScrapUnknownItems;
+
+        [XmlElement(nameof(SurvivalKitRecycling))]
+        public bool SurvivalKitRecycling;
     }
 }
