@@ -9,6 +9,7 @@ using VRage.Utils;
 using System.Linq;
 using System.Text;
 using System;
+using AwwScrap.Common.Extensions;
 using AwwScrap.UserConfig.Settings;
 
 namespace AwwScrap.Controllers
@@ -236,6 +237,19 @@ namespace AwwScrap.Controllers
                         compatible = false;
                         falseHits++;
                     }
+
+                    // Unfortunate but necessary workaround for IO and the fact it let the "Ingots" BPC exist but not use it.
+                    if (!compatible && 
+                        bco.Key.Id.SubtypeName == "RefineryIngots" &&
+                        cm.Value.GetComponentDefinition().Context.ModId == "2344068716.sbm" &&
+                        (cm.Value.GetComponentDefinition()?.Id.SubtypeName == "Thrust" ||
+                         cm.Value.GetComponentDefinition()?.Id.SubtypeName == "Explosives") &&
+                        !string.IsNullOrWhiteSpace(cm.Value.GetComponentDefinition().Context.ModId))
+                    {
+                        cm.Value.AddCompatibleRefineryBpc(bco.Key, false);
+                        continue;
+                    }
+
                     if (compatible)
                     {
                         cm.Value.AddCompatibleRefineryBpc(bco.Key, false);
