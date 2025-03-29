@@ -2,10 +2,12 @@
 using AwwScrap.Common.BaseClasses;
 using AwwScrap.Common.Enums;
 using AwwScrap.Controllers;
+using AwwScrap.Support;
 using VRage.Game.Components;
 using AwwScrap.UserConfig.Controller;
 using AwwScrap.UserConfig.Settings;
 using Sandbox.Game.Gui;
+using AwwScrap.Common;
 
 namespace AwwScrap
 {
@@ -32,7 +34,9 @@ namespace AwwScrap
 		{
 			base.SuperEarlySetup();
             _settingsController = new SettingsController(ModContext.ModName);
-            _settingsController.Initialize();
+            if (References.IsServer)
+                _settingsController.InitializeServer();
+            else _settingsController.InitializeClient();
             _definitionController = new DefinitionController(_settingsController, ModContext.ModPath);
 			_definitionController.OnWriteToLog += WriteGeneral;
 			_definitionController.Init();
@@ -47,6 +51,7 @@ namespace AwwScrap
         protected override void LateSetup()
         {
             base.LateSetup();
+
 			var sbValidScrap = new StringBuilder();
             var validScrap = false;
             var sbSkippedScrap = new StringBuilder();

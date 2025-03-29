@@ -2,6 +2,7 @@
 using AwwScrap.Common.BaseClasses;
 using AwwScrap.Common.Extensions;
 using AwwScrap.UserConfig.Settings;
+using Sandbox.ModAPI;
 using VRage.Scripting;
 using VRageRender;
 
@@ -18,12 +19,71 @@ namespace AwwScrap.UserConfig.Controller
 
         public SettingsController(string modName) : base(modName) { }
 
-        public void Initialize()
+        public void InitializeServer()
         {
             _userSettings = Get<UserSettings>();
             SettingsMapper();
             CleanUserSettings();
             Set(_userSettings);
+            WriteToSandbox();
+        }
+
+        public void InitializeClient()
+        {
+            ReadFromSandbox();
+        }
+
+        private void WriteToSandbox()
+        {
+            // Server only --
+
+            MyAPIGateway.Utilities.SetVariable<float>("AwwScrap_BaseAwwScrapScalar", DefaultSettings.BaseAwwScrapScalar);
+            MyAPIGateway.Utilities.SetVariable<float>("AwwScrap_ScrapMassScalar", DefaultSettings.ScrapMassScalar);
+            MyAPIGateway.Utilities.SetVariable<float>("AwwScrap_ScrapProductionTimeScalar", DefaultSettings.ScrapProductionTimeScalar);
+            MyAPIGateway.Utilities.SetVariable<float>("AwwScrap_ScrapVolumeScalar", DefaultSettings.ScrapVolumeScalar);
+            MyAPIGateway.Utilities.SetVariable<bool>("AwwScrap_ScrapUnknownItems", DefaultSettings.ScrapUnknownItems);
+            MyAPIGateway.Utilities.SetVariable<bool>("AwwScrap_SurvivalKitRecycling", DefaultSettings.SurvivalKitRecycling);
+        }
+
+        private void ReadFromSandbox()
+        {
+            // Client only --
+
+            float scalar;
+            if (MyAPIGateway.Utilities.GetVariable("AwwScrap_BaseAwwScrapScalar", out scalar))
+            {
+                DefaultSettings.BaseAwwScrapScalar = scalar;
+            }
+
+            scalar = 0;
+            if (MyAPIGateway.Utilities.GetVariable("AwwScrap_ScrapMassScalar", out scalar))
+            {
+                DefaultSettings.ScrapMassScalar = scalar;
+            }
+
+            scalar = 0;
+            if (MyAPIGateway.Utilities.GetVariable("AwwScrap_ScrapProductionTimeScalar", out scalar))
+            {
+                DefaultSettings.ScrapProductionTimeScalar = scalar;
+            }
+
+            scalar = 0;
+            if (MyAPIGateway.Utilities.GetVariable("AwwScrap_ScrapVolumeScalar", out scalar))
+            {
+                DefaultSettings.ScrapVolumeScalar = scalar;
+            }
+
+            bool bools;
+            if (MyAPIGateway.Utilities.GetVariable("AwwScrap_ScrapUnknownItems", out bools))
+            {
+                DefaultSettings.ScrapUnknownItems = bools;
+            }
+
+            bools = false;
+            if (MyAPIGateway.Utilities.GetVariable("AwwScrap_SurvivalKitRecycling", out bools))
+            {
+                DefaultSettings.SurvivalKitRecycling = bools;
+            }
         }
 
         private void CleanUserSettings()

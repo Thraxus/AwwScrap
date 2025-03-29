@@ -174,7 +174,7 @@ namespace AwwScrap.Controllers
         {
             foreach (var refinery in MyDefinitionManager.Static.GetDefinitionsOfType<MyRefineryDefinition>())
             {
-                if (!refinery.Public) continue;
+                if (!refinery.Public || refinery.Id.SubtypeName.Contains("StoneIncinerator")) continue;
                 //if (refinery.Id.SubtypeName == Constants.AwwScrapRecyclerSubtypeName)
                 //{
                 //    _awwScrapRefineryDefinition = refinery;
