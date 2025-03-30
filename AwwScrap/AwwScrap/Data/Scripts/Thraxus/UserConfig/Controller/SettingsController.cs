@@ -3,8 +3,6 @@ using AwwScrap.Common.BaseClasses;
 using AwwScrap.Common.Extensions;
 using AwwScrap.UserConfig.Settings;
 using Sandbox.ModAPI;
-using VRage.Scripting;
-using VRageRender;
 
 // ReSharper disable SpecifyACultureInStringConversionExplicitly
 
@@ -30,6 +28,8 @@ namespace AwwScrap.UserConfig.Controller
 
         public void InitializeClient()
         {
+            _userSettings = Get<UserSettings>();
+            SettingsMapper();
             ReadFromSandbox();
         }
 
@@ -37,12 +37,12 @@ namespace AwwScrap.UserConfig.Controller
         {
             // Server only --
 
-            MyAPIGateway.Utilities.SetVariable<float>("AwwScrap_BaseAwwScrapScalar", DefaultSettings.BaseAwwScrapScalar);
-            MyAPIGateway.Utilities.SetVariable<float>("AwwScrap_ScrapMassScalar", DefaultSettings.ScrapMassScalar);
-            MyAPIGateway.Utilities.SetVariable<float>("AwwScrap_ScrapProductionTimeScalar", DefaultSettings.ScrapProductionTimeScalar);
-            MyAPIGateway.Utilities.SetVariable<float>("AwwScrap_ScrapVolumeScalar", DefaultSettings.ScrapVolumeScalar);
-            MyAPIGateway.Utilities.SetVariable<bool>("AwwScrap_ScrapUnknownItems", DefaultSettings.ScrapUnknownItems);
-            MyAPIGateway.Utilities.SetVariable<bool>("AwwScrap_SurvivalKitRecycling", DefaultSettings.SurvivalKitRecycling);
+            MyAPIGateway.Utilities.SetVariable("AwwScrap_BaseAwwScrapScalar", DefaultSettings.BaseAwwScrapScalar);
+            MyAPIGateway.Utilities.SetVariable("AwwScrap_ScrapMassScalar", DefaultSettings.ScrapMassScalar);
+            MyAPIGateway.Utilities.SetVariable("AwwScrap_ScrapProductionTimeScalar", DefaultSettings.ScrapProductionTimeScalar);
+            MyAPIGateway.Utilities.SetVariable("AwwScrap_ScrapVolumeScalar", DefaultSettings.ScrapVolumeScalar);
+            MyAPIGateway.Utilities.SetVariable("AwwScrap_ScrapUnknownItems", DefaultSettings.ScrapUnknownItems);
+            MyAPIGateway.Utilities.SetVariable("AwwScrap_SurvivalKitRecycling", DefaultSettings.SurvivalKitRecycling);
         }
 
         private void ReadFromSandbox()
@@ -73,7 +73,7 @@ namespace AwwScrap.UserConfig.Controller
                 DefaultSettings.ScrapVolumeScalar = scalar;
             }
 
-            bool bools;
+            bool bools = false;
             if (MyAPIGateway.Utilities.GetVariable("AwwScrap_ScrapUnknownItems", out bools))
             {
                 DefaultSettings.ScrapUnknownItems = bools;
